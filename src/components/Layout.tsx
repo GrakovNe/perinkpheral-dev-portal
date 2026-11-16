@@ -5,35 +5,57 @@ import { PAGES } from '../content/pages'
 import { useLang, useT } from '../i18n'
 import { Mark, Wordmark } from './Brand'
 
-// The two flags, drawn small: the Union Flag and the Russian tricolour.
-function FlagUk() {
+// The two flags as pixel pictures, cell for cell like the screen: 20 x 12
+// cells, the panel's paper for white, colours a little quieter than the
+// standards'.
+const FLAG_W = 20
+const FLAG_H = 12
+const PAPER = '#e9e7e1'
+const BLUE = '#2b3f7a'
+const RED = '#b0343a'
+
+function Pixels({ colour }: { colour: (x: number, y: number) => string }) {
+  const cells = []
+  for (let y = 0; y < FLAG_H; y++) {
+    for (let x = 0; x < FLAG_W; x++) {
+      cells.push(<rect key={`${x}-${y}`} x={x} y={y} width={1} height={1} fill={colour(x, y)} />)
+    }
+  }
   return (
-    <svg viewBox="0 0 60 30" aria-hidden="true">
-      <clipPath id="uk-s">
-        <path d="M0,0 v30 h60 v-30 z" />
-      </clipPath>
-      <clipPath id="uk-t">
-        <path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z" />
-      </clipPath>
-      <g clipPath="url(#uk-s)">
-        <path d="M0,0 v30 h60 v-30 z" fill="#012169" />
-        <path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" strokeWidth="6" />
-        <path d="M0,0 L60,30 M60,0 L0,30" clipPath="url(#uk-t)" stroke="#C8102E" strokeWidth="4" />
-        <path d="M30,0 v30 M0,15 h60" stroke="#fff" strokeWidth="10" />
-        <path d="M30,0 v30 M0,15 h60" stroke="#C8102E" strokeWidth="6" />
-      </g>
+    <svg viewBox={`0 0 ${FLAG_W} ${FLAG_H}`} shapeRendering="crispEdges" aria-hidden="true">
+      {cells}
     </svg>
   )
 }
 
+// The Union Flag: the cross over the saltires, each a red band edged in
+// white; a cell belongs to a diagonal by its distance from it.
+const DIAGONAL = Math.hypot(FLAG_W, FLAG_H)
+
+function unionFlag(x: number, y: number) {
+  const cx = x + 0.5
+  const cy = y + 0.5
+  const fromCross = Math.min(Math.abs(cx - FLAG_W / 2), Math.abs(cy - FLAG_H / 2))
+  if (fromCross < 1) return RED
+  if (fromCross < 2) return PAPER
+  const down = Math.abs(cy * FLAG_W - cx * FLAG_H) / DIAGONAL
+  const up = Math.abs((FLAG_H - cy) * FLAG_W - cx * FLAG_H) / DIAGONAL
+  const fromSaltire = Math.min(down, up)
+  if (fromSaltire < 0.6) return RED
+  if (fromSaltire < 1.5) return PAPER
+  return BLUE
+}
+
+function russianFlag(_x: number, y: number) {
+  return y < FLAG_H / 3 ? PAPER : y < (2 * FLAG_H) / 3 ? BLUE : RED
+}
+
+function FlagUk() {
+  return <Pixels colour={unionFlag} />
+}
+
 function FlagRu() {
-  return (
-    <svg viewBox="0 0 9 6" aria-hidden="true">
-      <rect width="9" height="2" fill="#fff" />
-      <rect y="2" width="9" height="2" fill="#0039A6" />
-      <rect y="4" width="9" height="2" fill="#D52B1E" />
-    </svg>
-  )
+  return <Pixels colour={russianFlag} />
 }
 
 function Languages() {
