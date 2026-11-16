@@ -1,4 +1,5 @@
 import { useState, type ReactNode } from 'react'
+import { useT } from '../i18n'
 
 // The head of a page: its title, and a line under it when there is one.
 export function PageHead({ eyebrow, title, children }: { eyebrow?: string; title: string; children?: ReactNode }) {
@@ -17,10 +18,11 @@ export type Chapter = { id: string; title: string }
 
 // A long page: its contents on the left, its sections on the right.
 export function DocBody({ chapters, children }: { chapters: Chapter[]; children: ReactNode }) {
+  const t = useT()
   return (
     <div className="wrap page-body">
-      <nav className="toc" aria-label="On this page">
-        <p>On this page</p>
+      <nav className="toc" aria-label={t('On this page', 'На этой странице')}>
+        <p>{t('On this page', 'На этой странице')}</p>
         <ol>
           {chapters.map((chapter) => (
             <li key={chapter.id}>
@@ -46,6 +48,7 @@ export function Chapter({ chapter, children }: { chapter: Chapter; children: Rea
 // A block of code, shell or C, with a button that copies it.
 export function Code({ label, children }: { label: string; children: string }) {
   const [copied, setCopied] = useState(false)
+  const t = useT()
   const copy = async () => {
     try {
       await navigator.clipboard.writeText(children.trim())
@@ -60,7 +63,7 @@ export function Code({ label, children }: { label: string; children: string }) {
       <div className="label">
         <span>{label}</span>
         <button type="button" className="copy" onClick={copy}>
-          {copied ? 'Copied' : 'Copy'}
+          {copied ? t('Copied', 'Скопировано') : t('Copy', 'Копировать')}
         </button>
       </div>
       <pre>

@@ -2,50 +2,56 @@ import { Link } from 'react-router-dom'
 import { Mark, Wordmark } from '../components/Brand'
 import { Carousel, Gallery, Screen } from '../components/Pictures'
 import { APPS } from '../content/apps'
+import { useT } from '../i18n'
 
-const SPECS: [string, string][] = [
-  ['Screen', '4.2" e-paper'],
-  ['Apps', 'Up to 24'],
-  ['Controls', '4 buttons'],
-  ['Connection', 'Wi-Fi'],
-  ['Power', 'Battery, USB-C'],
-  ['Case', '3D-printed'],
+const SPECS: [string, string, string, string][] = [
+  ['Screen', 'Экран', '4.2" e-paper', '4.2" e-paper'],
+  ['Apps', 'Приложения', 'Up to 24', 'До 24'],
+  ['Controls', 'Управление', '4 buttons', '4 кнопки'],
+  ['Connection', 'Связь', 'Wi-Fi', 'Wi-Fi'],
+  ['Power', 'Питание', 'Battery, USB-C', 'Аккумулятор, USB-C'],
+  ['Case', 'Корпус', '3D-printed', '3D-печать'],
 ]
 
-const FEATURES = ['No backlight', 'No account, no cloud', 'Set up in a browser', 'Four buttons']
+const FEATURES: [string, string][] = [
+  ['No backlight', 'Без подсветки'],
+  ['No account, no cloud', 'Без аккаунта и облака'],
+  ['Set up in a browser', 'Настройка из браузера'],
+  ['Four buttons', 'Четыре кнопки'],
+]
 
 const HERO = [
-  { name: 'hero-weather', caption: 'Weather' },
-  { name: 'hero-sun', caption: 'Sun and Moon' },
-  { name: 'hero-stocks', caption: 'Stocks' },
-  { name: 'hero-timer', caption: 'Timer' },
+  { name: 'hero-weather', en: 'Weather', ru: 'Погода' },
+  { name: 'hero-sun', en: 'Sun and Moon', ru: 'Солнце и Луна' },
+  { name: 'hero-stocks', en: 'Stocks', ru: 'Акции' },
+  { name: 'hero-timer', en: 'Timer', ru: 'Таймер' },
 ]
 
 const SCREENS = [
-  { name: 'weather', caption: 'Weather' },
-  { name: 'stocks', caption: 'Stocks' },
-  { name: 'clock', caption: 'Clock' },
-  { name: 'sun', caption: 'Sun and Moon' },
-  { name: 'timer', caption: 'Timer' },
-  { name: 'stopwatch', caption: 'Stopwatch' },
+  { name: 'weather', en: 'Weather', ru: 'Погода' },
+  { name: 'stocks', en: 'Stocks', ru: 'Акции' },
+  { name: 'clock', en: 'Clock', ru: 'Часы' },
+  { name: 'sun', en: 'Sun and Moon', ru: 'Солнце и Луна' },
+  { name: 'timer', en: 'Timer', ru: 'Таймер' },
+  { name: 'stopwatch', en: 'Stopwatch', ru: 'Секундомер' },
 ]
 
 const RENDERS = [
-  { name: 'front34l', caption: 'Front, left' },
-  { name: 'front34r', caption: 'Front, right' },
-  { name: 'front', caption: 'Front' },
-  { name: 'buttons', caption: 'Buttons' },
-  { name: 'top', caption: 'Top' },
-  { name: 'back', caption: 'Back' },
-  { name: 'back34r', caption: 'Back, right' },
-  { name: 'left', caption: 'Left' },
-  { name: 'right', caption: 'Right' },
+  { name: 'front34l', en: 'Front, left', ru: 'Спереди слева' },
+  { name: 'front34r', en: 'Front, right', ru: 'Спереди справа' },
+  { name: 'front', en: 'Front', ru: 'Спереди' },
+  { name: 'buttons', en: 'Buttons', ru: 'Кнопки' },
+  { name: 'top', en: 'Top', ru: 'Сверху' },
+  { name: 'back', en: 'Back', ru: 'Сзади' },
+  { name: 'back34r', en: 'Back, right', ru: 'Сзади справа' },
+  { name: 'left', en: 'Left', ru: 'Слева' },
+  { name: 'right', en: 'Right', ru: 'Справа' },
 ]
 
 const DOORS = [
-  { to: '/hardware', title: 'Hardware' },
-  { to: '/sdk', title: 'SDK' },
-  { to: '/firmware', title: 'Firmware' },
+  { to: '/hardware', en: 'Hardware', ru: 'Железо' },
+  { to: '/sdk', en: 'SDK', ru: 'SDK' },
+  { to: '/firmware', en: 'Firmware', ru: 'Прошивка' },
 ]
 
 function AppIcon({ rows }: { rows: string[] }) {
@@ -59,39 +65,41 @@ function AppIcon({ rows }: { rows: string[] }) {
 }
 
 export function Home() {
+  const t = useT()
+  const caption = (one: { name: string; en: string; ru: string }) => ({ name: one.name, caption: t(one.en, one.ru) })
   return (
     <>
       <section className="hero">
         <div className="wrap">
           <div className="hero-text">
-            <Mark className="hero-mark" title="The perINKpheral mark" />
+            <Mark className="hero-mark" title={t('The perINKpheral mark', 'Знак perINKpheral')} />
             <h1>
               <Wordmark className="hero-wordmark" />
             </h1>
-            <p className="hero-line">A paper-like screen for your desk, with apps.</p>
-            <p className="hero-lead">Weather, calendar, stocks, smart home and more.</p>
+            <p className="hero-line">{t('A paper-like screen for your desk, with apps.', 'Экран как бумага для рабочего стола, с приложениями.')}</p>
+            <p className="hero-lead">{t('Weather, calendar, stocks, smart home and more.', 'Погода, календарь, акции, умный дом и не только.')}</p>
             <div className="buttons">
               <Link className="button" to="/hardware">
-                Build one <span className="arrow">-&gt;</span>
+                {t('Build one', 'Собрать')} <span className="arrow">-&gt;</span>
               </Link>
               <Link className="button quiet" to="/sdk">
-                Write an app
+                {t('Write an app', 'Написать приложение')}
               </Link>
             </div>
           </div>
           <div className="hero-picture">
-            <Carousel slides={HERO} sizes="(max-width: 64rem) 100vw, 56vw" />
+            <Carousel slides={HERO.map(caption)} sizes="(max-width: 64rem) 100vw, 56vw" />
           </div>
         </div>
       </section>
 
-      <section className="specs" aria-label="Specifications">
+      <section className="specs" aria-label={t('Specifications', 'Характеристики')}>
         <div className="wrap">
           <dl>
-            {SPECS.map(([name, value]) => (
+            {SPECS.map(([name, nameRu, value, valueRu]) => (
               <div key={name}>
-                <dt>{name}</dt>
-                <dd>{value}</dd>
+                <dt>{t(name, nameRu)}</dt>
+                <dd>{t(value, valueRu)}</dd>
               </div>
             ))}
           </dl>
@@ -101,22 +109,22 @@ export function Home() {
       <section className="band">
         <div className="wrap">
           <div className="band-head">
-            <h2>Apps</h2>
+            <h2>{t('Apps', 'Приложения')}</h2>
           </div>
           <div className="apps">
             {APPS.map((app) => (
               <article key={app.name} className="panel app">
                 <AppIcon rows={app.icon} />
-                <h3>{app.title}</h3>
-                <p>{app.text}</p>
+                <h3>{t(app.title, app.titleRu)}</h3>
+                <p>{t(app.text, app.textRu)}</p>
               </article>
             ))}
             <Link to="/sdk" className="panel app own">
               <span className="plus" aria-hidden="true">
                 +
               </span>
-              <h3>Your own</h3>
-              <p>In C</p>
+              <h3>{t('Your own', 'Своё')}</h3>
+              <p>{t('In C', 'На C')}</p>
             </Link>
           </div>
         </div>
@@ -125,9 +133,9 @@ export function Home() {
       <section className="band">
         <div className="wrap">
           <div className="features">
-            {FEATURES.map((title) => (
+            {FEATURES.map(([title, titleRu]) => (
               <article key={title}>
-                <h3>{title}</h3>
+                <h3>{t(title, titleRu)}</h3>
               </article>
             ))}
           </div>
@@ -137,10 +145,10 @@ export function Home() {
       <section className="band">
         <div className="wrap">
           <div className="band-head">
-            <h2>On the screen</h2>
+            <h2>{t('On the screen', 'На экране')}</h2>
           </div>
           <div className="screens">
-            {SCREENS.map((screen) => (
+            {SCREENS.map(caption).map((screen) => (
               <Screen key={screen.name} name={screen.name} alt={screen.caption} caption={screen.caption} />
             ))}
           </div>
@@ -150,9 +158,9 @@ export function Home() {
       <section className="band">
         <div className="wrap">
           <div className="band-head">
-            <h2>The case</h2>
+            <h2>{t('The case', 'Корпус')}</h2>
           </div>
-          <Gallery shots={RENDERS} />
+          <Gallery shots={RENDERS.map(caption)} />
         </div>
       </section>
 
@@ -162,7 +170,7 @@ export function Home() {
             {DOORS.map((door) => (
               <Link key={door.to} to={door.to} className="door">
                 <h3>
-                  {door.title} <span className="arrow">-&gt;</span>
+                  {t(door.en, door.ru)} <span className="arrow">-&gt;</span>
                 </h3>
               </Link>
             ))}

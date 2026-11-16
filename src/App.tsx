@@ -8,21 +8,19 @@ import { Hardware } from './pages/Hardware'
 import { Home } from './pages/Home'
 import { Sdk } from './pages/Sdk'
 
-const TITLES: Record<string, string> = {
-  '/': 'perINKpheral',
-  '/sdk': 'SDK - perINKpheral',
-  '/hardware': 'Hardware - perINKpheral',
-  '/firmware': 'Firmware - perINKpheral',
-  '/contacts': 'Contacts - perINKpheral',
-  '/credits': 'Credits - perINKpheral',
-}
+import { PAGES } from './content/pages'
+import { useLang, useT } from './i18n'
 
 // A new page starts at its top, or at the section its address names; the
 // title of the tab says which page it is.
 function Navigation() {
   const { pathname, hash } = useLocation()
+  const { lang } = useLang()
   useEffect(() => {
-    document.title = TITLES[pathname] ?? 'Not found - perINKpheral'
+    const page = PAGES.find((one) => one.to === pathname)
+    document.title = pathname === '/' ? 'perINKpheral' : `${page ? page[lang] : lang === 'ru' ? 'Не найдено' : 'Not found'} - perINKpheral`
+  }, [pathname, lang])
+  useEffect(() => {
     if (hash) {
       document.getElementById(decodeURIComponent(hash.slice(1)))?.scrollIntoView()
     } else {
@@ -33,12 +31,13 @@ function Navigation() {
 }
 
 function NotFound() {
+  const t = useT()
   return (
     <div className="wrap not-found">
-      <h1>Not found</h1>
-      <p>There is no page at this address.</p>
+      <h1>{t('Not found', 'Не найдено')}</h1>
+      <p>{t('There is no page at this address.', 'По этому адресу ничего нет.')}</p>
       <Link className="button" to="/">
-        Home
+        {t('Home', 'На главную')}
       </Link>
     </div>
   )

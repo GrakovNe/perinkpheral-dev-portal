@@ -2,134 +2,133 @@ import { Chapter, DocBody, Facts, PageHead, Table } from '../components/Doc'
 import { WiringDiagram } from '../components/Diagrams'
 import { Gallery, Render } from '../components/Pictures'
 import { files } from '../content/links'
+import { useT } from '../i18n'
 
 const CHAPTERS = [
-  { id: 'overview', title: 'Overview' },
-  { id: 'parts', title: 'Parts' },
-  { id: 'constraints', title: 'Before assembly' },
-  { id: 'printing', title: 'Printed parts' },
-  { id: 'wiring', title: 'Wiring' },
-  { id: 'assembly', title: 'Assembly' },
-  { id: 'fasteners', title: 'Fasteners' },
-  { id: 'flashing', title: 'First flash' },
-  { id: 'files', title: 'Files' },
-  { id: 'renders', title: 'Renders' },
+  { id: 'overview', en: 'Overview', ru: 'Обзор' },
+  { id: 'parts', en: 'Parts', ru: 'Детали' },
+  { id: 'constraints', en: 'Before assembly', ru: 'Перед сборкой' },
+  { id: 'printing', en: 'Printed parts', ru: 'Печатные детали' },
+  { id: 'wiring', en: 'Wiring', ru: 'Проводка' },
+  { id: 'assembly', en: 'Assembly', ru: 'Сборка' },
+  { id: 'fasteners', en: 'Fasteners', ru: 'Крепёж' },
+  { id: 'flashing', en: 'First flash', ru: 'Первая прошивка' },
+  { id: 'files', en: 'Files', ru: 'Файлы' },
+  { id: 'renders', en: 'Renders', ru: 'Рендеры' },
 ]
 
-const [overview, parts, constraints, printing, wiring, assembly, fasteners, flashing, filesChapter, renders] =
-  CHAPTERS
-
 const RENDERS = [
-  { name: 'front34l', caption: 'Front, left' },
-  { name: 'front34r', caption: 'Front, right' },
-  { name: 'front', caption: 'Front' },
-  { name: 'left', caption: 'Left' },
-  { name: 'right', caption: 'Right' },
-  { name: 'back', caption: 'Back' },
-  { name: 'back34r', caption: 'Back, right' },
-  { name: 'top', caption: 'Top' },
-  { name: 'buttons', caption: 'Buttons' },
+  { name: 'front34l', en: 'Front, left', ru: 'Спереди слева' },
+  { name: 'front34r', en: 'Front, right', ru: 'Спереди справа' },
+  { name: 'front', en: 'Front', ru: 'Спереди' },
+  { name: 'left', en: 'Left', ru: 'Слева' },
+  { name: 'right', en: 'Right', ru: 'Справа' },
+  { name: 'back', en: 'Back', ru: 'Сзади' },
+  { name: 'back34r', en: 'Back, right', ru: 'Сзади справа' },
+  { name: 'top', en: 'Top', ru: 'Сверху' },
+  { name: 'buttons', en: 'Buttons', ru: 'Кнопки' },
 ]
 
 export function Hardware() {
+  const t = useT()
+  const chapters = CHAPTERS.map((one) => ({ id: one.id, title: t(one.en, one.ru) }))
+  const [overview, parts, constraints, printing, wiring, assembly, fasteners, flashing, filesChapter, renders] =
+    chapters
   return (
     <>
-      <PageHead title="Hardware" />
-      <DocBody chapters={CHAPTERS}>
+      <PageHead title={t('Hardware', 'Железо')} />
+      <DocBody chapters={chapters}>
         <Chapter chapter={overview}>
-          <Render
-            name="front34r"
-            alt="The device, front right view"
-          />
+          <Render name="front34r" alt={t('The device, front right view', 'Устройство спереди справа')} />
           <Facts
             rows={[
-              ['Size', '111.5 x 103.5 x 86.5 mm with the feet'],
-              ['Board', 'Seeed Studio XIAO ESP32-C6'],
-              ['Display', 'Waveshare 4.2" e-Paper Module V2, 400 x 300 pixels'],
-              ['Battery', 'Li-Ion 3.7 V, charges over USB-C'],
-              ['Screws', 'M2.5'],
-              ['Tools', 'Soldering iron, screwdriver, FDM printer'],
+              [t('Size', 'Размер'), t('111.5 x 103.5 x 86.5 mm with the feet', '111.5 x 103.5 x 86.5 мм с ножками')],
+              [t('Board', 'Плата'), 'Seeed Studio XIAO ESP32-C6'],
+              [t('Display', 'Экран'), t('Waveshare 4.2" e-Paper Module V2, 400 x 300 pixels', 'Waveshare 4.2" e-Paper Module V2, 400 x 300 точек')],
+              [t('Battery', 'Аккумулятор'), t('Li-Ion 3.7 V, charges over USB-C', 'Li-Ion 3.7 В, заряжается по USB-C')],
+              [t('Screws', 'Винты'), 'M2.5'],
+              [t('Tools', 'Инструменты'), t('Soldering iron, screwdriver, FDM printer', 'Паяльник, отвёртка, FDM-принтер')],
             ]}
           />
         </Chapter>
 
         <Chapter chapter={parts}>
           <Table
-            head={['Part', 'Model', 'Qty', 'Notes']}
+            head={[t('Part', 'Деталь'), t('Model', 'Модель'), t('Qty', 'Кол-во'), t('Notes', 'Примечание')]}
             rows={[
-              ['Microcontroller', 'Seeed Studio XIAO ESP32-C6', '1', 'Has a battery charger and an antenna connector'],
-              ['Display', 'Waveshare 4.2inch e-Paper Module, V2 (SSD1683)', '1', 'Version 2 only'],
-              ['Antenna', 'Seeed FPC Antenna A-01, 2.4/5 GHz', '1', 'Flat antenna with an 80 mm cable'],
-              ['Buttons', '"Independent key switch module 4P"', '1', 'A small board with four buttons, sold under this name'],
-              ['Battery', 'Li-Ion/LiPo 3.7 V, size code 955465, 4000 mAh', '1', 'With a protection board'],
-              ['Screws', 'M2.5 x 4', '5', '3 display to frame, 2 back panel'],
-              ['Screws', 'M2.5 x 6', '7', '4 bottom to cover, 2 sole, 1 display corner'],
-              ['Wire', 'Thin hook-up wire', '~0.3\u00a0m', 'Buttons and battery'],
-              ['Heat shrink tube', '1.5-2 mm', '~0.1\u00a0m', 'Insulating the joined wires'],
-              ['Tape', 'Thin double-sided', '-', 'Antenna and battery'],
+              [t('Microcontroller', 'Микроконтроллер'), 'Seeed Studio XIAO ESP32-C6', '1', t('Has a battery charger and an antenna connector', 'Со встроенной зарядкой и разъёмом антенны')],
+              [t('Display', 'Экран'), 'Waveshare 4.2inch e-Paper Module, V2 (SSD1683)', '1', t('Version 2 only', 'Только версия 2')],
+              [t('Antenna', 'Антенна'), 'Seeed FPC Antenna A-01, 2.4/5 GHz', '1', t('Flat antenna with an 80 mm cable', 'Плоская, кабель 80 мм')],
+              [t('Buttons', 'Кнопки'), '"Independent key switch module 4P"', '1', t('A small board with four buttons, sold under this name', 'Плата с четырьмя кнопками, продаётся под этим названием')],
+              [t('Battery', 'Аккумулятор'), t('Li-Ion/LiPo 3.7 V, size code 955465, 4000 mAh', 'Li-Ion/LiPo 3.7 В, типоразмер 955465, 4000 мАч'), '1', t('With a protection board', 'С платой защиты')],
+              [t('Screws', 'Винты'), 'M2.5 x 4', '5', t('3 display to frame, 2 back panel', '3 экран к рамке, 2 задняя панель')],
+              [t('Screws', 'Винты'), 'M2.5 x 6', '7', t('4 bottom to cover, 2 sole, 1 display corner', '4 дно к основанию, 2 основание, 1 угол экрана')],
+              [t('Wire', 'Провод'), t('Thin hook-up wire', 'Тонкий монтажный'), t('~0.3 m', '~0.3 м'), t('Buttons and battery', 'Кнопки и аккумулятор')],
+              [t('Heat shrink tube', 'Термоусадка'), t('1.5-2 mm', '1.5-2 мм'), t('~0.1 m', '~0.1 м'), t('Insulating the joined wires', 'Изоляция скруток')],
+              [t('Tape', 'Скотч'), t('Thin double-sided', 'Тонкий двусторонний'), '-', t('Antenna and battery', 'Антенна и аккумулятор')],
             ]}
           />
         </Chapter>
 
         <Chapter chapter={constraints}>
-          <h3>Display</h3>
+          <h3>{t('Display', 'Экран')}</h3>
           <ul>
-            <li>Only version 2 of the display works: look for the V2 sticker on the back.</li>
-            <li>Unscrew the brass spacers: the display is screwed straight to the frame.</li>
-            <li>Plug in the display cable first: the connector cannot be reached once the display is in place.</li>
-            <li>Do not bend the thin ribbon at the glass edge sharply.</li>
+            <li>{t('Only version 2 of the display works: look for the V2 sticker on the back.', 'Подходит только вторая версия экрана: на обороте наклейка V2.')}</li>
+            <li>{t('Unscrew the brass spacers: the display is screwed straight to the frame.', 'Открутите латунные стойки: экран крепится прямо к рамке.')}</li>
+            <li>{t('Plug in the display cable first: the connector cannot be reached once the display is in place.', 'Сначала подключите шлейф: когда экран на месте, до разъёма не добраться.')}</li>
+            <li>{t('Do not bend the thin ribbon at the glass edge sharply.', 'Не перегибайте тонкий шлейф у края стекла.')}</li>
           </ul>
-          <h3>Board</h3>
+          <h3>{t('Board', 'Плата')}</h3>
           <ul>
-            <li>The USB-C port goes into the opening in the right wall.</li>
-            <li>The battery pads are on the underside of the board.</li>
+            <li>{t('The USB-C port goes into the opening in the right wall.', 'Разъём USB-C входит в окно в правой стенке.')}</li>
+            <li>{t('The battery pads are on the underside of the board.', 'Площадки аккумулятора на нижней стороне платы.')}</li>
           </ul>
-          <h3>Battery</h3>
+          <h3>{t('Battery', 'Аккумулятор')}</h3>
           <ul>
-            <li>Use a battery with a protection board: the XIAO does not protect the battery from deep discharge.</li>
-            <li>The battery compartment fits up to 70 x 54 x 12.5 mm.</li>
+            <li>{t('Use a battery with a protection board: the XIAO does not protect the battery from deep discharge.', 'Нужен аккумулятор с платой защиты: XIAO не защищает его от глубокого разряда.')}</li>
+            <li>{t('The battery compartment fits up to 70 x 54 x 12.5 mm.', 'Отсек вмещает аккумулятор до 70 x 54 x 12.5 мм.')}</li>
           </ul>
-          <h3>Buttons</h3>
+          <h3>{t('Buttons', 'Кнопки')}</h3>
           <ul>
-            <li>Snap off the narrow strip along the edge of the button board, or it does not fit.</li>
-            <li>The board sits on two pins in the bottom, solder pads towards the XIAO.</li>
-            <li>The caps fit standard 6 x 6 mm buttons.</li>
+            <li>{t('Snap off the narrow strip along the edge of the button board, or it does not fit.', 'Отломите узкую полоску по краю платы кнопок, иначе она не встанет.')}</li>
+            <li>{t('The board sits on two pins in the bottom, solder pads towards the XIAO.', 'Плата садится на два штыря в дне, площадками к XIAO.')}</li>
+            <li>{t('The caps fit standard 6 x 6 mm buttons.', 'Колпачки под стандартные кнопки 6 x 6 мм.')}</li>
           </ul>
         </Chapter>
 
         <Chapter chapter={printing}>
           <Table
-            head={['Part', 'Qty', 'Material', 'Orientation']}
+            head={[t('Part', 'Деталь'), t('Qty', 'Кол-во'), t('Material', 'Материал'), t('Orientation', 'Положение')]}
             rows={[
-              ['Frame', '1', 'PLA, copper', 'Front side down'],
-              ['Logo', '1', 'PLA, black', 'Together with the frame, second color'],
-              ['Back panel', '1', 'PLA, copper', 'Outer side down'],
-              ['Corner bracket', '1', 'PLA', 'Wide side down'],
-              ['Base', '1', 'PLA, copper', 'Top side down'],
-              ['Bottom', '1', 'PLA, copper', 'Bottom side down'],
-              ['Button caps', '4', 'PLA, black', 'Wide side down'],
-              ['Feet', '6', 'TPU', 'Flat side down'],
+              [t('Frame', 'Рамка'), '1', t('PLA, copper', 'PLA, медный'), t('Front side down', 'Лицом вниз')],
+              [t('Logo', 'Логотип'), '1', t('PLA, black', 'PLA, чёрный'), t('Together with the frame, second color', 'Вместе с рамкой, вторым цветом')],
+              [t('Back panel', 'Задняя панель'), '1', t('PLA, copper', 'PLA, медный'), t('Outer side down', 'Внешней стороной вниз')],
+              [t('Corner bracket', 'Уголок'), '1', 'PLA', t('Wide side down', 'Широкой стороной вниз')],
+              [t('Base', 'Основание'), '1', t('PLA, copper', 'PLA, медный'), t('Top side down', 'Верхом вниз')],
+              [t('Bottom', 'Дно'), '1', t('PLA, copper', 'PLA, медный'), t('Bottom side down', 'Низом вниз')],
+              [t('Button caps', 'Колпачки кнопок'), '4', t('PLA, black', 'PLA, чёрный'), t('Wide side down', 'Широкой стороной вниз')],
+              [t('Feet', 'Ножки'), '6', 'TPU', t('Flat side down', 'Плоской стороной вниз')],
             ]}
           />
           <ul>
-            <li>No supports.</li>
-            <li>Logo: second color, printed with the frame.</li>
+            <li>{t('No supports.', 'Без поддержек.')}</li>
+            <li>{t('Logo: second color, printed with the frame.', 'Логотип: второй цвет, печатается вместе с рамкой.')}</li>
           </ul>
         </Chapter>
 
         <Chapter chapter={wiring}>
           <WiringDiagram />
           <Table
-            head={['Wire', 'Pin on the XIAO']}
+            head={[t('Wire', 'Провод'), t('Pin on the XIAO', 'Пин на XIAO')]}
             rows={[
-              ['Display VCC, GND', '3V3, GND'],
-              ['Display DIN, CLK', 'D10, D8'],
-              ['Display CS, DC', 'D7, D5'],
-              ['Display RST, BUSY', 'D4, D6'],
-              ['Buttons 1, 2, 3, 4', 'D0, D1, D2, D3'],
-              ['Buttons V, G (power)', '3V3, GND: joined to the display\'s VCC and GND wires'],
-              ['Battery +, -', 'BAT+, BAT- pads under the board'],
-              ['Antenna', 'Antenna connector'],
+              [t('Display VCC, GND', 'Экран VCC, GND'), '3V3, GND'],
+              [t('Display DIN, CLK', 'Экран DIN, CLK'), 'D10, D8'],
+              [t('Display CS, DC', 'Экран CS, DC'), 'D7, D5'],
+              [t('Display RST, BUSY', 'Экран RST, BUSY'), 'D4, D6'],
+              [t('Buttons 1, 2, 3, 4', 'Кнопки 1, 2, 3, 4'), 'D0, D1, D2, D3'],
+              [t('Buttons V, G (power)', 'Кнопки V, G (питание)'), t('3V3, GND: joined to the display\'s VCC and GND wires', '3V3, GND: скруткой с проводами VCC и GND экрана')],
+              [t('Battery +, -', 'Аккумулятор +, -'), t('BAT+, BAT- pads under the board', 'Площадки BAT+, BAT- под платой')],
+              [t('Antenna', 'Антенна'), t('Antenna connector', 'Разъём антенны')],
             ]}
           />
         </Chapter>
@@ -137,41 +136,52 @@ export function Hardware() {
         <Chapter chapter={assembly}>
           <ol className="steps">
             <li>
-              <h3>Print</h3>
-              <p>Print all parts as listed above. Press the TPU feet into the bottom.</p>
+              <h3>{t('Print', 'Печать')}</h3>
+              <p>{t('Print all parts as listed above. Press the TPU feet into the bottom.', 'Напечатайте все детали по списку выше. Вдавите ножки из TPU в дно.')}</p>
             </li>
             <li>
-              <h3>Mount the display</h3>
+              <h3>{t('Mount the display', 'Экран')}</h3>
               <p>
-                Unscrew the spacers, plug in the cable and put the display into the frame from the back. Three corners:
-                M2.5 x 4 screws. Bottom right corner: M2.5 x 6 through the corner bracket.
+                {t(
+                  'Unscrew the spacers, plug in the cable and put the display into the frame from the back. Three corners: M2.5 x 4 screws. Bottom right corner: M2.5 x 6 through the corner bracket.',
+                  'Открутите стойки, подключите шлейф и вставьте экран в рамку сзади. Три угла: винты M2.5 x 4. Правый нижний угол: M2.5 x 6 через уголок.',
+                )}
               </p>
             </li>
             <li>
-              <h3>Install the board, buttons and battery</h3>
+              <h3>{t('Install the board, buttons and battery', 'Плата, кнопки и аккумулятор')}</h3>
               <p>
-                Put the XIAO on its two supports with USB-C in the opening of the right wall, the button board on its
-                pins and the battery in its compartment.
+                {t(
+                  'Put the XIAO on its two supports with USB-C in the opening of the right wall, the button board on its pins and the battery in its compartment.',
+                  'Поставьте XIAO на две опоры разъёмом USB-C в окно правой стенки, плату кнопок на её штыри, аккумулятор в отсек.',
+                )}
               </p>
             </li>
             <li>
-              <h3>Solder</h3>
+              <h3>{t('Solder', 'Пайка')}</h3>
               <p>
-                Solder the display and the buttons as in the wiring table, button wires no longer than 35 mm. Solder the
-                battery to the pads under the XIAO.
+                {t(
+                  'Solder the display and the buttons as in the wiring table, button wires no longer than 35 mm. Solder the battery to the pads under the XIAO.',
+                  'Припаяйте экран и кнопки по таблице проводки, провода кнопок не длиннее 35 мм. Аккумулятор припаяйте к площадкам под XIAO.',
+                )}
               </p>
             </li>
             <li>
-              <h3>Antenna</h3>
+              <h3>{t('Antenna', 'Антенна')}</h3>
               <p>
-                Stick the antenna inside the base cover, away from the battery, and plug it into the XIAO.
+                {t(
+                  'Stick the antenna inside the base cover, away from the battery, and plug it into the XIAO.',
+                  'Приклейте антенну внутри крышки основания, подальше от аккумулятора, и подключите к XIAO.',
+                )}
               </p>
             </li>
             <li>
-              <h3>Close the case</h3>
+              <h3>{t('Close the case', 'Закрыть корпус')}</h3>
               <p>
-                Screw the back panel to the frame, the bottom to the base and the base to the back panel. Put on the
-                button caps.
+                {t(
+                  'Screw the back panel to the frame, the bottom to the base and the base to the back panel. Put on the button caps.',
+                  'Привинтите заднюю панель к рамке, дно к основанию и основание к задней панели. Наденьте колпачки кнопок.',
+                )}
               </p>
             </li>
           </ol>
@@ -179,14 +189,14 @@ export function Hardware() {
 
         <Chapter chapter={fasteners}>
           <Table
-            head={['Where', 'Screw', 'Qty', 'Note']}
+            head={[t('Where', 'Где'), t('Screw', 'Винт'), t('Qty', 'Кол-во'), t('Note', 'Примечание')]}
             rows={[
-              ['Display to frame, three corners', 'M2.5 x 4', '3', ''],
-              ['Display, bottom right corner', 'M2.5 x 6', '1', 'Exactly 6 mm, a longer one shows on the front'],
-              ['Back panel to frame', 'M2.5 x 4', '1', 'No longer than 4 mm'],
-              ['Back panel to corner bracket', 'M2.5 x 4', '1', ''],
-              ['Bottom to base', 'M2.5 x 6', '4', 'Up to 8 mm'],
-              ['Base to back panel', 'M2.5 x 6', '2', 'No longer than 6 mm'],
+              [t('Display to frame, three corners', 'Экран к рамке, три угла'), 'M2.5 x 4', '3', ''],
+              [t('Display, bottom right corner', 'Экран, правый нижний угол'), 'M2.5 x 6', '1', t('Exactly 6 mm, a longer one shows on the front', 'Ровно 6 мм, длиннее выйдет на лицевую сторону')],
+              [t('Back panel to frame', 'Задняя панель к рамке'), 'M2.5 x 4', '1', t('No longer than 4 mm', 'Не длиннее 4 мм')],
+              [t('Back panel to corner bracket', 'Задняя панель к уголку'), 'M2.5 x 4', '1', ''],
+              [t('Bottom to base', 'Дно к основанию'), 'M2.5 x 6', '4', t('Up to 8 mm', 'До 8 мм')],
+              [t('Base to back panel', 'Основание к задней панели'), 'M2.5 x 6', '2', t('No longer than 6 mm', 'Не длиннее 6 мм')],
             ]}
           />
         </Chapter>
@@ -206,10 +216,10 @@ idf.py -p <port> flash`}</code>
           </div>
           <Facts
             rows={[
-              ['Needs', 'ESP-IDF, wasi-sdk, USB cable'],
-              ['Board not found', 'Hold BOOT while plugging in'],
-              ['Wi-Fi setup', <>Join <code>Perinkpheral-XXXX</code>, open <code>http://192.168.4.1</code></>],
-              ['Later updates', 'Over Wi-Fi'],
+              [t('Needs', 'Нужно'), t('ESP-IDF, wasi-sdk, USB cable', 'ESP-IDF, wasi-sdk, кабель USB')],
+              [t('Board not found', 'Плата не видна'), t('Hold BOOT while plugging in', 'Держите BOOT при подключении')],
+              [t('Wi-Fi setup', 'Настройка Wi-Fi'), <>{t('Join', 'Подключиться к')} <code>Perinkpheral-XXXX</code>, {t('open', 'открыть')} <code>http://192.168.4.1</code></>],
+              [t('Later updates', 'Дальнейшие обновления'), t('Over Wi-Fi', 'По Wi-Fi')],
             ]}
           />
         </Chapter>
@@ -217,19 +227,19 @@ idf.py -p <port> flash`}</code>
         <Chapter chapter={filesChapter}>
           <div className="grid">
             <a className="panel" href={files.step}>
-              <h3>3D model</h3>
+              <h3>{t('3D model', '3D-модель')}</h3>
             </a>
             <a className="panel" href={files.bomPage}>
-              <h3>Drawings</h3>
+              <h3>{t('Drawings', 'Чертежи')}</h3>
             </a>
             <a className="panel" href={files.hardwareNotes}>
-              <h3>Display notes</h3>
+              <h3>{t('Display notes', 'Заметки об экране')}</h3>
             </a>
           </div>
         </Chapter>
 
         <Chapter chapter={renders}>
-          <Gallery shots={RENDERS} />
+          <Gallery shots={RENDERS.map((one) => ({ name: one.name, caption: t(one.en, one.ru) }))} />
         </Chapter>
       </DocBody>
     </>

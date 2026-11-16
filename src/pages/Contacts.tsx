@@ -1,10 +1,12 @@
 import { PageHead, Table } from '../components/Doc'
 import { author, repo } from '../content/links'
+import { useT } from '../i18n'
 
 export function Contacts() {
+  const t = useT()
   return (
     <>
-      <PageHead title="Contacts" />
+      <PageHead title={t('Contacts', 'Контакты')} />
       <div className="wrap page-body single">
         <div className="doc">
           <div className="contacts">
@@ -13,7 +15,7 @@ export function Contacts() {
               <p className="value">GrakovNe/perinkpheral</p>
             </a>
             <a className="panel" href={`mailto:${author.email}`}>
-              <p className="kind">Email</p>
+              <p className="kind">{t('Email', 'Почта')}</p>
               <p className="value">{author.email}</p>
             </a>
             <a className="panel" href={`https://t.me/${author.telegram}`}>
@@ -23,15 +25,15 @@ export function Contacts() {
           </div>
 
           <section>
-            <h2>Repositories</h2>
+            <h2>{t('Repositories', 'Репозитории')}</h2>
             <Table
-              head={['Repository', 'Description']}
+              head={[t('Repository', 'Репозиторий'), t('Description', 'Описание')]}
               rows={[
-                [<a href={repo.firmware}>perinkpheral</a>, 'Firmware, SDK, tools, hardware, application guide'],
-                [<a href={repo.apps}>perinkpheral-apps</a>, 'Official applications and catalog'],
-                [<a href={repo.clion}>perinkpheral-clion-plugin</a>, 'CLion plugin'],
-                [<a href={repo.homeAssistant}>perinkpheral-hacs</a>, 'Home Assistant integration'],
-                [<a href={repo.portal}>perinkpheral-dev-portal</a>, 'Developer portal'],
+                [<a href={repo.firmware}>perinkpheral</a>, t('Firmware, SDK, tools, hardware, application guide', 'Прошивка, SDK, инструменты, железо, руководство')],
+                [<a href={repo.apps}>perinkpheral-apps</a>, t('Official applications and catalog', 'Официальные приложения и каталог')],
+                [<a href={repo.clion}>perinkpheral-clion-plugin</a>, t('CLion plugin', 'Плагин CLion')],
+                [<a href={repo.homeAssistant}>perinkpheral-hacs</a>, t('Home Assistant integration', 'Интеграция Home Assistant')],
+                [<a href={repo.portal}>perinkpheral-dev-portal</a>, t('Developer portal', 'Портал разработчика')],
               ]}
             />
           </section>

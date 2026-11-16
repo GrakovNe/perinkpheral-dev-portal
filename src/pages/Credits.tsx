@@ -1,30 +1,32 @@
 import { Facts, PageHead, Table } from '../components/Doc'
 import { author, files, repo } from '../content/links'
+import { useT } from '../i18n'
 
 const BASE = import.meta.env.BASE_URL
 
 export function Credits() {
+  const t = useT()
   return (
     <>
-      <PageHead title="Credits" />
+      <PageHead title={t('Credits', 'Благодарности')} />
       <div className="wrap page-body single">
         <div className="doc">
           <section>
-            <h2>The project</h2>
+            <h2>{t('The project', 'Проект')}</h2>
             <Facts
               rows={[
-                ['Author', author.name],
-                ['License', <a href={files.license}>MIT</a>],
-                ['Firmware, SDK, hardware', <a href={repo.firmware}>perinkpheral</a>],
-                ['Applications', <a href={repo.apps}>perinkpheral-apps</a>],
+                [t('Author', 'Автор'), author.name],
+                [t('License', 'Лицензия'), <a href={files.license}>MIT</a>],
+                [t('Firmware, SDK, hardware', 'Прошивка, SDK, железо'), <a href={repo.firmware}>perinkpheral</a>],
+                [t('Applications', 'Приложения'), <a href={repo.apps}>perinkpheral-apps</a>],
               ]}
             />
           </section>
 
           <section>
-            <h2>In the firmware</h2>
+            <h2>{t('In the firmware', 'В прошивке')}</h2>
             <Table
-              head={['Component', 'Author', 'License']}
+              head={[t('Component', 'Компонент'), t('Author', 'Автор'), t('License', 'Лицензия')]}
               rows={[
                 [<a href="https://github.com/espressif/esp-idf">ESP-IDF</a>, 'Espressif Systems', 'Apache License 2.0'],
                 [<a href="https://github.com/wasm3/wasm3">Wasm3</a>, 'Steven Massey, Volodymyr Shymanskyy', 'MIT'],
@@ -38,9 +40,9 @@ export function Credits() {
           </section>
 
           <section>
-            <h2>Typefaces</h2>
+            <h2>{t('Typefaces', 'Шрифты')}</h2>
             <Table
-              head={['Typeface', 'Author', 'License']}
+              head={[t('Typeface', 'Шрифт'), t('Author', 'Автор'), t('License', 'Лицензия')]}
               rows={[
                 [
                   <a href="https://github.com/rektdeckard/departure-mono">Departure Mono</a>,
@@ -49,7 +51,7 @@ export function Credits() {
                 ],
                 [
                   <a href="https://github.com/scfried/soft-type-jersey">Jersey</a>,
-                  'The Soft Type Project Authors; Cyrillic added',
+                  t('The Soft Type Project Authors; Cyrillic added', 'The Soft Type Project Authors; кириллица добавлена'),
                   'SIL Open Font License 1.1',
                 ],
               ]}
@@ -57,9 +59,9 @@ export function Credits() {
           </section>
 
           <section>
-            <h2>Hardware</h2>
+            <h2>{t('Hardware', 'Железо')}</h2>
             <Table
-              head={['Part', 'Maker']}
+              head={[t('Part', 'Деталь'), t('Maker', 'Производитель')]}
               rows={[
                 ['XIAO ESP32-C6', 'Seeed Studio'],
                 ['4.2inch e-Paper Module V2', 'Waveshare'],
@@ -69,30 +71,30 @@ export function Credits() {
           </section>
 
           <section>
-            <h2>Data sources of the official applications</h2>
+            <h2>{t('Data sources of the official applications', 'Источники данных официальных приложений')}</h2>
             <Table
-              head={['Source', 'Used by']}
+              head={[t('Source', 'Источник'), t('Used by', 'Где используется')]}
               rows={[
                 [<a href="https://open-meteo.com">Open-Meteo</a>, 'weather'],
                 [<a href="https://finance.yahoo.com">Yahoo Finance</a>, 'stocks'],
-                [<a href="https://www.moex.com">Moscow Exchange</a>, 'stocks'],
-                [<a href="https://spbexchange.ru">SPB Exchange</a>, 'stocks'],
-                [<a href="https://photon.komoot.io">Photon</a>, 'device web UI: place search'],
-                [<a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, 'place data for Photon, ODbL'],
+                [<a href="https://www.moex.com">{t('Moscow Exchange', 'Московская биржа')}</a>, 'stocks'],
+                [<a href="https://spbexchange.ru">{t('SPB Exchange', 'СПБ Биржа')}</a>, 'stocks'],
+                [<a href="https://photon.komoot.io">Photon</a>, t('device web UI: place search', 'страница устройства: поиск места')],
+                [<a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, t('place data for Photon, ODbL', 'данные мест для Photon, ODbL')],
               ]}
             />
           </section>
 
           <section>
-            <h2>Tools</h2>
+            <h2>{t('Tools', 'Инструменты')}</h2>
             <Table
-              head={['Tool', 'Use']}
+              head={[t('Tool', 'Инструмент'), t('Use', 'Назначение')]}
               rows={[
-                [<a href="https://github.com/WebAssembly/wasi-sdk">wasi-sdk</a>, 'Application compiler'],
-                [<a href="https://kotlinlang.org">Kotlin</a>, 'SDK tools and CLion plugin'],
-                [<a href="https://www.blender.org">Blender</a>, 'Enclosure renders'],
-                [<a href="https://www.autodesk.com/products/fusion-360">Fusion</a>, 'Enclosure model'],
-                [<a href="https://react.dev">React</a>, 'This site, with Vite and Sass'],
+                [<a href="https://github.com/WebAssembly/wasi-sdk">wasi-sdk</a>, t('Application compiler', 'Компилятор приложений')],
+                [<a href="https://kotlinlang.org">Kotlin</a>, t('SDK tools and CLion plugin', 'Инструменты SDK и плагин CLion')],
+                [<a href="https://www.blender.org">Blender</a>, t('Enclosure renders', 'Рендеры корпуса')],
+                [<a href="https://www.autodesk.com/products/fusion-360">Fusion</a>, t('Enclosure model', 'Модель корпуса')],
+                [<a href="https://react.dev">React</a>, t('This site, with Vite and Sass', 'Этот сайт, вместе с Vite и Sass')],
               ]}
             />
           </section>

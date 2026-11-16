@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { useT } from '../i18n'
 
 const BASE = import.meta.env.BASE_URL
 
@@ -57,6 +58,7 @@ export type Shot = { name: string; caption: string }
 // Renders that open at full width on a press.
 export function Gallery({ shots }: { shots: Shot[] }) {
   const dialog = useRef<HTMLDialogElement>(null)
+  const t = useT()
   const [shown, setShown] = useState<Shot | null>(null)
   const open = (shot: Shot) => {
     setShown(shot)
@@ -88,7 +90,7 @@ export function Gallery({ shots }: { shots: Shot[] }) {
         <div className="row">
           <span>{shown?.caption}</span>
           <button type="button" onClick={() => dialog.current?.close()} autoFocus>
-            Close
+            {t('Close', 'Закрыть')}
           </button>
         </div>
       </dialog>
@@ -106,6 +108,7 @@ const TURN_MS = 5000
 export function Carousel({ slides, sizes = '100vw', screens = false }: { slides: Slide[]; sizes?: string; screens?: boolean }) {
   const [shown, setShown] = useState(0)
   const [held, setHeld] = useState(false)
+  const t = useT()
   const still =
     typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
   useEffect(() => {
@@ -129,7 +132,7 @@ export function Carousel({ slides, sizes = '100vw', screens = false }: { slides:
           <img
             key={slide.name}
             {...(screens ? { src: `${BASE}screens/${slide.name}.png` } : { ...renderSources(slide.name), sizes })}
-            alt={screens ? slide.caption : `perINKpheral showing ${slide.caption}`}
+            alt={screens ? slide.caption : t(`perINKpheral showing ${slide.caption}`, `perINKpheral: ${slide.caption}`)}
             width={screens ? 800 : 1600}
             height={screens ? 600 : 1067}
             className={index === shown ? 'shown' : undefined}
