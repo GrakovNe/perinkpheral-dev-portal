@@ -24,11 +24,6 @@
   }
 }
 
-.hero-mark {
-  width: 4.5rem;
-  height: 4.5rem;
-}
-
 .hero-wordmark {
   display: block;
   width: min(100%, 30rem);
@@ -38,7 +33,7 @@
 .hero-line {
   font-size: clamp(1.5rem, 3vw, 2.1rem);
   line-height: 1.3;
-  margin: 1.75rem 0 1rem;
+  margin: 0 0 1rem;
 }
 
 .hero-lead {
@@ -106,6 +101,52 @@
   }
 
   dd {
+    margin: 0;
+  }
+}
+
+// ---- the steps from parts to a screen ----
+
+.steps-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  @include phone {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  li {
+    position: relative;
+    margin: 0;
+  }
+
+  // an arrow from one step to the next
+  li + li::before {
+    content: '->';
+    position: absolute;
+    left: -1.6rem;
+    top: 20px;
+    color: var(--dim);
+
+    @include phone {
+      content: none;
+    }
+  }
+
+  .app-icon {
+    display: block;
+    width: 64px;
+    height: 64px;
+    margin-bottom: 1rem;
+    fill: var(--ink);
+  }
+
+  h3 {
+    font-size: 1.1rem;
     margin: 0;
   }
 }
