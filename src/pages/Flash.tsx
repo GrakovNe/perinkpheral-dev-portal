@@ -78,6 +78,24 @@ export function Flash() {
     write: (line: string) => say(line),
   }
 
+  // The board out of its loader and into its firmware. esptool-js's hard
+  // reset left the C6 in the loader over USB-JTAG; this is esptool.py's for
+  // USB-JTAG - the boot pin let go, RTS up for a moment and down again.
+  const restart = async () => {
+    const line = transport.current
+    if (!line) {
+      return
+    }
+    try {
+      await line.setDTR(false)
+      await line.setRTS(true)
+      await new Promise((resolve) => setTimeout(resolve, 100))
+      await line.setRTS(false)
+    } catch {
+      // the board is gone already
+    }
+  }
+
   const release = async () => {
     try {
       await transport.current?.disconnect()
@@ -148,7 +166,7 @@ export function Flash() {
           setPhase({ name: 'writing', done: Math.round(share * 100) })
         },
       })
-      await loader.current.after('hard_reset')
+      await restart()
       await release()
       setPhase({ name: 'done' })
     } catch {
@@ -298,11 +316,7 @@ export function Flash() {
             className="button quiet"
             onClick={async () => {
               // Connect left the board in its loader: it starts its firmware again
-              try {
-                await loader.current?.after('hard_reset')
-              } catch {
-                // the board is gone already
-              }
+              await restart()
               await release()
               setPhase({ name: 'idle' })
             }}
