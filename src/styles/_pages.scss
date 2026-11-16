@@ -309,30 +309,29 @@
 
 .features {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 2rem;
-
-  @include tablet {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
 
   @include phone {
     grid-template-columns: minmax(0, 1fr);
   }
 
   article {
-    border-top: 3px solid var(--ink);
-    padding-top: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  .app-icon {
+    flex: none;
+    width: 3.5rem;
+    height: 3.5rem;
+    fill: var(--ink);
   }
 
   h3 {
-    font-size: 1.2rem;
-    margin-bottom: 0.6rem;
-  }
-
-  p {
+    font-size: 1.3rem;
     margin: 0;
-    color: #3a3936;
   }
 }
 

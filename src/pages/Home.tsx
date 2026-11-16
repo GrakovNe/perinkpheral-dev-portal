@@ -13,11 +13,59 @@ const SPECS: [string, string, string, string][] = [
   ['Case', 'Корпус', '3D-printed', '3D-печать'],
 ]
 
-const FEATURES: [string, string][] = [
-  ['No backlight', 'Без подсветки'],
-  ['No account, no cloud', 'Без аккаунта и облака'],
-  ['Set up in a browser', 'Настройка из браузера'],
-  ['Four buttons', 'Четыре кнопки'],
+// Each with a picture of 11 x 11 cells, as the app icons and the mark are.
+const FEATURES: { en: string; ru: string; icon: string[] }[] = [
+  {
+    en: 'No account, no cloud',
+    ru: 'Без аккаунта и облака',
+    icon: [
+      '..........#',
+      '.........#.',
+      '....###.#..',
+      '...#...#...',
+      '.##...#.##.',
+      '#....#....#',
+      '#...#.....#',
+      '.#########.',
+      '..#........',
+      '.#.........',
+      '#..........',
+    ],
+  },
+  {
+    en: 'Easy to build',
+    ru: 'Простая сборка',
+    icon: [
+      '.......#..#',
+      '.......#..#',
+      '.......####',
+      '......###..',
+      '.....###...',
+      '....###....',
+      '...###.....',
+      '..###......',
+      '.###.......',
+      '.##........',
+      '...........',
+    ],
+  },
+  {
+    en: 'Intuitive controls',
+    ru: 'Интуитивное управление',
+    icon: [
+      '......##...',
+      '......##...',
+      '......##...',
+      '.....####..',
+      '......##...',
+      '...........',
+      '##.##....##',
+      '##.##.##.##',
+      '###########',
+      '...........',
+      '...........',
+    ],
+  },
 ]
 
 const HERO = [
@@ -129,9 +177,10 @@ export function Home() {
       <section className="band">
         <div className="wrap">
           <div className="features">
-            {FEATURES.map(([title, titleRu]) => (
-              <article key={title}>
-                <h3>{t(title, titleRu)}</h3>
+            {FEATURES.map((feature) => (
+              <article key={feature.en}>
+                <AppIcon rows={feature.icon} />
+                <h3>{t(feature.en, feature.ru)}</h3>
               </article>
             ))}
           </div>
