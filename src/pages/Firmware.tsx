@@ -56,13 +56,12 @@ export function Firmware() {
         </Chapter>
 
         <Chapter chapter={display}>
-          <Table
-            head={['Update', 'Time']}
-            rows={[
-              ['After a button press', 'About 0.5 s'],
-              ['New screen', 'About 2.5 s'],
-            ]}
-          />
+          <ul>
+            <li>Press a button: the screen changes in about half a second.</li>
+            <li>Open another app: the screen flashes once and redraws in about 2.5 seconds.</li>
+            <li>Weather, prices and other data refresh at most once a minute.</li>
+            <li>The picture stays on the screen without using power.</li>
+          </ul>
         </Chapter>
 
         <Chapter chapter={network}>
