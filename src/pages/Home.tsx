@@ -87,7 +87,7 @@ export function Home() {
       <section className="band">
         <div className="wrap">
           <div className="band-head">
-            <h2>{t('Apps', 'Приложения')}</h2>
+            <h2>{t('Example apps', 'Примеры приложений')}</h2>
           </div>
           <div className="apps">
             {APPS.map((app) => (
