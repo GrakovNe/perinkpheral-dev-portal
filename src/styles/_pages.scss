@@ -282,13 +282,24 @@
   &.own {
     text-decoration: none;
     border-style: dashed;
+    grid-template-rows: auto;
+    align-items: center;
+
+    h3 {
+      margin: 0;
+    }
   }
 
   .plus {
     display: grid;
     place-items: center;
-    font-size: 2.5rem;
     border: 1px solid var(--ink);
+
+    svg {
+      width: 60%;
+      height: 60%;
+      fill: var(--ink);
+    }
   }
 }
 

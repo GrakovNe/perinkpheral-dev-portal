@@ -115,7 +115,10 @@ export function Home() {
             ))}
             <Link to="/sdk" className="panel app own">
               <span className="plus" aria-hidden="true">
-                +
+                <svg viewBox="0 0 11 11" shapeRendering="crispEdges">
+                  <rect x={5} y={2} width={1} height={7} />
+                  <rect x={2} y={5} width={7} height={1} />
+                </svg>
               </span>
               <h3>{t('Your own', 'Что угодно')}</h3>
             </Link>
