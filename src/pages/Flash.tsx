@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import { Link } from 'react-router-dom'
 import type { ESPLoader, Transport } from 'esptool-js'
 import { Facts, PageHead } from '../components/Doc'
+import { readWholeFlash } from '../content/flashRead'
 import { useLocal, useT } from '../i18n'
 
 // The first flash from a browser: the board on a USB cable, Web Serial and
@@ -151,8 +152,8 @@ export function Flash() {
     }
     setPhase({ name: 'reading', chip, mac, done: 0 })
     try {
-      const data = await loader.current.readFlash(0, FLASH_BYTES, (_packet, read, size) =>
-        setPhase({ name: 'reading', chip, mac, done: Math.round((read / size) * 100) }),
+      const data = await readWholeFlash(loader.current, FLASH_BYTES, (read, size) =>
+        setPhase({ name: 'reading', chip, mac, done: Math.floor((read / size) * 100) }),
       )
       const name = `perinkpheral-backup-${mac.replace(/:/g, '')}-${new Date().toISOString().slice(0, 10)}.bin`
       const link = document.createElement('a')
