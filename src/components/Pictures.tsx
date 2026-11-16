@@ -129,7 +129,7 @@ export function Gallery({
             height={533}
             loading="lazy"
           />
-          <span>{shot.caption}</span>
+          {!strip && <span>{shot.caption}</span>}
         </button>
       ))}
     </div>
