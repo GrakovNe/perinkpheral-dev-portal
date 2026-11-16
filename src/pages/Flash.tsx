@@ -154,7 +154,7 @@ export function Flash() {
       const data = await loader.current.readFlash(0, FLASH_BYTES, (_packet, read, size) =>
         setPhase({ name: 'reading', chip, mac, done: Math.round((read / size) * 100) }),
       )
-      const name = `perinkpheral-${mac.replace(/:/g, '')}-${new Date().toISOString().slice(0, 10)}.bin`
+      const name = `perinkpheral-backup-${mac.replace(/:/g, '')}-${new Date().toISOString().slice(0, 10)}.bin`
       const link = document.createElement('a')
       link.href = URL.createObjectURL(new Blob([data as BlobPart], { type: 'application/octet-stream' }))
       link.download = name
@@ -198,7 +198,7 @@ export function Flash() {
         />
         {phase.saved ? (
           <p>
-            {t('Copy saved:', 'Копия сохранена:')} <code>{phase.saved}</code>
+            {t('Backup saved:', 'Резервная копия сохранена:')} <code>{phase.saved}</code>
           </p>
         ) : null}
         <p className="flash-warning">{t('Everything on the board is erased.', 'Всё на плате будет стёрто.')}</p>
@@ -207,7 +207,7 @@ export function Flash() {
             {t('Install', 'Установить')}
           </button>
           <button type="button" className="button quiet" onClick={() => save(phase.chip, phase.mac)}>
-            {t('Save a copy', 'Сохранить копию')}
+            {t('Back up', 'Создать резервную копию')}
           </button>
           <button
             type="button"
