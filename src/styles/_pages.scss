@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// What only one page has: the landing page's hero, bands and doors.
+// What only one page has: the landing page's hero and bands.
 
 @use 'tokens' as *;
 
@@ -107,12 +107,6 @@
 .band {
   padding: clamp(3rem, 7vw, 5.5rem) 0;
   border-bottom: 1px solid var(--ink);
-
-  &.ink {
-    background: var(--ink);
-    color: var(--paper);
-    border-bottom-color: var(--ink);
-  }
 }
 
 .band-head {
@@ -134,44 +128,6 @@
   p {
     margin: 0;
     max-width: $text;
-  }
-}
-
-.doors {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1.25rem;
-
-  @include tablet {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
-
-.door {
-  display: block;
-  padding: 1.5rem;
-  color: var(--paper);
-  text-decoration: none;
-  border: 1px solid var(--paper);
-  transition: background 0.08s ease-out, color 0.08s ease-out;
-
-  h3 {
-    font-size: 1.4rem;
-    margin-bottom: 0.75rem;
-  }
-
-  p {
-    margin: 0;
-    color: #c9c6be;
-  }
-
-  &:hover {
-    background: var(--paper);
-    color: var(--ink);
-
-    p {
-      color: #3a3936;
-    }
   }
 }
 
@@ -258,7 +214,6 @@
   .app-name {
     display: flex;
     align-items: center;
-    justify-content: center;
     gap: 0.75rem;
     margin-top: 1rem;
   }

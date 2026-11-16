@@ -33,6 +33,19 @@
     background: var(--paper);
   }
 
+  // Looks off, still takes a press: to say why it is off.
+  &.off {
+    color: var(--dim);
+    border-color: var(--dim);
+    border-style: dashed;
+    cursor: default;
+
+    &:hover {
+      transform: none;
+      box-shadow: none;
+    }
+  }
+
   .arrow {
     font-size: 1.1em;
   }
@@ -525,4 +538,18 @@
 .doc .figure,
 .doc .grid {
   margin-bottom: 1.75rem;
+}
+
+// ---- a word that comes and goes, at the top right ----
+
+.toast {
+  position: fixed;
+  top: 5rem;
+  right: 1.5rem;
+  z-index: 20;
+  max-width: calc(100vw - 3rem);
+  padding: 0.9rem 1.25rem;
+  color: var(--paper);
+  background: var(--ink);
+  box-shadow: 4px 4px 0 var(--dim);
 }

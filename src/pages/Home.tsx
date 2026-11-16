@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Mark } from '../components/Brand'
 import { Carousel, Gallery } from '../components/Pictures'
@@ -33,12 +34,6 @@ const RENDERS = [
   { name: 'right', en: 'Right', ru: 'Справа' },
 ]
 
-const DOORS = [
-  { to: '/hardware', en: 'Hardware', ru: 'Hardware' },
-  { to: '/sdk', en: 'SDK', ru: 'SDK' },
-  { to: '/firmware', en: 'Firmware', ru: 'Firmware' },
-]
-
 function AppIcon({ rows }: { rows: string[] }) {
   return (
     <svg className="app-icon" viewBox={`0 0 ${rows[0].length} ${rows.length}`} shapeRendering="crispEdges" aria-hidden="true">
@@ -46,6 +41,31 @@ function AppIcon({ rows }: { rows: string[] }) {
         [...row].map((cell, x) => (cell === '#' ? <rect key={`${x}-${y}`} x={x} y={y} width={1} height={1} /> : null)),
       )}
     </svg>
+  )
+}
+
+// A kit to buy: not yet. The button looks off, and a press says so.
+function KitButton() {
+  const t = useT()
+  const [told, setTold] = useState(false)
+  useEffect(() => {
+    if (!told) {
+      return
+    }
+    const timer = window.setTimeout(() => setTold(false), 3500)
+    return () => window.clearTimeout(timer)
+  }, [told])
+  return (
+    <>
+      <button type="button" className="button quiet off" aria-disabled="true" onClick={() => setTold(true)}>
+        {t('Get a kit', 'Получить набор')}
+      </button>
+      {told && (
+        <div className="toast" role="status">
+          {t('Kits are coming soon.', 'Наборы скоро будут доступны.')}
+        </div>
+      )}
+    </>
   )
 }
 
@@ -64,6 +84,7 @@ export function Home() {
               <Link className="button" to="/hardware">
                 {t('Build one', 'Собрать')} <span className="arrow">-&gt;</span>
               </Link>
+              <KitButton />
             </div>
           </div>
           <div className="hero-picture">
@@ -127,21 +148,7 @@ export function Home() {
           <div className="band-head">
             <h2>{t('Gallery', 'Галерея')}</h2>
           </div>
-          <Gallery strip shots={RENDERS.map(caption)} />
-        </div>
-      </section>
-
-      <section className="band ink">
-        <div className="wrap">
-          <div className="doors">
-            {DOORS.map((door) => (
-              <Link key={door.to} to={door.to} className="door">
-                <h3>
-                  {t(door.en, door.ru)} <span className="arrow">-&gt;</span>
-                </h3>
-              </Link>
-            ))}
-          </div>
+          <Gallery shots={RENDERS.map(caption)} />
         </div>
       </section>
     </>
