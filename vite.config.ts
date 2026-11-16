@@ -17,7 +17,8 @@ function notFoundIsTheApp(): Plugin {
 }
 
 // PORTAL_BASE is the path the portal is served under: "/" on a domain of its
-// own, "/perinkpheral-dev-portal/" on GitHub Pages of the repository.
+// own - perinkpheral.dev, public/CNAME - and "/perinkpheral-dev-portal/" on
+// GitHub Pages of the repository without it.
 export default defineConfig({
   base: process.env.PORTAL_BASE ?? '/',
   plugins: [react(), notFoundIsTheApp()],

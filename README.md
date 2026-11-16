@@ -5,7 +5,8 @@
 The site about the [perINKpheral](https://github.com/GrakovNe/perinkpheral) desk e-paper display: what it is,
 how to write applications for it, how to build one and how its firmware works.
 
-Pages: the landing page, SDK, Hardware, Firmware, Contacts, Credits.
+https://perinkpheral.dev - in English and Russian. Pages: the landing page, Getting started, Hardware, Firmware,
+SDK, Contacts, Credits.
 
 ## Development
 
@@ -20,12 +21,15 @@ npm run check     # types and lint
 
 ## Hosting
 
+GitHub Pages, at perinkpheral.dev (`public/CNAME`). The Publish workflow builds, checks and publishes the portal
+when it is run by hand from the Actions tab; a push to `main` publishes nothing.
+
 The build is static files. `dist/404.html` is a copy of the page, so that a static host answers any address of
 the portal with it. The path the portal is served under is `PORTAL_BASE`:
 
 ```bash
 npm run build                                           # at the root of a domain
-PORTAL_BASE=/perinkpheral-dev-portal/ npm run build     # GitHub Pages of this repository
+PORTAL_BASE=/perinkpheral-dev-portal/ npm run build     # GitHub Pages of this repository, without the domain
 ```
 
 ## Pictures
@@ -47,4 +51,4 @@ portal points to. The text is English, plain and factual; a hyphen, never a dash
 
 ## License
 
-MIT. Departure Mono is under the SIL Open Font License 1.1 (`public/licenses/OFL-DepartureMono.txt`).
+MIT. Departure Mono and Jersey are under the SIL Open Font License 1.1 (`public/licenses`).
