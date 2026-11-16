@@ -82,9 +82,6 @@ export function Home() {
               <Link className="button" to="/hardware">
                 {t('Build one', 'Собрать')} <span className="arrow">-&gt;</span>
               </Link>
-              <Link className="button quiet" to="/sdk">
-                {t('Write an app', 'Написать приложение')}
-              </Link>
             </div>
           </div>
           <div className="hero-picture">
