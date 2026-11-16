@@ -4,5 +4,5 @@ export const PAGES = [
   { to: '/hardware', en: 'Hardware', ru: 'Hardware' },
   { to: '/firmware', en: 'Firmware', ru: 'Firmware' },
   { to: '/contacts', en: 'Contacts', ru: 'Контакты' },
-  { to: '/credits', en: 'Credits', ru: 'Благодарности' },
+  { to: '/credits', en: 'Credits', ru: 'Лицензии' },
 ]

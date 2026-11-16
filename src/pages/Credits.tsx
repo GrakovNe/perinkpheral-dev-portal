@@ -8,7 +8,7 @@ export function Credits() {
   const t = useT()
   return (
     <>
-      <PageHead title={t('Credits', 'Благодарности')} />
+      <PageHead title={t('Credits', 'Лицензии')} />
       <div className="wrap page-body single">
         <div className="doc">
           <section>
