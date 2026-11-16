@@ -91,12 +91,7 @@ export function Home() {
           </div>
           <div className="apps">
             {APPS.map((app) => (
-              <article key={app.name} className="panel app">
-                <div className="app-name">
-                  <AppIcon rows={app.icon} />
-                  <h3>{t(app.title, app.titleRu)}</h3>
-                  <p>{t(app.text, app.textRu)}</p>
-                </div>
+              <article key={app.name} className="app">
                 <img
                   className="app-screen"
                   src={`${import.meta.env.BASE_URL}screens/${app.name}.png`}
@@ -105,18 +100,27 @@ export function Home() {
                   height={600}
                   loading="lazy"
                 />
+                <div className="app-name">
+                  <AppIcon rows={app.icon} />
+                  <div>
+                    <h3>{t(app.title, app.titleRu)}</h3>
+                    <p>{t(app.text, app.textRu)}</p>
+                  </div>
+                </div>
               </article>
             ))}
-            <Link to="/sdk" className="panel app own">
-              <div className="app-name">
-                <h3>{t('Your own', 'Что угодно')}</h3>
-              </div>
+            <Link to="/sdk" className="app own">
               <span className="app-screen plus" aria-hidden="true">
                 <svg viewBox="0 0 11 11" shapeRendering="crispEdges">
                   <rect x={5} y={2} width={1} height={7} />
                   <rect x={2} y={5} width={7} height={1} />
                 </svg>
               </span>
+              <div className="app-name">
+                <div>
+                  <h3>{t('Your own', 'Что угодно')}</h3>
+                </div>
+              </div>
             </Link>
           </div>
         </div>

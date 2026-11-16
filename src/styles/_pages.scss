@@ -222,32 +222,22 @@
 
 .apps {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1.25rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2.25rem 1.5rem;
 
   @include tablet {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-}
-
-.app {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
-  padding: 0;
-  transition: transform 0.08s ease-out, box-shadow 0.08s ease-out;
 
   @include phone {
     grid-template-columns: minmax(0, 1fr);
   }
+}
 
-  &:hover {
-    transform: translate(-4px, -4px);
-    box-shadow: 4px 4px 0 var(--ink);
-  }
-
-  .app-name {
-    padding: 1.25rem 1.4rem;
-  }
+// The screen is the card; the name stands under it, as a caption.
+.app {
+  display: block;
+  color: var(--ink);
 
   .app-screen {
     display: block;
@@ -255,39 +245,58 @@
     height: auto;
     aspect-ratio: 4 / 3;
     image-rendering: pixelated;
+    border: 1px solid var(--ink);
+    background: var(--paper);
+    transition: transform 0.08s ease-out, box-shadow 0.08s ease-out;
+  }
+
+  &:hover .app-screen {
+    transform: translate(-4px, -4px);
+    box-shadow: 4px 4px 0 var(--ink);
+  }
+
+  .app-name {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin-top: 1rem;
   }
 
   .app-icon {
-    display: block;
-    width: 2.75rem;
-    height: 2.75rem;
-    margin-bottom: 1rem;
+    flex: none;
+    width: 2.25rem;
+    height: 2.25rem;
     fill: var(--ink);
   }
 
   h3 {
-    font-size: 1.15rem;
-    margin: 0 0 0.4rem;
+    font-size: 1.05rem;
+    margin: 0 0 0.25rem;
   }
 
   p {
     margin: 0;
-    color: #3a3936;
+    font-size: 0.9rem;
+    color: var(--dim);
   }
 
   &.own {
     text-decoration: none;
-    border-style: dashed;
 
     .plus {
       display: grid;
       place-items: center;
+      border-style: dashed;
 
       svg {
         width: 22%;
         height: 22%;
         fill: var(--ink);
       }
+    }
+
+    h3 {
+      margin: 0;
     }
   }
 }
