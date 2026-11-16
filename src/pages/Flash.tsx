@@ -71,6 +71,24 @@ export function Flash() {
       .catch(() => setManifest('none'))
   }, [])
 
+  // leaving the page lets the board go: the port is the browser's, not the page's
+  useEffect(
+    () => () => {
+      const reader = monitorReader.current
+      const port = monitorPort.current
+      monitorReader.current = null
+      monitorPort.current = null
+      void (async () => {
+        await reader?.cancel().catch(() => {})
+        await port?.close().catch(() => {})
+      })()
+      void transport.current?.disconnect().catch(() => {})
+      transport.current = null
+      loader.current = null
+    },
+    [],
+  )
+
   const say = (line: string) => setLog((text) => text + line)
   const terminal = {
     clean: () => setLog(''),
@@ -178,8 +196,9 @@ export function Flash() {
   // What the board's firmware writes on its console, from a restart on: the
   // way to see why a board that does not answer does not.
   const monitor = async () => {
+    let port: SerialPort | null = null
     try {
-      const port = await navigator.serial.requestPort({ filters: [{ usbVendorId: ESPRESSIF }] })
+      port = await navigator.serial.requestPort({ filters: [{ usbVendorId: ESPRESSIF }] })
       await port.open({ baudRate: 115200 })
       monitorPort.current = port
       setLog('')
@@ -204,27 +223,47 @@ export function Flash() {
           // the board went away, or Stop was pressed
         } finally {
           reader.releaseLock()
+          if (monitorReader.current === reader) {
+            monitorReader.current = null
+          }
         }
       }
     } catch (error) {
       const cancelled = error instanceof DOMException && error.name === 'NotFoundError'
       if (!cancelled) {
+        // a port that opened and then failed is let go, or nothing could open it again
+        if (port && monitorPort.current === port) {
+          await closeMonitor()
+        }
         setPhase({ name: 'error', message: t('The port does not open.', 'Порт не открывается.') })
       }
     }
   }
 
-  const stopMonitor = async () => {
+  // The reader and the port let go each on its own: a reader already gone
+  // must not keep the port open.
+  const closeMonitor = async () => {
     const port = monitorPort.current
+    const reader = monitorReader.current
     monitorPort.current = null
+    monitorReader.current = null
     try {
-      await monitorReader.current?.cancel()
+      await reader?.cancel()
+    } catch {
+      // released already
+    }
+    try {
       await port?.close()
     } catch {
       // closed already
     }
+  }
+
+  const stopMonitor = async () => {
+    await closeMonitor()
     setPhase({ name: 'idle' })
   }
+
 
   // the whole flash into a file the browser saves
   const save = async (chip: string, mac: string) => {

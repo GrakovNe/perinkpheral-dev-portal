@@ -4,15 +4,16 @@ import type { ESPLoader } from 'esptool-js'
 // esptool-js lets the board send 1024 packets of 4 KB unanswered, and over
 // the C6's USB-JTAG some of them are lost and the read never ends. Here a
 // piece of 512 KB at a time, 64 packets in flight, each piece checked
-// against the MD5 the board sends after it and read again when it does not
-// match or stops.
+// against the MD5 the board sends after it. A piece that stops or does not
+// match ends the read: the board's loader still waits for the answer to it,
+// and would take a new command for that answer, so it is not asked again -
+// connecting again starts the loader anew.
 
 const PIECE = 512 * 1024
 const SECTOR = 0x1000
 const IN_FLIGHT = 64
 const READ_FLASH = 0xd2
 const PACKET_TIMEOUT_MS = 5000
-const ATTEMPTS = 3
 
 const word = (value: number) => new Uint8Array(new Uint32Array([value]).buffer)
 
@@ -61,19 +62,7 @@ export async function readWholeFlash(
   const all = new Uint8Array(size)
   for (let address = 0; address < size; address += PIECE) {
     const length = Math.min(PIECE, size - address)
-    for (let attempt = 1; ; attempt += 1) {
-      try {
-        all.set(await readPiece(loader, address, length), address)
-        break
-      } catch (error) {
-        if (attempt === ATTEMPTS) {
-          throw error
-        }
-        // what the board still had on its way is let go before asking again
-        await new Promise((resolve) => setTimeout(resolve, 1000))
-        loader.transport.flushInput()
-      }
-    }
+    all.set(await readPiece(loader, address, length), address)
     progress(address + length, size)
   }
   return all

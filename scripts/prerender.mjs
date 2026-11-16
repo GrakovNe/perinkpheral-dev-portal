@@ -29,13 +29,13 @@ const file = (path, lang) => {
 }
 const escape = (text) => text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
 
-function page({ url, lang, title, description, head }) {
+function page({ url, lang, title, description, head, any = false }) {
   return template
     .replace('<html lang="en">', `<html lang="${lang}">`)
     .replace(/<title>[^<]*<\/title>/, `<title>${escape(title)}</title>`)
     .replace(/<meta name="description" content="[^"]*" \/>/, `<meta name="description" content="${escape(description)}" />`)
     .replace('</head>', `${head}\n  </head>`)
-    .replace('<div id="root"></div>', `<div id="root">${render(url)}</div>`)
+    .replace('<div id="root"></div>', `<div id="root"${any ? ' data-page="any"' : ''}>${render(url)}</div>`)
 }
 
 function write(name, html) {
@@ -82,6 +82,7 @@ write(
     title: pageTitle('/404', 'en'),
     description: DESCRIPTIONS['/'].en,
     head: '    <meta name="robots" content="noindex" />',
+    any: true,
   }),
 )
 
