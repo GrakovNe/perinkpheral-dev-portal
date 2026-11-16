@@ -1,20 +1,18 @@
-import { Chapter, DocBody, Facts, PageHead, Table } from '../components/Doc'
-import { DeliveryDiagram, FlashDiagram, InstallDiagram, LayersDiagram } from '../components/Diagrams'
+import { Chapter, DocBody, Facts, PageHead } from '../components/Doc'
+import { DeliveryDiagram, FlashDiagram, LayersDiagram } from '../components/Diagrams'
 import { files, repo } from '../content/links'
 
 const CHAPTERS = [
   { id: 'overview', title: 'Overview' },
   { id: 'architecture', title: 'Architecture' },
   { id: 'delivery', title: 'Data delivery' },
-  { id: 'catalogs', title: 'Installing apps' },
   { id: 'storage', title: 'Storage' },
   { id: 'display', title: 'Display' },
   { id: 'network', title: 'Network and updates' },
-  { id: 'power', title: 'Power' },
   { id: 'api', title: 'Web API' },
 ]
 
-const [overview, architecture, delivery, catalogs, storage, display, network, power, api] = CHAPTERS
+const [overview, architecture, delivery, storage, display, network, api] = CHAPTERS
 
 export function Firmware() {
   return (
@@ -42,9 +40,6 @@ export function Firmware() {
           <DeliveryDiagram />
         </Chapter>
 
-        <Chapter chapter={catalogs}>
-          <InstallDiagram />
-        </Chapter>
 
         <Chapter chapter={storage}>
           <FlashDiagram />
@@ -53,10 +48,8 @@ export function Firmware() {
         <Chapter chapter={display}>
           <Facts
             rows={[
-              ['Button press', '0.5 s'],
-              ['Switching apps', '2.5 s'],
-              ['Data updates', 'Up to once a minute'],
-              ['Power to keep the picture', 'None'],
+              ['Frame rate', 'Up to 1.5 fps'],
+              ['Delay', '0.5 s; 2.5 s when switching apps'],
             ]}
           />
         </Chapter>
@@ -71,31 +64,10 @@ export function Firmware() {
           />
         </Chapter>
 
-        <Chapter chapter={power}>
-          <Facts
-            rows={[
-              ['Power saving off', 'Wi-Fi always on'],
-              ['Power saving on', 'Wi-Fi only for data updates'],
-              ['Auto', 'Power saving without a computer on USB'],
-            ]}
-          />
-        </Chapter>
 
         <Chapter chapter={api}>
-          <Table
-            head={['Endpoint', 'Description']}
-            rows={[
-              [<code>GET /api/status</code>, 'Device status'],
-              [<code>GET /api/apps</code>, 'Installed apps and their settings'],
-              [<code>POST /api/apps/install</code>, 'Install an app'],
-              [<code>POST /api/apps/settings</code>, 'App settings'],
-              [<code>GET, POST /api/settings</code>, 'Device settings'],
-              [<code>GET /api/log</code>, 'Log'],
-              [<code>POST /api/ota</code>, 'Firmware update'],
-            ]}
-          />
           <p>
-            <a href={files.security}>SECURITY.md</a>
+            <a href={files.openapi}>OpenAPI specification</a>
           </p>
         </Chapter>
       </DocBody>

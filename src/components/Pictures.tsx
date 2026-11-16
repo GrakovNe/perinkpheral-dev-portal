@@ -103,7 +103,7 @@ const TURN_MS = 5000
 // Renders that turn by themselves, one every few seconds, and by the squares
 // under them. Held while the pointer is over them, and still
 // for a reader who asked for less motion.
-export function Carousel({ slides, sizes }: { slides: Slide[]; sizes: string }) {
+export function Carousel({ slides, sizes = '100vw', screens = false }: { slides: Slide[]; sizes?: string; screens?: boolean }) {
   const [shown, setShown] = useState(0)
   const [held, setHeld] = useState(false)
   const still =
@@ -117,7 +117,7 @@ export function Carousel({ slides, sizes }: { slides: Slide[]; sizes: string }) 
   }, [shown, held, still, slides.length])
   return (
     <div
-      className="carousel"
+      className={screens ? 'carousel panel-frames' : 'carousel'}
       onMouseEnter={() => setHeld(true)}
       onMouseLeave={() => setHeld(false)}
       onFocus={() => setHeld(true)}
@@ -128,11 +128,10 @@ export function Carousel({ slides, sizes }: { slides: Slide[]; sizes: string }) 
         {slides.map((slide, index) => (
           <img
             key={slide.name}
-            {...renderSources(slide.name)}
-            sizes={sizes}
-            alt={`perINKpheral showing ${slide.caption}`}
-            width={1600}
-            height={1067}
+            {...(screens ? { src: `${BASE}screens/${slide.name}.png` } : { ...renderSources(slide.name), sizes })}
+            alt={screens ? slide.caption : `perINKpheral showing ${slide.caption}`}
+            width={screens ? 800 : 1600}
+            height={screens ? 600 : 1067}
             className={index === shown ? 'shown' : undefined}
             aria-hidden={index !== shown}
             loading={index === 0 ? 'eager' : 'lazy'}

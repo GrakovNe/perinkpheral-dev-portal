@@ -1,6 +1,19 @@
 import { Chapter, Code, DocBody, Facts, PageHead, Table } from '../components/Doc'
-import { Screen } from '../components/Pictures'
+import { Carousel } from '../components/Pictures'
 import { files, repo } from '../content/links'
+
+const KIT = [
+  { name: 'kit-parts', caption: 'Text, icons, value, bar' },
+  { name: 'kit-list', caption: 'List' },
+  { name: 'kit-options', caption: 'Options' },
+  { name: 'stocks', caption: 'Chart' },
+  { name: 'kit-picker', caption: 'Picker' },
+  { name: 'kit-date', caption: 'Date and time' },
+  { name: 'kit-time', caption: 'Time' },
+  { name: 'kit-message', caption: 'Message' },
+  { name: 'kit-question', caption: 'Question' },
+  { name: 'kit-working', caption: 'Work in progress' },
+]
 
 const CHAPTERS = [
   { id: 'overview', title: 'Overview' },
@@ -155,10 +168,6 @@ tools/perinkpheral log --follow
 
         <Chapter chapter={application}>
           <Code label="hello.c">{HELLO}</Code>
-          <div className="grid two">
-            <Screen name="kit-list" alt="A list drawn with the kit" caption="List" />
-            <Screen name="kit-question" alt="A question drawn with the kit" caption="Question" />
-          </div>
         </Chapter>
 
         <Chapter chapter={manifest}>
@@ -237,10 +246,7 @@ tools/perinkpheral log --follow
               ['Message while there is nothing to show', 'ui_reason'],
             ]}
           />
-          <div className="grid two">
-            <Screen name="kit-parts" alt="Text, icons, a value and a bar drawn with the kit" caption="Text, icons, value, bar" />
-            <Screen name="stocks" alt="A chart in the stocks application" caption="Chart" />
-          </div>
+          <Carousel screens slides={KIT} />
         </Chapter>
 
         <Chapter chapter={limits}>

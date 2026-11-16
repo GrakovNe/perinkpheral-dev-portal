@@ -143,31 +143,6 @@ export function DeliveryDiagram() {
   )
 }
 
-// ---- installing from a catalog ----
-
-export function InstallDiagram() {
-  const step = 170
-  return (
-    <Diagram
-      width={820}
-      height={160}
-      label="Installing an application from a catalog"
-    >
-      <Box x={0} y={20} w={140} h={56} title="Catalog" />
-      <Arrow points={[[140, 48], [step, 48]]} />
-      <Box x={step} y={20} w={140} h={56} title="Device page" />
-      <Arrow points={[[step + 140, 48], [2 * step, 48]]} />
-      <Box x={2 * step} y={20} w={140} h={56} title="Space check" filled />
-      <Arrow points={[[2 * step + 140, 48], [3 * step, 48]]} />
-      <Box x={3 * step} y={20} w={140} h={56} title="Download" />
-      <Arrow points={[[3 * step + 140, 48], [4 * step, 48]]} />
-      <Box x={4 * step} y={20} w={140} h={56} title="Installed" filled />
-      <Arrow points={[[4 * step + 70, 76], [4 * step + 70, 125], [2 * step + 320, 125]]} />
-      <Box x={2 * step + 20} y={105} w={300} h={40} title="Menu" />
-    </Diagram>
-  )
-}
-
 // ---- the flash ----
 
 const PARTITIONS: { name: string; size: string; weight: number; filled?: boolean }[] = [
@@ -235,6 +210,8 @@ const BUTTON_PINS: [string, string][] = [
   ['2 OK', 'D1'],
   ['3 DOWN', 'D2'],
   ['4 BACK', 'D3'],
+  ['V', '3V3'],
+  ['G', 'GND'],
 ]
 
 export function WiringDiagram() {

@@ -44,11 +44,10 @@ export function Hardware() {
           <Facts
             rows={[
               ['Size', '111.5 x 103.5 x 86.5 mm with the feet'],
-              ['Screen tilt', '15 degrees'],
               ['Board', 'Seeed Studio XIAO ESP32-C6'],
               ['Display', 'Waveshare 4.2" e-Paper Module V2, 400 x 300 pixels'],
-              ['Battery', 'Li-Ion 3.7 V with a protection board, up to 4000 mAh, charges over USB-C'],
-              ['Screws', 'M2.5 countersunk'],
+              ['Battery', 'Li-Ion 3.7 V, charges over USB-C'],
+              ['Screws', 'M2.5'],
               ['Tools', 'Soldering iron, screwdriver, FDM printer'],
             ]}
           />
@@ -63,8 +62,8 @@ export function Hardware() {
               ['Antenna', 'Seeed FPC Antenna A-01, 2.4/5 GHz', '1', 'Flat antenna with an 80 mm cable'],
               ['Buttons', '"Independent key switch module 4P"', '1', 'A small board with four buttons, sold under this name'],
               ['Battery', 'Li-Ion/LiPo 3.7 V, size code 955465, 4000 mAh', '1', 'With a protection board'],
-              ['Screws', 'M2.5 x 4, countersunk (DIN 965)', '5', '3 display to frame, 2 back panel'],
-              ['Screws', 'M2.5 x 6, countersunk (DIN 965)', '7', '4 bottom to cover, 2 sole, 1 display corner'],
+              ['Screws', 'M2.5 x 4', '5', '3 display to frame, 2 back panel'],
+              ['Screws', 'M2.5 x 6', '7', '4 bottom to cover, 2 sole, 1 display corner'],
               ['Wire', 'Thin hook-up wire', '~0.3\u00a0m', 'Buttons and battery'],
               ['Heat shrink tube', '1.5-2 mm', '~0.1\u00a0m', 'Insulating the joined wires'],
               ['Tape', 'Thin double-sided', '-', 'Antenna and battery'],
@@ -128,7 +127,7 @@ export function Hardware() {
               ['Display CS, DC', 'D7, D5'],
               ['Display RST, BUSY', 'D4, D6'],
               ['Buttons 1, 2, 3, 4', 'D0, D1, D2, D3'],
-              ['Buttons V, G', 'Joined to the display\'s VCC and GND wires'],
+              ['Buttons V, G (power)', '3V3, GND: joined to the display\'s VCC and GND wires'],
               ['Battery +, -', 'BAT+, BAT- pads under the board'],
               ['Antenna', 'Antenna connector'],
             ]}

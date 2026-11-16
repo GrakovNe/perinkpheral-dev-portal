@@ -26,6 +26,7 @@ export const files = {
   hardwareNotes: blob('hardware/README.md'),
   partitions: blob('firmware/partitions.csv'),
   security: blob('SECURITY.md'),
+  openapi: blob('docs/api/openapi.yaml'),
   license: blob('LICENSE'),
   releases: `${repo.firmware}/releases`,
   catalog: `${repo.apps}/tree/main/catalog`,

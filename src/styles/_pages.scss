@@ -377,3 +377,28 @@
     }
   }
 }
+
+// The same, for frames of the panel: in the case's color, cell for cell.
+.carousel.panel-frames {
+  max-width: 40rem;
+  margin: 0 0 1.5rem;
+
+  .slides {
+    aspect-ratio: 4 / 3;
+    box-shadow: none;
+    background: #b67a55;
+    border: 1px solid var(--ink);
+  }
+
+  img {
+    inset: 0.6rem;
+    width: calc(100% - 1.2rem);
+    height: calc(100% - 1.2rem);
+    image-rendering: pixelated;
+    border: 1px solid #6f4630;
+  }
+
+  .controls {
+    justify-content: flex-start;
+  }
+}
