@@ -8,10 +8,12 @@ import { useLocal, useT } from '../i18n'
 // Espressif's esptool-js. The files are the latest firmware release's, put
 // beside the portal when it is published (firmware/manifest.json, in the form
 // of ESP Web Tools); the board is erased and they are written where the
-// manifest says.
+// manifest says. Before that, the whole flash can be read into a file: a copy
+// of what the board holds, settings and Wi-Fi password among it.
 
 const BASE = import.meta.env.BASE_URL
 const ESPRESSIF = 0x303a
+const FLASH_BYTES = 4 * 1024 * 1024
 
 type Part = { path: string; offset: number }
 type Manifest = { version: string; builds: { chipFamily: string; parts: Part[] }[] }
@@ -19,7 +21,8 @@ type Manifest = { version: string; builds: { chipFamily: string; parts: Part[] }
 type Phase =
   | { name: 'idle' }
   | { name: 'connecting' }
-  | { name: 'connected'; chip: string; mac: string }
+  | { name: 'connected'; chip: string; mac: string; saved?: string }
+  | { name: 'reading'; chip: string; mac: string; done: number }
   | { name: 'erasing' }
   | { name: 'writing'; done: number }
   | { name: 'done' }
@@ -141,8 +144,32 @@ export function Flash() {
     }
   }
 
+  // the whole flash into a file the browser saves
+  const save = async (chip: string, mac: string) => {
+    if (!loader.current) {
+      return
+    }
+    setPhase({ name: 'reading', chip, mac, done: 0 })
+    try {
+      const data = await loader.current.readFlash(0, FLASH_BYTES, (_packet, read, size) =>
+        setPhase({ name: 'reading', chip, mac, done: Math.round((read / size) * 100) }),
+      )
+      const name = `perinkpheral-${mac.replace(/:/g, '')}-${new Date().toISOString().slice(0, 10)}.bin`
+      const link = document.createElement('a')
+      link.href = URL.createObjectURL(new Blob([data as BlobPart], { type: 'application/octet-stream' }))
+      link.download = name
+      link.click()
+      URL.revokeObjectURL(link.href)
+      setPhase({ name: 'connected', chip, mac, saved: name })
+    } catch {
+      await release()
+      setPhase({ name: 'error', message: t('Reading stopped. Connect again.', 'Чтение прервалось. Подключите ещё раз.') })
+    }
+  }
+
   const version = manifest && manifest !== 'none' ? manifest.version : null
-  const busy = phase.name === 'connecting' || phase.name === 'erasing' || phase.name === 'writing'
+  const busy =
+    phase.name === 'connecting' || phase.name === 'erasing' || phase.name === 'writing' || phase.name === 'reading'
 
   let body
   if (!supported) {
@@ -169,10 +196,18 @@ export function Flash() {
             ['MAC', phase.mac],
           ]}
         />
+        {phase.saved ? (
+          <p>
+            {t('Copy saved:', 'Копия сохранена:')} <code>{phase.saved}</code>
+          </p>
+        ) : null}
         <p className="flash-warning">{t('Everything on the board is erased.', 'Всё на плате будет стёрто.')}</p>
         <div className="buttons">
           <button type="button" className="button" onClick={install}>
             {t('Install', 'Установить')}
+          </button>
+          <button type="button" className="button quiet" onClick={() => save(phase.chip, phase.mac)}>
+            {t('Save a copy', 'Сохранить копию')}
           </button>
           <button
             type="button"
@@ -185,6 +220,17 @@ export function Flash() {
             {t('Disconnect', 'Отключить')}
           </button>
         </div>
+      </>
+    )
+  } else if (phase.name === 'reading') {
+    body = (
+      <>
+        <p>
+          {t('Reading the flash', 'Чтение флеша')}
+          <span className="flash-percent">{phase.done}%</span>
+        </p>
+        <Progress value={phase.done} />
+        <p className="dim">{t('Keep the board connected.', 'Не отключайте плату.')}</p>
       </>
     )
   } else if (phase.name === 'erasing' || phase.name === 'writing') {
