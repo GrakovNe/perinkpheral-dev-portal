@@ -24,13 +24,14 @@ npm run check     # types and lint
 GitHub Pages, at perinkpheral.dev (`public/CNAME`). The Publish workflow builds, checks and publishes the portal
 when it is run by hand from the Actions tab; a push to `main` publishes nothing.
 
-The build is static files. `dist/404.html` is a copy of the page, so that a static host answers any address of
-the portal with it. The path the portal is served under is `PORTAL_BASE`:
+The build is static files, every page rendered into a file of its own at build time (`scripts/prerender.mjs`,
+from `src/entry-server.tsx`): `sdk.html` for /sdk, `ru/sdk.html` for /ru/sdk, each with its title, description,
+canonical address, the other language's address and the preview of a link (`og:*`, `public/og.jpg`). The
+browser then takes the page over. Any other address is `404.html`; `sitemap.xml` and `robots.txt` are written
+beside them. The addresses are made for the root of perinkpheral.dev.
 
-```bash
-npm run build                                           # at the root of a domain
-PORTAL_BASE=/perinkpheral-dev-portal/ npm run build     # GitHub Pages of this repository, without the domain
-```
+The language is in the address: English at /sdk, Russian at /ru/sdk. A first visit to an English address goes on
+to the Russian one when the browser asks for Russian; a language picked with the flags is remembered.
 
 ## Pictures
 

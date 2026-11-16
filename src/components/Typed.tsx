@@ -46,7 +46,8 @@ export function TypedHeading({ lines, className = '' }: { lines: string[]; class
   const caretLine = shown >= total ? lines.length - 1 : typed.findIndex((count, index) => count < lines[index].length)
 
   return (
-    <h1 className={`typed ${className}`} aria-label={lines.join(' ')}>
+    <h1 className={`typed ${className}`}>
+      <span className="unseen">{lines.join('. ')}</span>
       {lines.map((line, index) => (
         <span key={index} className="typed-line" aria-hidden="true">
           {line.slice(0, typed[index])}

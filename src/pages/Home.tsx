@@ -5,7 +5,7 @@ import { keepWords } from '../components/Doc'
 import { PixelIcon } from '../components/PixelIcon'
 import { TypedHeading } from '../components/Typed'
 import { APPS } from '../content/apps'
-import { useT } from '../i18n'
+import { useLocal, useT } from '../i18n'
 
 // Each with a picture of 64 x 64 cells, drawn a pixel a cell.
 const SPECS: { en: string; ru: string; value: string; valueRu: string; icon: string[] }[] = [
@@ -417,6 +417,7 @@ function KitButton() {
 
 export function Home() {
   const t = useT()
+  const local = useLocal()
   const caption = (one: { name: string; en: string; ru: string }) => ({ name: one.name, caption: t(one.en, one.ru) })
   return (
     <>
@@ -429,7 +430,7 @@ export function Home() {
             />
             <p className="hero-lead">{t('Weather, calendar, stocks, smart home and more.', 'Погода, календарь, акции, умный дом и не только.')}</p>
             <div className="buttons">
-              <Link className="button" to="/start">
+              <Link className="button" to={local('/start')}>
                 {t('Getting started', 'Начало работы')} <span className="arrow">-&gt;</span>
               </Link>
               <KitButton />
@@ -479,7 +480,7 @@ export function Home() {
                 </div>
               </article>
             ))}
-            <Link to="/sdk" className="app own">
+            <Link to={local('/sdk')} className="app own">
               <span className="app-screen plus" aria-hidden="true">
                 <svg viewBox="0 0 11 11" shapeRendering="crispEdges">
                   <rect x={5} y={2} width={1} height={7} />

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { keepWords, PageHead } from '../components/Doc'
 import { PixelIcon } from '../components/PixelIcon'
 import { STEP_ICONS } from '../content/start'
-import { useT } from '../i18n'
+import { useLocal, useT } from '../i18n'
 
 // What to do, in order: a step a row, its picture, a line and where the
 // rest is told.
@@ -40,6 +40,7 @@ function Step({
 
 export function Start() {
   const t = useT()
+  const local = useLocal()
   return (
     <>
       <PageHead title={t('Getting started', 'Начало работы')} />
@@ -50,7 +51,7 @@ export function Start() {
             icon={STEP_ICONS.build}
             title={t('Build it', 'Соберите устройство')}
             more={
-              <Link className="button quiet" to="/hardware">
+              <Link className="button quiet" to={local('/hardware')}>
                 Hardware <span className="arrow">-&gt;</span>
               </Link>
             }
@@ -65,7 +66,7 @@ export function Start() {
             icon={STEP_ICONS.flash}
             title={t('Flash the firmware', 'Прошейте')}
             more={
-              <Link className="button quiet" to="/hardware#flashing">
+              <Link className="button quiet" to={local('/hardware#flashing')}>
                 {t('First flash', 'Первая прошивка')} <span className="arrow">-&gt;</span>
               </Link>
             }

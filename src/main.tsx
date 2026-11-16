@@ -1,16 +1,25 @@
 import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import { createRoot, hydrateRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import App from './App.tsx'
 import { LangProvider } from './i18n.tsx'
 import './styles/global.scss'
 
-createRoot(document.getElementById('root')!).render(
+const page = (
   <StrictMode>
-    <LangProvider>
-      <BrowserRouter basename={import.meta.env.BASE_URL}>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
+      <LangProvider>
         <App />
-      </BrowserRouter>
-    </LangProvider>
-  </StrictMode>,
+      </LangProvider>
+    </BrowserRouter>
+  </StrictMode>
 )
+
+// A page rendered at build time is taken over as it is; the development
+// server's empty one is drawn.
+const root = document.getElementById('root')!
+if (root.hasChildNodes()) {
+  hydrateRoot(root, page)
+} else {
+  createRoot(root).render(page)
+}

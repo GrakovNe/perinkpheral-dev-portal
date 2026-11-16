@@ -2,7 +2,7 @@ import { useState, type ReactNode } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { author, repo } from '../content/links'
 import { PAGES } from '../content/pages'
-import { useLang, useT } from '../i18n'
+import { useLang, useLocal, useT } from '../i18n'
 import { Mark, Wordmark } from './Brand'
 
 // The two flags as pixel pictures, cell for cell like the screen: 20 x 12
@@ -77,10 +77,11 @@ function Languages({ className = '' }: { className?: string }) {
 function Bar() {
   const [open, setOpen] = useState(false)
   const t = useT()
+  const local = useLocal()
   return (
     <header className="bar">
       <div className="wrap">
-        <Link to="/" className="brand" aria-label="perINKpheral, home" onClick={() => setOpen(false)}>
+        <Link to={local('/')} className="brand" aria-label="perINKpheral, home" onClick={() => setOpen(false)}>
           <Mark />
           <Wordmark />
         </Link>
@@ -95,7 +96,7 @@ function Bar() {
         </button>
         <nav id="menu" className={open ? 'menu open' : 'menu'} aria-label="Sections">
           {PAGES.filter((page) => page.inBar).map((page) => (
-            <NavLink key={page.to} to={page.to} onClick={() => setOpen(false)}>
+            <NavLink key={page.to} to={local(page.to)} onClick={() => setOpen(false)}>
               {t(page.en, page.ru)}
             </NavLink>
           ))}
@@ -109,12 +110,13 @@ function Bar() {
 
 function Foot() {
   const t = useT()
+  const local = useLocal()
   return (
     <footer className="foot">
       <div className="wrap">
         <div className="columns">
           <div>
-            <Link to="/" className="brand" aria-label="perINKpheral, home">
+            <Link to={local('/')} className="brand" aria-label="perINKpheral, home">
               <Mark />
               <Wordmark />
             </Link>
@@ -125,7 +127,7 @@ function Foot() {
             <ul>
               {PAGES.map((page) => (
                 <li key={page.to}>
-                  <Link to={page.to}>{t(page.en, page.ru)}</Link>
+                  <Link to={local(page.to)}>{t(page.en, page.ru)}</Link>
                 </li>
               ))}
             </ul>
