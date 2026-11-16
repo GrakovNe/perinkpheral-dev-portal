@@ -1,0 +1,110 @@
+import { useState, type ReactNode } from 'react'
+
+// The head of a page: what section of the portal it is, its title and one
+// paragraph of what is on it.
+export function PageHead({ eyebrow, title, children }: { eyebrow: string; title: string; children: ReactNode }) {
+  return (
+    <header className="page-head">
+      <div className="wrap">
+        <p className="eyebrow">{eyebrow}</p>
+        <h1>{title}</h1>
+        <p className="lead">{children}</p>
+      </div>
+    </header>
+  )
+}
+
+export type Chapter = { id: string; title: string }
+
+// A long page: its contents on the left, its sections on the right.
+export function DocBody({ chapters, children }: { chapters: Chapter[]; children: ReactNode }) {
+  return (
+    <div className="wrap page-body">
+      <nav className="toc" aria-label="On this page">
+        <p>On this page</p>
+        <ol>
+          {chapters.map((chapter) => (
+            <li key={chapter.id}>
+              <a href={`#${chapter.id}`}>{chapter.title}</a>
+            </li>
+          ))}
+        </ol>
+      </nav>
+      <div className="doc">{children}</div>
+    </div>
+  )
+}
+
+export function Chapter({ chapter, children }: { chapter: Chapter; children: ReactNode }) {
+  return (
+    <section aria-labelledby={chapter.id}>
+      <h2 id={chapter.id}>{chapter.title}</h2>
+      {children}
+    </section>
+  )
+}
+
+// A block of code, shell or C, with a button that copies it.
+export function Code({ label, children }: { label: string; children: string }) {
+  const [copied, setCopied] = useState(false)
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(children.trim())
+      setCopied(true)
+      setTimeout(() => setCopied(false), 1500)
+    } catch {
+      setCopied(false)
+    }
+  }
+  return (
+    <div className="code">
+      <div className="label">
+        <span>{label}</span>
+        <button type="button" className="copy" onClick={copy}>
+          {copied ? 'Copied' : 'Copy'}
+        </button>
+      </div>
+      <pre>
+        <code>{children.trim()}</code>
+      </pre>
+    </div>
+  )
+}
+
+export function Facts({ rows }: { rows: [ReactNode, ReactNode][] }) {
+  return (
+    <dl className="facts">
+      {rows.map(([name, value], index) => (
+        <div key={index} style={{ display: 'contents' }}>
+          <dt>{name}</dt>
+          <dd>{value}</dd>
+        </div>
+      ))}
+    </dl>
+  )
+}
+
+export function Table({ head, rows }: { head: string[]; rows: ReactNode[][] }) {
+  return (
+    <div className="table">
+      <table>
+        <thead>
+          <tr>
+            {head.map((cell) => (
+              <th key={cell}>{cell}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row, index) => (
+            <tr key={index}>
+              {row.map((cell, column) => (
+                <td key={column}>{cell}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+}

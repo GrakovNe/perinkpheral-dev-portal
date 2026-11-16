@@ -1,0 +1,27 @@
+// SPDX-License-Identifier: MIT
+// The palette of the device: ink and the panel's grey-white paper.
+$ink: #141413;
+$paper: #e9e7e1;
+$dim: #6b6862;
+$line: #c9c6be;
+$face: 'Departure Mono', ui-monospace, Menlo, Consolas, monospace;
+
+$wide: 76rem;
+$text: 46rem;
+$gutter: clamp(1rem, 4vw, 2.5rem);
+$shadow: 6px 6px 0 $ink;
+
+$phone: 40rem;
+$tablet: 64rem;
+
+@mixin phone {
+  @media (max-width: $phone) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (max-width: $tablet) {
+    @content;
+  }
+}

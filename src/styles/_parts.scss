@@ -1,0 +1,415 @@
+// SPDX-License-Identifier: MIT
+// What pages are put together from: buttons, panels, the device's screen,
+// code, facts, steps, tables, diagrams, galleries.
+
+@use 'tokens' as *;
+
+// ---- buttons ----
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  height: 2.9rem;
+  padding: 0 1.25rem;
+  font: inherit;
+  text-decoration: none;
+  white-space: nowrap;
+  color: var(--paper);
+  background: var(--ink);
+  border: 1px solid var(--ink);
+  border-radius: 0;
+  cursor: pointer;
+  transition: transform 0.08s ease-out, box-shadow 0.08s ease-out;
+
+  &:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 3px 3px 0 var(--ink);
+    text-decoration: none;
+  }
+
+  &.quiet {
+    color: var(--ink);
+    background: var(--paper);
+  }
+
+  .arrow {
+    font-size: 1.1em;
+  }
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+}
+
+// ---- a box of ink lines ----
+
+.panel {
+  border: 1px solid var(--ink);
+  padding: 1.25rem 1.4rem;
+  background: var(--paper);
+
+  > :last-child {
+    margin-bottom: 0;
+  }
+
+  h3 {
+    margin-top: 0;
+  }
+}
+
+.panel.raised {
+  box-shadow: $shadow;
+}
+
+.panel.ink {
+  background: var(--ink);
+  color: var(--paper);
+
+  a {
+    color: var(--paper);
+  }
+
+  code {
+    border-color: #4a4944;
+  }
+}
+
+.note {
+  border-left: 3px solid var(--ink);
+  padding: 0.25rem 0 0.25rem 1rem;
+  margin: 1.25rem 0;
+  max-width: $text;
+
+  > :last-child {
+    margin-bottom: 0;
+  }
+}
+
+.dim {
+  color: var(--dim);
+}
+
+.grid {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+
+  &.two {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+  }
+}
+
+// ---- the device's screen ----
+
+.screen {
+  margin: 0;
+
+  .bezel {
+    padding: 0.6rem;
+    background: #b67a55;
+    border: 1px solid var(--ink);
+  }
+
+  img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    image-rendering: pixelated;
+    border: 1px solid #6f4630;
+  }
+
+  figcaption {
+    margin-top: 0.6rem;
+    font-size: 0.9rem;
+  }
+}
+
+// ---- pictures ----
+
+.figure {
+  margin: 0;
+
+  img {
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--ink);
+    background: #d6d2ca;
+  }
+
+  figcaption {
+    margin-top: 0.6rem;
+    font-size: 0.9rem;
+    color: var(--dim);
+  }
+}
+
+.gallery {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
+
+  button {
+    display: block;
+    width: 100%;
+    padding: 0;
+    font: inherit;
+    text-align: left;
+    color: inherit;
+    background: none;
+    border: 0;
+    cursor: zoom-in;
+  }
+
+  img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+    border: 1px solid var(--ink);
+    transition: box-shadow 0.08s ease-out, transform 0.08s ease-out;
+  }
+
+  button:hover img {
+    transform: translate(-3px, -3px);
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+
+  span {
+    display: block;
+    margin-top: 0.4rem;
+    font-size: 0.85rem;
+    color: var(--dim);
+  }
+}
+
+.lightbox {
+  width: min(96vw, 110rem);
+  max-width: none;
+  max-height: 96vh;
+  padding: 0;
+  border: 1px solid var(--ink);
+  background: var(--paper);
+  color: var(--ink);
+
+  &::backdrop {
+    background: rgb(20 20 19 / 85%);
+  }
+
+  img {
+    width: 100%;
+    height: auto;
+    max-height: calc(96vh - 3.5rem);
+    object-fit: contain;
+  }
+
+  .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.6rem 0.9rem;
+    border-top: 1px solid var(--ink);
+  }
+
+  button {
+    font: inherit;
+    padding: 0.35rem 0.8rem;
+    color: var(--paper);
+    background: var(--ink);
+    border: 0;
+    border-radius: 0;
+    cursor: pointer;
+  }
+}
+
+// ---- code ----
+
+.code {
+  position: relative;
+  margin: 1rem 0 1.5rem;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+
+  .label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.4rem 0.9rem;
+    font-size: 0.8rem;
+    color: #a8a49c;
+    border-bottom: 1px solid #3a3936;
+  }
+
+  .copy {
+    font: inherit;
+    padding: 0.15rem 0.6rem;
+    color: var(--paper);
+    background: transparent;
+    border: 1px solid #5a5853;
+    border-radius: 0;
+    cursor: pointer;
+
+    &:hover {
+      border-color: var(--paper);
+    }
+  }
+
+  pre {
+    margin: 0;
+    padding: 1rem 0.9rem;
+    overflow-x: auto;
+    line-height: 1.55;
+    font-size: 0.88rem;
+  }
+
+  .comment {
+    color: #9a968e;
+  }
+}
+
+// ---- facts: a name and its value ----
+
+.facts {
+  display: grid;
+  grid-template-columns: minmax(8rem, max-content) minmax(0, 1fr);
+  margin: 0 0 1.5rem;
+  border-top: 1px solid var(--ink);
+
+  dt,
+  dd {
+    margin: 0;
+    padding: 0.55rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  dt {
+    color: var(--dim);
+    padding-right: 1.5rem;
+  }
+
+  @include phone {
+    grid-template-columns: 1fr;
+
+    dt {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+  }
+}
+
+// ---- steps ----
+
+.steps {
+  list-style: none;
+  counter-reset: step;
+  padding: 0;
+  max-width: none !important;
+
+  > li {
+    counter-increment: step;
+    position: relative;
+    padding: 0 0 2rem 3.5rem;
+    margin: 0;
+
+    &::before {
+      content: counter(step);
+      position: absolute;
+      left: 0;
+      top: -0.15rem;
+      display: grid;
+      place-items: center;
+      width: 2.2rem;
+      height: 2.2rem;
+      color: var(--paper);
+      background: var(--ink);
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 1.1rem;
+      top: 2.3rem;
+      bottom: 0.3rem;
+      border-left: 1px solid var(--ink);
+    }
+
+    &:last-child::after {
+      display: none;
+    }
+
+    h3 {
+      margin: 0 0 0.6rem;
+    }
+
+    .code {
+      max-width: 48rem;
+    }
+  }
+}
+
+// ---- tables ----
+
+.table {
+  overflow-x: auto;
+  margin: 0 0 1.5rem;
+
+  table {
+    min-width: 34rem;
+  }
+}
+
+// ---- diagrams ----
+
+.diagram {
+  margin: 1.5rem 0 2rem;
+
+  .canvas {
+    border: 1px solid var(--ink);
+    padding: clamp(0.75rem, 2vw, 1.5rem);
+    overflow-x: auto;
+  }
+
+  svg {
+    display: block;
+    width: 100%;
+    min-width: 36rem;
+    height: auto;
+    font-family: $face;
+  }
+
+  figcaption {
+    margin-top: 0.6rem;
+    font-size: 0.9rem;
+    color: var(--dim);
+  }
+}
+
+// ---- small marks ----
+
+.tag {
+  display: inline-block;
+  padding: 0 0.45rem;
+  font-size: 0.8rem;
+  color: var(--paper);
+  background: var(--ink);
+  vertical-align: 0.1em;
+}
+
+.kbd {
+  display: inline-block;
+  min-width: 1.6rem;
+  padding: 0 0.35rem;
+  text-align: center;
+  border: 1px solid var(--ink);
+  box-shadow: 2px 2px 0 var(--ink);
+  font-size: 0.85rem;
+}
+
+.doc .figure,
+.doc .grid {
+  margin-bottom: 1.75rem;
+}

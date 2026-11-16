@@ -1,0 +1,271 @@
+// SPDX-License-Identifier: MIT
+// What only one page has: the landing page's hero, bands and doors.
+
+@use 'tokens' as *;
+
+.hero {
+  border-bottom: 1px solid var(--ink);
+
+  .wrap {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+    padding-top: clamp(2.5rem, 6vw, 5rem);
+    padding-bottom: clamp(2.5rem, 6vw, 5rem);
+
+    @include tablet {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  h1 {
+    margin: 1.5rem 0 1.25rem;
+  }
+}
+
+.hero-mark {
+  width: 4.5rem;
+  height: 4.5rem;
+}
+
+.hero-wordmark {
+  display: block;
+  width: min(100%, 30rem);
+  height: auto;
+}
+
+.hero-line {
+  font-size: clamp(1.15rem, 2.2vw, 1.4rem);
+  margin-bottom: 1rem;
+}
+
+.hero-lead {
+  color: #3a3936;
+  max-width: 34rem;
+  margin-bottom: 2rem;
+}
+
+.hero-picture .figure img {
+  box-shadow: 10px 10px 0 var(--ink);
+  border-width: 1px;
+}
+
+// ---- specifications in a row ----
+
+.specs {
+  border-bottom: 1px solid var(--ink);
+
+  dl {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    margin: 0;
+
+    @include tablet {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    @include phone {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  dl > div {
+    padding: 1.25rem 1rem 1.25rem 0;
+    border-right: 1px solid var(--line);
+    padding-left: 1rem;
+
+    &:first-child {
+      padding-left: 0;
+    }
+
+    &:last-child {
+      border-right: 0;
+    }
+
+    @include tablet {
+      padding-left: 0;
+      border-right: 0;
+    }
+  }
+
+  dt {
+    color: var(--dim);
+    font-size: 0.85rem;
+    margin-bottom: 0.3rem;
+  }
+
+  dd {
+    margin: 0;
+  }
+}
+
+// ---- bands of the landing page ----
+
+.band {
+  padding: clamp(3rem, 7vw, 5.5rem) 0;
+  border-bottom: 1px solid var(--ink);
+
+  &.ink {
+    background: var(--ink);
+    color: var(--paper);
+    border-bottom-color: var(--ink);
+  }
+}
+
+.band-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  gap: 2rem;
+  align-items: end;
+  margin-bottom: 2.5rem;
+
+  @include tablet {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+  }
+
+  h2 {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+  }
+
+  p {
+    margin: 0;
+    max-width: $text;
+  }
+}
+
+.principles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+
+  @include tablet {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @include phone {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .panel {
+    transition: transform 0.08s ease-out, box-shadow 0.08s ease-out;
+
+    &:hover {
+      transform: translate(-4px, -4px);
+      box-shadow: 4px 4px 0 var(--ink);
+    }
+  }
+
+  .number {
+    display: inline-block;
+    margin-bottom: 1.25rem;
+    padding: 0 0.4rem;
+    color: var(--paper);
+    background: var(--ink);
+  }
+
+  h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.6rem;
+  }
+
+  p {
+    color: #3a3936;
+  }
+}
+
+.screens {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.75rem 1.25rem;
+
+  @include tablet {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @include phone {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.doors {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+
+  @include tablet {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.door {
+  display: block;
+  padding: 1.5rem;
+  color: var(--paper);
+  text-decoration: none;
+  border: 1px solid var(--paper);
+  transition: background 0.08s ease-out, color 0.08s ease-out;
+
+  h3 {
+    font-size: 1.4rem;
+    margin-bottom: 0.75rem;
+  }
+
+  p {
+    margin: 0;
+    color: #c9c6be;
+  }
+
+  &:hover {
+    background: var(--paper);
+    color: var(--ink);
+
+    p {
+      color: #3a3936;
+    }
+  }
+}
+
+// ---- contacts ----
+
+.contacts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 3rem;
+
+  @include tablet {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  a.panel {
+    display: block;
+    text-decoration: none;
+    transition: transform 0.08s ease-out, box-shadow 0.08s ease-out;
+
+    &:hover {
+      transform: translate(-4px, -4px);
+      box-shadow: 4px 4px 0 var(--ink);
+    }
+  }
+
+  .kind {
+    color: var(--dim);
+    margin-bottom: 0.75rem;
+  }
+
+  .value {
+    font-size: 1.15rem;
+    overflow-wrap: anywhere;
+  }
+}
+
+.not-found {
+  padding: 6rem 0;
+
+  h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+}
