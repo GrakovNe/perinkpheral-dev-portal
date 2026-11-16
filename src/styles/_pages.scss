@@ -91,6 +91,19 @@
     }
   }
 
+  dl > div {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+  }
+
+  .app-icon {
+    flex: none;
+    width: 2.25rem;
+    height: 2.25rem;
+    fill: var(--ink);
+  }
+
   dt {
     color: var(--dim);
     font-size: 0.85rem;
