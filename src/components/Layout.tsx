@@ -58,10 +58,10 @@ function FlagRu() {
   return <Pixels colour={russianFlag} />
 }
 
-function Languages() {
+function Languages({ className = '' }: { className?: string }) {
   const { lang, setLang } = useLang()
   return (
-    <div className="langs" role="group" aria-label="Language">
+    <div className={`langs ${className}`} role="group" aria-label="Language">
       <button type="button" className={lang === 'en' ? 'current' : undefined} onClick={() => setLang('en')}
         aria-pressed={lang === 'en'} title="English">
         <FlagUk />
@@ -99,8 +99,9 @@ function Bar() {
               {t(page.en, page.ru)}
             </NavLink>
           ))}
+          <Languages className="in-menu" />
         </nav>
-        <Languages />
+        <Languages className="in-bar" />
       </div>
     </header>
   )

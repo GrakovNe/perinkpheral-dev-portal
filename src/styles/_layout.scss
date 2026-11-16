@@ -39,6 +39,16 @@
     align-items: center;
     gap: 2rem;
     height: 4rem;
+
+    @include phone {
+      gap: 1rem;
+    }
+  }
+
+  @include phone {
+    .brand .wordmark {
+      height: 0.8rem;
+    }
   }
 }
 
@@ -336,5 +346,21 @@ main {
     display: block;
     width: 100%;
     height: 100%;
+  }
+}
+
+// The flags stand in the bar; on a phone, at the foot of the opened menu.
+.langs.in-menu {
+  display: none;
+}
+
+@include phone {
+  .langs.in-bar {
+    display: none;
+  }
+
+  .menu .langs.in-menu {
+    display: flex;
+    margin: 0.75rem 0 0 0.8rem;
   }
 }

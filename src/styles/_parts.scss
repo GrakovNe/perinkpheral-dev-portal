@@ -415,12 +415,63 @@
 
 // ---- tables ----
 
+.nowrap {
+  white-space: nowrap;
+}
+
 .table {
   overflow-x: auto;
   margin: 0 0 1.5rem;
 
   table {
     min-width: 34rem;
+  }
+
+  // On a phone a row is a block: its first cell a title, the rest each
+  // under the name of its column.
+  @include phone {
+    overflow: visible;
+
+    table {
+      min-width: 0;
+    }
+
+    thead {
+      display: none;
+    }
+
+    tr {
+      display: block;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    td {
+      display: grid;
+      grid-template-columns: 7.5rem minmax(0, 1fr);
+      gap: 0.75rem;
+      padding: 0.15rem 0;
+      border: 0;
+
+      &::before {
+        content: attr(data-label);
+        color: var(--dim);
+      }
+
+      &:empty {
+        display: none;
+      }
+    }
+
+    td:first-child {
+      display: block;
+      padding-bottom: 0.35rem;
+      font-size: 1rem;
+
+      &::before {
+        content: none;
+      }
+    }
   }
 }
 

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { Mark } from '../components/Brand'
 import { Carousel, Gallery } from '../components/Pictures'
+import { keepWords } from '../components/Doc'
 import { APPS } from '../content/apps'
 import { useT } from '../i18n'
 
@@ -77,7 +78,7 @@ export function Home() {
             {SPECS.map(([name, nameRu, value, valueRu]) => (
               <div key={name}>
                 <dt>{t(name, nameRu)}</dt>
-                <dd>{t(value, valueRu)}</dd>
+                <dd>{keepWords(t(value, valueRu))}</dd>
               </div>
             ))}
           </dl>

@@ -1,6 +1,22 @@
 import { useState, type ReactNode } from 'react'
 import { useT } from '../i18n'
 
+// A word with a hyphen in it - USB-C, Li-Ion - is not broken at the hyphen.
+export function keepWords(node: ReactNode): ReactNode {
+  if (typeof node !== 'string' || !node.includes('-')) {
+    return node
+  }
+  return node.split(/(\S*\S-\S\S*)/).map((part, index) =>
+    index % 2 === 1 ? (
+      <span key={index} className="nowrap">
+        {part}
+      </span>
+    ) : (
+      part
+    ),
+  )
+}
+
 // The head of a page: its title, and a line under it when there is one.
 export function PageHead({ eyebrow, title, children }: { eyebrow?: string; title: string; children?: ReactNode }) {
   return (
@@ -79,7 +95,7 @@ export function Facts({ rows }: { rows: [ReactNode, ReactNode][] }) {
       {rows.map(([name, value], index) => (
         <div key={index} style={{ display: 'contents' }}>
           <dt>{name}</dt>
-          <dd>{value}</dd>
+          <dd>{keepWords(value)}</dd>
         </div>
       ))}
     </dl>
@@ -101,7 +117,9 @@ export function Table({ head, rows }: { head: string[]; rows: ReactNode[][] }) {
           {rows.map((row, index) => (
             <tr key={index}>
               {row.map((cell, column) => (
-                <td key={column}>{cell}</td>
+                <td key={column} data-label={head[column]}>
+                  <span>{keepWords(cell)}</span>
+                </td>
               ))}
             </tr>
           ))}

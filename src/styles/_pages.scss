@@ -311,6 +311,10 @@
     box-shadow: 10px 10px 0 var(--ink);
     background: #d6d2ca;
     overflow: hidden;
+
+    @include phone {
+      box-shadow: 6px 6px 0 var(--ink);
+    }
   }
 
   img {
