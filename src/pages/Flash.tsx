@@ -214,6 +214,12 @@ export function Flash() {
             type="button"
             className="button quiet"
             onClick={async () => {
+              // Connect left the board in its loader: it starts its firmware again
+              try {
+                await loader.current?.after('hard_reset')
+              } catch {
+                // the board is gone already
+              }
               await release()
               setPhase({ name: 'idle' })
             }}
