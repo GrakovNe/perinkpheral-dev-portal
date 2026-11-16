@@ -365,29 +365,17 @@ tools/perinkpheral log --follow
 
         <Chapter chapter={reference}>
           <div className="grid">
-            <a className="panel" href={files.guidePdf}>
-              <h3>Application guide</h3>
-              <p className="dim">Everything above in detail, with the full API. PDF.</p>
-            </a>
-            <a className="panel" href={files.guidePdfRu}>
-              <h3>Application guide, Russian</h3>
-              <p className="dim">The same guide in Russian.</p>
-            </a>
-            <a className="panel" href={files.hostApi}>
-              <h3>host_api.h</h3>
-              <p className="dim">Every function, with a comment.</p>
-            </a>
-            <a className="panel" href={files.hello}>
-              <h3>Sample application</h3>
-              <p className="dim">A small app: text, a button, a saved counter.</p>
-            </a>
-            <a className="panel" href={files.sdkLib}>
-              <h3>sdk/lib</h3>
-              <p className="dim">Helpers for text, numbers, settings and saved state.</p>
+            <a className="panel" href={repo.firmware}>
+              <h3>perinkpheral</h3>
+              <p className="dim">SDK, tools, firmware.</p>
             </a>
             <a className="panel" href={repo.apps}>
-              <h3>Official applications</h3>
-              <p className="dim">Source code of the official applications.</p>
+              <h3>perinkpheral-apps</h3>
+              <p className="dim">Official apps and their catalog.</p>
+            </a>
+            <a className="panel" href={repo.clion}>
+              <h3>perinkpheral-clion-plugin</h3>
+              <p className="dim">CLion plugin.</p>
             </a>
           </div>
         </Chapter>
