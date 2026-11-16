@@ -5,10 +5,9 @@ import { EnglishOnly, useT } from '../i18n'
 
 const CHAPTERS = [
   { id: 'overview', en: 'Overview', ru: 'Обзор' },
-  { id: 'architecture', en: 'Architecture', ru: 'Архитектура' },
-  { id: 'delivery', en: 'Data delivery', ru: 'Доставка данных' },
-  { id: 'storage', en: 'Storage', ru: 'Хранение' },
-  { id: 'display', en: 'Display', ru: 'Экран' },
+  { id: 'architecture', en: 'Architecture', ru: 'Архитектура OS' },
+  { id: 'delivery', en: 'Data Flow', ru: 'Data Flow' },
+  { id: 'storage', en: 'Storage', ru: 'Хранилище' },
   { id: 'network', en: 'Network and updates', ru: 'Сеть и обновления' },
   { id: 'api', en: 'Web API', ru: 'Web API' },
 ]
@@ -16,7 +15,7 @@ const CHAPTERS = [
 export function Firmware() {
   const t = useT()
   const chapters = CHAPTERS.map((one) => ({ id: one.id, title: t(one.en, one.ru) }))
-  const [overview, architecture, delivery, storage, display, network, api] = chapters
+  const [overview, architecture, delivery, storage, network, api] = chapters
   return (
     <>
       <PageHead title="Firmware" />
@@ -52,14 +51,6 @@ export function Firmware() {
           </EnglishOnly>
         </Chapter>
 
-        <Chapter chapter={display}>
-          <Facts
-            rows={[
-              ['Frame rate', 'Up to 1.5 fps'],
-              ['Delay', '0.5 s; 2.5 s when switching apps'],
-            ]}
-          />
-        </Chapter>
 
         <Chapter chapter={network}>
           <Facts
