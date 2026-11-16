@@ -105,22 +105,46 @@
   }
 }
 
-// ---- the steps from parts to a screen: cards, as the apps' are ----
+// ---- Getting started: the steps as cards, as the apps' are ----
+
+.start-band {
+  padding: 3rem 0;
+  border-bottom: 1px solid var(--ink);
+}
 
 .start {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 2.25rem 1.5rem;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 2.25rem 1.25rem;
   margin: 0;
   padding: 0;
   list-style: none;
 
   @include tablet {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  @include phone {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   li {
     margin: 0;
+  }
+
+  a {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+
+    .start-picture {
+      transition: transform 0.08s ease-out, box-shadow 0.08s ease-out;
+    }
+
+    &:hover .start-picture {
+      transform: translate(-4px, -4px);
+      box-shadow: 4px 4px 0 var(--ink);
+    }
   }
 
   .start-picture {
@@ -165,10 +189,6 @@
   color: var(--paper);
   background: var(--ink);
   font-size: 0.95rem;
-}
-
-.start-buttons {
-  margin-top: 2.5rem;
 }
 
 // ---- bands of the landing page ----

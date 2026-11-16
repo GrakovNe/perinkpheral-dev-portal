@@ -94,7 +94,7 @@ function Bar() {
           {t('Menu', 'Меню')}
         </button>
         <nav id="menu" className={open ? 'menu open' : 'menu'} aria-label="Sections">
-          {PAGES.map((page) => (
+          {PAGES.filter((page) => page.inBar).map((page) => (
             <NavLink key={page.to} to={page.to} onClick={() => setOpen(false)}>
               {t(page.en, page.ru)}
             </NavLink>

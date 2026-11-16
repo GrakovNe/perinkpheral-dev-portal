@@ -7,6 +7,7 @@ import { Firmware } from './pages/Firmware'
 import { Hardware } from './pages/Hardware'
 import { Home } from './pages/Home'
 import { Sdk } from './pages/Sdk'
+import { Start } from './pages/Start'
 
 import { PAGES } from './content/pages'
 import { useLang, useT } from './i18n'
@@ -49,6 +50,7 @@ export default function App() {
       <Navigation />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/start" element={<Start />} />
         <Route path="/sdk" element={<Sdk />} />
         <Route path="/hardware" element={<Hardware />} />
         <Route path="/firmware" element={<Firmware />} />
