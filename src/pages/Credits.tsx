@@ -7,7 +7,7 @@ export function Credits() {
   return (
     <>
       <PageHead eyebrow="Credits" title="Credits and licenses">
-        perINKpheral is open under the MIT License. It is built on the work of others, listed here with their licenses.
+        perINKpheral is released under the MIT License. Third-party components and their licenses are listed below.
       </PageHead>
       <div className="wrap page-body single">
         <div className="doc">
@@ -56,7 +56,7 @@ export function Credits() {
                 ],
               ]}
             />
-            <p className="dim">Departure Mono is the face of the device and of this portal.</p>
+            <p className="dim">Departure Mono is used on the device and on this site.</p>
           </section>
 
           <section>
@@ -70,8 +70,8 @@ export function Credits() {
               ]}
             />
             <p className="dim">
-              The display driver follows Waveshare's reference code; GxEPD2 by Jean-Marc Zingg was a reference for the
-              same panel.
+              The display driver is based on Waveshare's reference code. GxEPD2 by Jean-Marc Zingg was used as a
+              reference for the same panel.
             </p>
           </section>
 
@@ -84,13 +84,13 @@ export function Credits() {
                 [<a href="https://finance.yahoo.com">Yahoo Finance</a>, 'stocks'],
                 [<a href="https://www.moex.com">Moscow Exchange</a>, 'stocks'],
                 [<a href="https://spbexchange.ru">SPB Exchange</a>, 'stocks'],
-                [<a href="https://photon.komoot.io">Photon</a>, 'the device page: search of places'],
-                [<a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, 'place data behind Photon, ODbL'],
+                [<a href="https://photon.komoot.io">Photon</a>, 'device web UI: place search'],
+                [<a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, 'place data for Photon, ODbL'],
               ]}
             />
             <p className="dim">
-              sun computes sunrise and sunset with the NOAA solar equations and the moon with the methods of Jean
-              Meeus, Astronomical Algorithms.
+              sun: sunrise and sunset by the NOAA solar equations; moon phase by Jean Meeus, Astronomical
+              Algorithms.
             </p>
           </section>
 
@@ -99,11 +99,11 @@ export function Credits() {
             <Table
               head={['Tool', 'Use']}
               rows={[
-                [<a href="https://github.com/WebAssembly/wasi-sdk">wasi-sdk</a>, 'Compiler of applications'],
-                [<a href="https://kotlinlang.org">Kotlin</a>, 'The SDK tools and the CLion plugin'],
-                [<a href="https://www.blender.org">Blender</a>, 'Renders of the case'],
-                [<a href="https://www.autodesk.com/products/fusion-360">Fusion</a>, 'The model of the case'],
-                [<a href="https://react.dev">React</a>, 'This portal, with Vite and Sass'],
+                [<a href="https://github.com/WebAssembly/wasi-sdk">wasi-sdk</a>, 'Application compiler'],
+                [<a href="https://kotlinlang.org">Kotlin</a>, 'SDK tools and CLion plugin'],
+                [<a href="https://www.blender.org">Blender</a>, 'Enclosure renders'],
+                [<a href="https://www.autodesk.com/products/fusion-360">Fusion</a>, 'Enclosure model'],
+                [<a href="https://react.dev">React</a>, 'This site, with Vite and Sass'],
               ]}
             />
           </section>
@@ -111,7 +111,7 @@ export function Credits() {
           <section>
             <h2>Inspiration</h2>
             <p>
-              Pebble, for applications on a small host with buttons and a companion page.
+              Pebble: application model and companion configuration page.
             </p>
           </section>
         </div>

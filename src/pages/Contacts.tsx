@@ -5,8 +5,8 @@ export function Contacts() {
   return (
     <>
       <PageHead eyebrow="Contacts" title="Contacts">
-        Questions, bug reports and ideas go to the issues of the repository they concern. For anything else, write to
-        the author directly.
+        Bug reports and feature requests: GitHub issues of the relevant repository. Other questions: email or
+        Telegram.
       </PageHead>
       <div className="wrap page-body single">
         <div className="doc">
@@ -28,13 +28,13 @@ export function Contacts() {
           <section>
             <h2>Repositories</h2>
             <Table
-              head={['Repository', 'What is in it']}
+              head={['Repository', 'Description']}
               rows={[
-                [<a href={repo.firmware}>perinkpheral</a>, 'Firmware, SDK, tools, hardware, the application guide'],
-                [<a href={repo.apps}>perinkpheral-apps</a>, 'The official applications and their catalog'],
-                [<a href={repo.clion}>perinkpheral-clion-plugin</a>, 'The CLion plugin'],
-                [<a href={repo.homeAssistant}>perinkpheral-hacs</a>, 'The Home Assistant integration'],
-                [<a href={repo.portal}>perinkpheral-dev-portal</a>, 'This portal'],
+                [<a href={repo.firmware}>perinkpheral</a>, 'Firmware, SDK, tools, hardware, application guide'],
+                [<a href={repo.apps}>perinkpheral-apps</a>, 'Official applications and catalog'],
+                [<a href={repo.clion}>perinkpheral-clion-plugin</a>, 'CLion plugin'],
+                [<a href={repo.homeAssistant}>perinkpheral-hacs</a>, 'Home Assistant integration'],
+                [<a href={repo.portal}>perinkpheral-dev-portal</a>, 'Developer portal'],
               ]}
             />
           </section>

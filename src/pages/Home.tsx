@@ -12,39 +12,33 @@ const SPECS: [string, string][] = [
 ]
 
 const PRINCIPLES: [string, string][] = [
+  ['No backlight, no animation', 'Static content between updates. Display refresh is rate-limited.'],
   [
-    'Peripheral, not a monitor',
-    'No backlight and nothing that moves. The screen is read at a glance and ignored otherwise; the refresh policy is conservative.',
+    'Local processing',
+    'The device fetches data, runs applications and renders frames itself. No server-side rendering.',
   ],
   [
-    'Not a thin client',
-    'The device fetches the data, runs the application and draws the frame itself. No server renders pictures for it.',
+    'Direct data access',
+    'Requests go directly from the device to the data source. No accounts, no telemetry, no intermediate cloud service.',
+  ],
+  ['Physical buttons', 'Four buttons for application input. A long press on BACK always returns to the menu.'],
+  [
+    'Reproducible hardware',
+    'Off-the-shelf modules, no custom PCB, a case printed without supports. MIT License.',
   ],
   [
-    'The data stays with the user',
-    'Requests go from the device straight to the source. There is no account, no telemetry and no cloud of the project in between.',
-  ],
-  [
-    'It has buttons',
-    'Applications react to presses. A long press on BACK returns to the menu from anywhere.',
-  ],
-  [
-    'Cheap to repeat',
-    'Common parts, no custom PCB, a case that prints without supports. Everything is open under the MIT License.',
-  ],
-  [
-    'Applications decide the screen',
-    'The host stays small. Applications are installed from catalogs over the network, without reflashing.',
+    'Installable applications',
+    'Applications are installed from catalogs over Wi-Fi, without reflashing the firmware.',
   ],
 ]
 
 const SCREENS = [
-  { name: 'stocks', caption: 'Stocks: a quote and its day' },
+  { name: 'stocks', caption: 'Stocks' },
   { name: 'clock', caption: 'Clock' },
-  { name: 'menu', caption: 'The menu of the host' },
-  { name: 'kit-parts', caption: 'Parts of the kit' },
+  { name: 'menu', caption: 'Menu' },
+  { name: 'kit-parts', caption: 'UI kit' },
   { name: 'timer', caption: 'Timer' },
-  { name: 'settings', caption: 'Settings on the device' },
+  { name: 'settings', caption: 'Settings' },
 ]
 
 const RENDERS = [
@@ -63,17 +57,17 @@ const DOORS = [
   {
     to: '/sdk',
     title: 'SDK',
-    text: 'Write an application in C, run it in the simulator, send it to the device over the network.',
+    text: 'Toolchain, simulator, application model, API reference.',
   },
   {
     to: '/hardware',
     title: 'Hardware',
-    text: 'Parts, wiring, the printed case and the order of assembly.',
+    text: 'Bill of materials, wiring, printing, assembly.',
   },
   {
     to: '/firmware',
     title: 'Firmware',
-    text: 'How the host is built, how data reaches an application, how the panel is refreshed.',
+    text: 'Architecture, data delivery, display refresh, storage, updates.',
   },
 ]
 
@@ -87,11 +81,11 @@ export function Home() {
             <h1>
               <Wordmark className="hero-wordmark" />
             </h1>
-            <p className="hero-line">A desk e-paper display with buttons and applications.</p>
+            <p className="hero-line">Open-source e-paper desk display with buttons and WebAssembly applications.</p>
             <p className="hero-lead">
-              A 4.2" e-paper panel, four buttons and an ESP32-C6 in a printed case. It shows what is glanced
-              at - the time, the weather, a calendar, the state of a house - and asks for nothing. Applications
-              are WebAssembly modules, installed over the network.
+              A 4.2" e-paper panel, four buttons and an ESP32-C6 in a 3D-printed case. Displays the time, weather,
+              calendar events, market data and smart home state. Applications are WebAssembly modules installed over
+              Wi-Fi.
             </p>
             <div className="buttons">
               <Link className="button" to="/sdk">
@@ -105,7 +99,7 @@ export function Home() {
           <div className="hero-picture">
             <Render
               name="hero"
-              alt="The device on a desk, showing sunrise, sunset, day length and the moon"
+              alt="The device on a desk, showing the sun application"
               sizes="(max-width: 64rem) 100vw, 56vw"
               eager
             />
@@ -129,10 +123,10 @@ export function Home() {
       <section className="band">
         <div className="wrap">
           <div className="band-head">
-            <h2>What it is</h2>
+            <h2>Overview</h2>
             <p>
-              A separate screen for the desk that is not a second monitor: no server behind it, buttons in front of
-              it, on hardware that can be built at home.
+              An always-on secondary display for the desk. No backlight, no cloud service, no account. Built from
+              off-the-shelf modules.
             </p>
           </div>
           <div className="principles">
@@ -150,11 +144,8 @@ export function Home() {
       <section className="band">
         <div className="wrap">
           <div className="band-head">
-            <h2>On the screen</h2>
-            <p>
-              Frames as the panel shows them, 400 x 300 pixels, black on the panel's own grey-white. The host's
-              screens and the applications are drawn with the same kit.
-            </p>
+            <h2>Screens</h2>
+            <p>400 x 300 px, 1 bit. System screens and applications use the same UI kit.</p>
           </div>
           <div className="screens">
             {SCREENS.map((screen) => (
@@ -167,7 +158,7 @@ export function Home() {
       <section className="band ink">
         <div className="wrap">
           <div className="band-head">
-            <h2>Where to go next</h2>
+            <h2>Documentation</h2>
           </div>
           <div className="doors">
             {DOORS.map((door) => (
@@ -185,11 +176,8 @@ export function Home() {
       <section className="band">
         <div className="wrap">
           <div className="band-head">
-            <h2>The case</h2>
-            <p>
-              Printed in PLA without supports: a frame tilted at 15 degrees, a base with the board, the battery and
-              the buttons. 111.5 x 103.5 x 86.5 mm.
-            </p>
+            <h2>Enclosure</h2>
+            <p>3D-printed PLA, no supports. Display frame tilted at 15 degrees. 111.5 x 103.5 x 86.5 mm.</p>
           </div>
           <Gallery shots={RENDERS} />
         </div>
