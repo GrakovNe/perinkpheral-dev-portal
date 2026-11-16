@@ -107,12 +107,19 @@
 
 // ---- the steps from parts to a screen ----
 
-// The same diagram across the page, and down it on a phone.
+// The same diagram across the page, and down it on a phone. Never drawn
+// larger than it is, so that a cell of an icon is a pixel.
+.start-across svg {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
 .start-down {
   display: none;
 }
 
-@include phone {
+// below the width at which the row of four would be drawn smaller than 0.9
+@media (max-width: 60rem) {
   .start-across {
     display: none;
   }
@@ -120,13 +127,10 @@
   .start-down {
     display: block;
 
-    .canvas {
-      max-width: 22rem;
-      margin: 0 auto;
-    }
-
     svg {
       min-width: 0;
+      max-width: 280px;
+      margin: 0 auto;
     }
   }
 }
