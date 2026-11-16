@@ -129,9 +129,9 @@ export function Home() {
       <section className="band">
         <div className="wrap">
           <div className="band-head">
-            <h2>{t('The case', 'Корпус')}</h2>
+            <h2>{t('Gallery', 'Галерея')}</h2>
           </div>
-          <Gallery shots={RENDERS.map(caption)} />
+          <Gallery strip shots={RENDERS.map(caption)} />
         </div>
       </section>
 
