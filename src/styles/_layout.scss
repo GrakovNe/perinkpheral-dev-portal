@@ -207,8 +207,19 @@ main {
 .doc {
   min-width: 0;
 
+  // A section ends with a line; the next begins after a gap.
+  > section {
+    padding-bottom: 3rem;
+    border-bottom: 1px solid var(--ink);
+  }
+
   > section + section {
-    margin-top: 4rem;
+    margin-top: 3rem;
+  }
+
+  > section:last-child {
+    padding-bottom: 0;
+    border-bottom: 0;
   }
 
   h2 {
@@ -285,8 +296,7 @@ main {
 .page-body.single {
   grid-template-columns: minmax(0, 1fr);
 
-  .doc > section + section,
   .doc > .contacts + section {
-    margin-top: 3.5rem;
+    margin-top: 3rem;
   }
 }
