@@ -123,11 +123,11 @@ export function Sdk() {
         <Chapter chapter={overview}>
           <Facts
             rows={[
-              [t('Language', 'Язык'), t('C, compiled to WebAssembly', 'C, компилируется в WebAssembly')],
+              ['Language', 'C, compiled to WebAssembly'],
               ['API', <a href={files.hostApi}>sdk/host_api.h</a>],
-              [t('Memory', 'Память'), t('64 KB per app', '64 КБ на приложение')],
-              [t('Numbers', 'Числа'), t('Integers only, no floating point', 'Только целые, без плавающей точки')],
-              [t('Package', 'Пакет'), t('app.wasm, manifest.json, translations, pictures, files', 'app.wasm, manifest.json, переводы, картинки, файлы')],
+              ['Memory', '64 KB per app'],
+              ['Numbers', 'Integers only, no floating point'],
+              ['Package', 'app.wasm, manifest.json, translations, pictures, files'],
             ]}
           />
         </Chapter>
@@ -175,48 +175,48 @@ tools/perinkpheral log --follow
         <Chapter chapter={manifest}>
           <Code label="manifest.json">{MANIFEST}</Code>
           <Table
-            head={[t('Key', 'Ключ'), t('Meaning', 'Значение')]}
+            head={['Key', 'Meaning']}
             rows={[
-              [<code>name</code>, t('Unique id: 1-13 characters, a-z, 0-9, - and _', 'Уникальный id: 1-13 символов, a-z, 0-9, - и _')],
-              [<code>title</code>, t('Name in the menu, up to 23 characters', 'Название в меню, до 23 символов')],
-              [<code>polls</code>, t('Web requests the device makes on a schedule, up to 4', 'Запросы, которые устройство делает по расписанию, до 4')],
-              [<code>hosts</code>, t('Servers the app may contact', 'Серверы, к которым приложению можно обращаться')],
-              [<code>settings</code>, t('Up to 8. Types: text, secret, number, choice, toggle, place, url, link, list', 'До 8. Типы: text, secret, number, choice, toggle, place, url, link, list')],
-              [<code>intents</code>, t('System events to receive: device start, clock change, network back', 'Системные события: запуск устройства, смена времени, появление сети')],
-              [<code>icon</code>, t('11 x 11 pixel icon: # black, . white', 'Иконка 11 x 11 точек: # чёрный, . белый')],
-              [<code>fullscreen</code>, t('Use the whole screen, without the top bar', 'Весь экран, без верхней строки')],
-              [<code>writes_files</code>, t('The app saves files; 32 KB are reserved for it', 'Приложение пишет файлы; под них зарезервировано 32 КБ')],
-              [<code>system</code>, t('Access to device settings, clock and apps; the user confirms on install', 'Доступ к настройкам устройства, часам и приложениям; пользователь подтверждает при установке')],
-              [<code>certificates</code>, t('Certificates for servers that browsers do not trust', 'Сертификаты для серверов, которым не доверяют браузеры')],
-              [<code>companion</code>, t('A web page that helps the user set the app up', 'Веб-страница, которая помогает настроить приложение')],
+              [<code>name</code>, 'Unique id: 1-13 characters, a-z, 0-9, - and _'],
+              [<code>title</code>, 'Name in the menu, up to 23 characters'],
+              [<code>polls</code>, 'Web requests the device makes on a schedule, up to 4'],
+              [<code>hosts</code>, 'Servers the app may contact'],
+              [<code>settings</code>, 'Up to 8. Types: text, secret, number, choice, toggle, place, url, link, list'],
+              [<code>intents</code>, 'System events to receive: device start, clock change, network back'],
+              [<code>icon</code>, '11 x 11 pixel icon: # black, . white'],
+              [<code>fullscreen</code>, 'Use the whole screen, without the top bar'],
+              [<code>writes_files</code>, 'The app saves files; 32 KB are reserved for it'],
+              [<code>system</code>, 'Access to device settings, clock and apps; the user confirms on install'],
+              [<code>certificates</code>, 'Certificates for servers that browsers do not trust'],
+              [<code>companion</code>, 'A web page that helps the user set the app up'],
             ]}
           />
         </Chapter>
 
         <Chapter chapter={model}>
           <Table
-            head={[t('Function', 'Функция'), t('Called when', 'Когда вызывается')]}
+            head={['Function', 'Called when']}
             rows={[
-              [<code>app_init()</code>, t('The app starts', 'Приложение запускается')],
-              [<code>app_on_focus() / app_on_blur()</code>, t('The app appears on screen or leaves it', 'Приложение появляется на экране или уходит с него')],
-              [<code>app_on_terminate()</code>, t('The app is about to close: save state here', 'Приложение сейчас закроется: здесь сохраняют состояние')],
-              [<code>app_on_button(event)</code>, t('A button is pressed, released, or held', 'Кнопку нажали, отпустили или удерживают')],
-              [<code>app_on_back()</code>, t('BACK is pressed, for apps with several pages', 'Нажата BACK, для приложений с несколькими страницами')],
-              [<code>app_on_draw()</code>, t('The screen needs drawing', 'Нужно нарисовать экран')],
-              [<code>app_on_timer(id)</code>, t('A timer fired, while the app is on screen', 'Сработал таймер, пока приложение на экране')],
-              [<code>app_on_alarm(id)</code>, t('An alarm fired, even if the app is closed', 'Сработал будильник, даже если приложение закрыто')],
-              [<code>app_on_values(poll, status)</code>, t('Scheduled data arrived, already parsed', 'Пришли данные по расписанию, уже разобранные')],
-              [<code>app_on_data(...)</code>, t('A piece of a response arrived', 'Пришла часть ответа')],
-              [<code>app_on_settings()</code>, t('The user changed the settings', 'Пользователь изменил настройки')],
-              [<code>app_on_intent(type)</code>, t('A system event the app asked for', 'Системное событие, на которое приложение подписано')],
-              [<code>app_on_installed() / app_on_updated()</code>, t('First start after install or update', 'Первый запуск после установки или обновления')],
+              [<code>app_init()</code>, 'The app starts'],
+              [<code>app_on_focus() / app_on_blur()</code>, 'The app appears on screen or leaves it'],
+              [<code>app_on_terminate()</code>, 'The app is about to close: save state here'],
+              [<code>app_on_button(event)</code>, 'A button is pressed, released, or held'],
+              [<code>app_on_back()</code>, 'BACK is pressed, for apps with several pages'],
+              [<code>app_on_draw()</code>, 'The screen needs drawing'],
+              [<code>app_on_timer(id)</code>, 'A timer fired, while the app is on screen'],
+              [<code>app_on_alarm(id)</code>, 'An alarm fired, even if the app is closed'],
+              [<code>app_on_values(poll, status)</code>, 'Scheduled data arrived, already parsed'],
+              [<code>app_on_data(...)</code>, 'A piece of a response arrived'],
+              [<code>app_on_settings()</code>, 'The user changed the settings'],
+              [<code>app_on_intent(type)</code>, 'A system event the app asked for'],
+              [<code>app_on_installed() / app_on_updated()</code>, 'First start after install or update'],
             ]}
           />
           <h3>{t('Buttons and state', 'Кнопки и состояние')}</h3>
           <Facts
             rows={[
-              [t('Buttons', 'Кнопки'), t('1 up, 2 OK, 3 down, 4 back; hold BACK for the menu', '1 вверх, 2 OK, 3 вниз, 4 назад; удержание BACK открывает меню')],
-              [t('Saved data', 'Сохранённые данные'), 'kv_set(), kv_get()'],
+              ['Buttons', '1 up, 2 OK, 3 down, 4 back; hold BACK for the menu'],
+              ['Saved data', 'kv_set(), kv_get()'],
             ]}
           />
         </Chapter>
@@ -224,11 +224,11 @@ tools/perinkpheral log --follow
         <Chapter chapter={data}>
           <Facts
             rows={[
-              [t('On a schedule', 'По расписанию'), t('Requests in the manifest', 'Запросы в манифесте')],
-              [t('On demand', 'По запросу'), t('http_request() from the code', 'http_request() из кода')],
-              [t('Ready values', 'Готовые значения'), t('List JSON paths in "pick": app_on_values() gets the values', 'Пути JSON в "pick": app_on_values() получает значения')],
-              [t('Raw response', 'Ответ как есть'), t('Without "pick": app_on_data() gets the response piece by piece', 'Без "pick": app_on_data() получает ответ частями')],
-              [t('Show on screen', 'Показать на экране'), t('request_focus() opens the app when its data arrives', 'request_focus() открывает приложение, когда пришли данные')],
+              ['On a schedule', 'Requests in the manifest'],
+              ['On demand', 'http_request() from the code'],
+              ['Ready values', 'List JSON paths in "pick": app_on_values() gets the values'],
+              ['Raw response', 'Without "pick": app_on_data() gets the response piece by piece'],
+              ['Show on screen', 'request_focus() opens the app when its data arrives'],
             ]}
           />
           <Code label="weather.c">{VALUES}</Code>
@@ -236,56 +236,56 @@ tools/perinkpheral log --follow
 
         <Chapter chapter={kit}>
           <Table
-            head={[t('Part', 'Часть'), t('Functions', 'Функции')]}
+            head={['Part', 'Functions']}
             rows={[
-              [t('Text in four styles', 'Текст в четырёх стилях'), 'ui_text, ui_text_lines, ui_title'],
-              [t('List with scroll bar', 'Список с полосой прокрутки'), 'ui_list_row, ui_list_visible'],
-              [t('Dialog: text, icon, buttons', 'Диалог: текст, иконка, кнопки'), 'ui_notice'],
-              [t('Tile: name, picture, value', 'Плитка: название, картинка, значение'), 'ui_cell, ui_cell_fit'],
-              [t('Chart: line, area, bars, steps', 'График: линия, область, столбцы, ступени'), 'ui_chart'],
-              [t('Value with unit', 'Значение с единицей'), 'ui_value'],
-              [t('Choice of a value, date and time', 'Выбор значения, даты и времени'), 'ui_picker, ui_date'],
-              [t('Message while there is nothing to show', 'Сообщение, пока показывать нечего'), 'ui_reason'],
+              ['Text in four styles', 'ui_text, ui_text_lines, ui_title'],
+              ['List with scroll bar', 'ui_list_row, ui_list_visible'],
+              ['Dialog: text, icon, buttons', 'ui_notice'],
+              ['Tile: name, picture, value', 'ui_cell, ui_cell_fit'],
+              ['Chart: line, area, bars, steps', 'ui_chart'],
+              ['Value with unit', 'ui_value'],
+              ['Choice of a value, date and time', 'ui_picker, ui_date'],
+              ['Message while there is nothing to show', 'ui_reason'],
             ]}
           />
-          <Carousel screens slides={KIT.map((one) => ({ name: one.name, caption: t(one.en, one.ru) }))} />
+          <Carousel screens slides={KIT.map((one) => ({ name: one.name, caption: one.en }))} />
         </Chapter>
 
         <Chapter chapter={limits}>
           <Table
-            head={[t('What', 'Что'), t('Limit', 'Предел')]}
+            head={['What', 'Limit']}
             rows={[
-              [t('App size', 'Размер приложения'), '48 KB'],
-              [t('Memory', 'Память'), '64 KB'],
-              [t('Time per call', 'Время на вызов'), '3 s'],
-              [t('Saved data', 'Сохранённые данные'), t('2 KB, up to 1 KB per value', '2 КБ, до 1 КБ на значение')],
-              [t('Files', 'Файлы'), t('64 KB in the package; 32 KB if the app writes files', '64 КБ в пакете; 32 КБ, если приложение пишет файлы')],
-              [t('Scheduled requests', 'Запросы по расписанию'), t('4, every 10 s to 1 day', '4, от 10 с до суток')],
-              [t('Requests at once', 'Запросов одновременно'), '16'],
-              [t('Response size', 'Размер ответа'), t('256 KB parsed, 4 MB piece by piece', '256 КБ с разбором, 4 МБ частями')],
-              [t('Settings', 'Настройки'), t('8, values up to 255 bytes', '8, значения до 255 байт')],
-              [t('Timers and alarms', 'Таймеры и будильники'), t('4 and 4', '4 и 4')],
-              [t('Apps on a device', 'Приложений на устройстве'), t('Up to 24, while there is space', 'До 24, пока хватает места')],
+              ['App size', '48 KB'],
+              ['Memory', '64 KB'],
+              ['Time per call', '3 s'],
+              ['Saved data', '2 KB, up to 1 KB per value'],
+              ['Files', '64 KB in the package; 32 KB if the app writes files'],
+              ['Scheduled requests', '4, every 10 s to 1 day'],
+              ['Requests at once', '16'],
+              ['Response size', '256 KB parsed, 4 MB piece by piece'],
+              ['Settings', '8, values up to 255 bytes'],
+              ['Timers and alarms', '4 and 4'],
+              ['Apps on a device', 'Up to 24, while there is space'],
             ]}
           />
         </Chapter>
 
         <Chapter chapter={tools}>
           <Table
-            head={[t('Command', 'Команда'), t('Description', 'Описание')]}
+            head={['Command', 'Description']}
             rows={[
-              [<code>new &lt;dir&gt;</code>, t('Start a new app', 'Новое приложение')],
-              [<code>build &lt;app&gt; --out &lt;dir&gt;</code>, t('Build and check', 'Собрать и проверить')],
-              [<code>sim &lt;app&gt;</code>, t('Run in the simulator', 'Запустить в симуляторе')],
-              [<code>run &lt;app&gt;</code>, t('Run on the device', 'Запустить на устройстве')],
-              [<code>serve [app]</code>, t('A page with the device screen, buttons and log', 'Страница с экраном устройства, кнопками и логом')],
-              [<code>shot / press / open</code>, t('Screenshot, press buttons, open an app', 'Скриншот, нажатия кнопок, открыть приложение')],
-              [<code>log [--follow]</code>, t('Device log', 'Лог устройства')],
-              [<code>set &lt;app&gt; &lt;key&gt; &lt;value&gt;</code>, t('Change an app setting', 'Изменить настройку приложения')],
-              [<code>catalog &lt;folder&gt; --out &lt;dir&gt;</code>, t('Build a catalog', 'Собрать каталог')],
-              [<code>strings export / import</code>, t('Translations as a spreadsheet', 'Переводы таблицей')],
-              [<code>flash [image]</code>, t('Update the firmware over Wi-Fi', 'Обновить прошивку по Wi-Fi')],
-              [<code>usb &lt;port&gt;</code>, t('Control a device over USB', 'Управлять устройством по USB')],
+              [<code>new &lt;dir&gt;</code>, 'Start a new app'],
+              [<code>build &lt;app&gt; --out &lt;dir&gt;</code>, 'Build and check'],
+              [<code>sim &lt;app&gt;</code>, 'Run in the simulator'],
+              [<code>run &lt;app&gt;</code>, 'Run on the device'],
+              [<code>serve [app]</code>, 'A page with the device screen, buttons and log'],
+              [<code>shot / press / open</code>, 'Screenshot, press buttons, open an app'],
+              [<code>log [--follow]</code>, 'Device log'],
+              [<code>set &lt;app&gt; &lt;key&gt; &lt;value&gt;</code>, 'Change an app setting'],
+              [<code>catalog &lt;folder&gt; --out &lt;dir&gt;</code>, 'Build a catalog'],
+              [<code>strings export / import</code>, 'Translations as a spreadsheet'],
+              [<code>flash [image]</code>, 'Update the firmware over Wi-Fi'],
+              [<code>usb &lt;port&gt;</code>, 'Control a device over USB'],
             ]}
           />
         </Chapter>
@@ -293,9 +293,9 @@ tools/perinkpheral log --follow
         <Chapter chapter={clion}>
           <Facts
             rows={[
-              [t('Runs on', 'Где работает'), t('Device, simulator (macOS, Linux)', 'Устройство, симулятор (macOS, Linux)')],
-              [t('Includes', 'Что умеет'), t('Toolchain setup, live device screen, manifest checks, firmware upload', 'Установка тулчейна, живой экран устройства, проверка манифеста, загрузка прошивки')],
-              [t('Source', 'Исходники'), <a href={repo.clion}>perinkpheral-clion-plugin</a>],
+              ['Runs on', 'Device, simulator (macOS, Linux)'],
+              ['Includes', 'Toolchain setup, live device screen, manifest checks, firmware upload'],
+              ['Source', <a href={repo.clion}>perinkpheral-clion-plugin</a>],
             ]}
           />
         </Chapter>
@@ -308,15 +308,15 @@ tools/perinkpheral log --follow
           <div className="grid">
             <a className="panel" href={repo.firmware}>
               <h3>perinkpheral</h3>
-              <p className="dim">{t('SDK, tools, firmware.', 'SDK, инструменты, прошивка.')}</p>
+              <p className="dim">SDK, tools, firmware.</p>
             </a>
             <a className="panel" href={repo.apps}>
               <h3>perinkpheral-apps</h3>
-              <p className="dim">{t('Official apps and their catalog.', 'Официальные приложения и каталог.')}</p>
+              <p className="dim">Official apps and their catalog.</p>
             </a>
             <a className="panel" href={repo.clion}>
               <h3>perinkpheral-clion-plugin</h3>
-              <p className="dim">{t('CLion plugin.', 'Плагин CLion.')}</p>
+              <p className="dim">CLion plugin.</p>
             </a>
           </div>
         </Chapter>
