@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
 
-const STEP_MS = 55
-const LINE_PAUSE_MS = 350
+const STEP_MS = 95
+const LINE_PAUSE_MS = 700
 
 // A heading typed out a letter at a time, a carriage after the last one.
-// The whole text is laid out from the start, unseen, so that nothing moves
-// as it is typed; a reader that asks for less motion gets it at once.
+// The whole text is there from the start, the letters not yet typed unseen,
+// so every line breaks where it will end up and nothing moves as it is
+// typed; a reader that asks for less motion gets it at once.
 export function TypedHeading({ lines, className = '' }: { lines: string[]; className?: string }) {
   const total = lines.reduce((sum, line) => sum + line.length, 0)
   const [shown, setShown] = useState(0)
@@ -38,31 +39,21 @@ export function TypedHeading({ lines, className = '' }: { lines: string[]; class
 
   let left = shown
   const typed = lines.map((line) => {
-    const part = line.slice(0, Math.max(0, left))
+    const count = Math.min(line.length, Math.max(0, left))
     left -= line.length
-    return part
+    return count
   })
-  const caretLine = Math.max(0, typed.findIndex((part, index) => part.length < lines[index].length))
-  const lastLine = shown >= total ? lines.length - 1 : caretLine
+  const caretLine = shown >= total ? lines.length - 1 : typed.findIndex((count, index) => count < lines[index].length)
 
   return (
     <h1 className={`typed ${className}`} aria-label={lines.join(' ')}>
-      <span className="typed-ghost" aria-hidden="true">
-        {lines.map((line, index) => (
-          <span key={index} className="typed-line">
-            {line}
-            {index === lines.length - 1 && <span className="caret" />}
-          </span>
-        ))}
-      </span>
-      <span className="typed-text" aria-hidden="true">
-        {typed.map((part, index) => (
-          <span key={index} className="typed-line">
-            {part}
-            {index === lastLine && <span className="caret" />}
-          </span>
-        ))}
-      </span>
+      {lines.map((line, index) => (
+        <span key={index} className="typed-line" aria-hidden="true">
+          {line.slice(0, typed[index])}
+          {index === caretLine && <span className="caret" />}
+          <span className="typed-rest">{line.slice(typed[index])}</span>
+        </span>
+      ))}
     </h1>
   )
 }

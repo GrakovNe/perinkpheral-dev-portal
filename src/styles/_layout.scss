@@ -328,15 +328,9 @@ main {
     border: 1px solid var(--ink);
     border-radius: 0;
     cursor: pointer;
-    filter: grayscale(1) contrast(1.15);
     transition: transform 0.08s ease-out, box-shadow 0.08s ease-out;
 
-    &:hover {
-      filter: none;
-    }
-
     &.current {
-      filter: none;
       transform: translate(-2px, -2px);
       box-shadow: 2px 2px 0 var(--ink);
     }
