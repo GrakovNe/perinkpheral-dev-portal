@@ -105,16 +105,10 @@ export function Sdk() {
   return (
     <>
       <PageHead eyebrow="SDK" title="Application development">
-        Applications are written in C, compiled to WebAssembly and described by a JSON manifest. This page covers the
-        toolchain, the application model, the API and publishing.
+        Write an app in C, test it in the simulator, run it on the device.
       </PageHead>
       <DocBody chapters={CHAPTERS}>
         <Chapter chapter={overview}>
-          <p>
-            Applications run in wasm3, an interpreter built into the firmware. Each application is sandboxed: device
-            access only through the functions declared in <code>sdk/host_api.h</code>, network access only through the
-            host and only to the hosts listed in the manifest.
-          </p>
           <Facts
             rows={[
               ['Language', 'C11, compiled with clang of wasi-sdk to wasm32'],

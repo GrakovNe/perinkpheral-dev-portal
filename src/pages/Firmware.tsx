@@ -39,8 +39,7 @@ export function Firmware() {
   return (
     <>
       <PageHead eyebrow="Firmware" title="Firmware architecture">
-        The firmware is a host in C on ESP-IDF that runs WebAssembly applications. This page describes the host
-        layers, data delivery, display refresh, storage and updates.
+        How the firmware runs apps, gets their data and draws the screen.
       </PageHead>
       <DocBody chapters={CHAPTERS}>
         <Chapter chapter={overview}>
@@ -55,10 +54,6 @@ export function Firmware() {
               ['Languages', 'English and Russian: system UI and official applications'],
             ]}
           />
-          <p>
-            The design follows the Pebble model: a fixed host provides display, input, networking and storage;
-            applications are installed from catalogs without reflashing.
-          </p>
         </Chapter>
 
         <Chapter chapter={architecture}>
@@ -74,10 +69,6 @@ export function Firmware() {
               ['Services', 'main, components/net', 'Settings, Wi-Fi, clock, poller, web server'],
             ]}
           />
-          <p>
-            Hardware-independent modules are host-tested: refresh policy, window manager, manifest parser, request
-            queue, deadlines, Wi-Fi state machine. The simulator is built from the same sources.
-          </p>
         </Chapter>
 
         <Chapter chapter={scenes}>

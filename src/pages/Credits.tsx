@@ -7,7 +7,7 @@ export function Credits() {
   return (
     <>
       <PageHead eyebrow="Credits" title="Credits and licenses">
-        perINKpheral is released under the MIT License. Third-party components and their licenses are listed below.
+        MIT License. Third-party components below.
       </PageHead>
       <div className="wrap page-body single">
         <div className="doc">

@@ -35,8 +35,7 @@ export function Hardware() {
   return (
     <>
       <PageHead eyebrow="Hardware" title="Build guide">
-        The device is assembled from off-the-shelf modules and a 3D-printed case, without a custom PCB. This page lists
-        the parts, wiring, print settings and assembly steps.
+        Parts, wiring, printing and assembly. No custom PCB.
       </PageHead>
       <DocBody chapters={CHAPTERS}>
         <Chapter chapter={overview}>

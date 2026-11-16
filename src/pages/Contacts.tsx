@@ -5,8 +5,7 @@ export function Contacts() {
   return (
     <>
       <PageHead eyebrow="Contacts" title="Contacts">
-        Bug reports and feature requests: GitHub issues of the relevant repository. Other questions: email or
-        Telegram.
+        Bugs and ideas: GitHub issues. Anything else: email or Telegram.
       </PageHead>
       <div className="wrap page-body single">
         <div className="doc">
