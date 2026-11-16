@@ -112,15 +112,15 @@ export function Sdk() {
           <Facts
             rows={[
               ['Language', 'C, compiled to WebAssembly'],
-              ['Contract', <a href={files.hostApi}>sdk/host_api.h</a>],
+              ['API', <a href={files.hostApi}>sdk/host_api.h</a>],
               ['Memory', '64 KB per app'],
-              ['Numbers', 'Integers only'],
+              ['Numbers', 'Integers only, no floating point'],
               ['Package', 'app.wasm, manifest.json, translations, pictures, files'],
             ]}
           />
           <div className="note">
             <p>
-              The API is not frozen before the first release. Applications are rebuilt when it changes.
+              The API may change before the first release; apps are then rebuilt.
             </p>
           </div>
         </Chapter>
@@ -130,7 +130,7 @@ export function Sdk() {
             <li>
               <h3>Install the toolchain</h3>
               <p>
-                Requirements: wasi-sdk with <code>WASI_SDK_PATH</code> set, Java, git.
+                You need wasi-sdk (the C compiler for WebAssembly), Java and git.
               </p>
               <Code label="shell">{`
 git clone ${repo.firmware}.git
@@ -161,7 +161,8 @@ tools/perinkpheral
             <li>
               <h3>Run on the device</h3>
               <p>
-                Uploads the app over Wi-Fi and opens it on the device.
+                Uploads the app over Wi-Fi and opens it on the device. Needs firmware with developer tools, the
+                default.
               </p>
               <Code label="shell">{`
 export PERINKPHERAL_HOST=perinkpheral-xxxx.local
@@ -175,7 +176,8 @@ tools/perinkpheral log --follow
 
         <Chapter chapter={application}>
           <p>
-            Handlers change state and request a redraw; <code>app_on_draw()</code> draws the screen.
+            The device calls the app's functions on events. The app changes its state and asks for a redraw; the
+            screen is drawn in <code>app_on_draw()</code>.
           </p>
           <Code label="hello.c">{HELLO}</Code>
           <div className="grid two">
@@ -186,78 +188,80 @@ tools/perinkpheral log --follow
 
         <Chapter chapter={manifest}>
           <p>
-            The manifest describes the app: name, data sources, settings. The device page builds the settings form from
-            it.
+            The manifest describes the app: its name, the servers it uses, its settings. The device's web page shows the
+            settings form from it.
           </p>
           <Code label="manifest.json">{MANIFEST}</Code>
           <Table
             head={['Key', 'Meaning']}
             rows={[
-              [<code>name</code>, '1-13 characters: a-z, 0-9, - and _. Folder, catalog key and store namespace'],
-              [<code>title</code>, 'Up to 23 characters. Shown in the menu'],
-              [<code>polls</code>, 'Up to 4 requests scheduled by the host, every 10 s to 1 day'],
-              [<code>hosts</code>, 'Hosts allowed for http_request()'],
-              [<code>settings</code>, 'Up to eight: text, secret, number, choice, toggle, place, url, link, list'],
-              [<code>intents</code>, 'Event subscriptions: started, time_changed, network_up'],
-              [<code>icon</code>, '11 rows of 11 characters, # for ink and . for paper'],
-              [<code>fullscreen</code>, '400 x 300 without the header, instead of 400 x 260'],
-              [<code>writes_files</code>, 'Enables file_write(); 32 KB of files are kept free for it'],
-              [<code>system</code>, 'Enables sys_* functions: settings, clock, applications. Confirmed on install'],
-              [<code>certificates</code>, 'Up to 2 root certificates, trusted only for this application'],
-              [<code>companion</code>, 'HTTPS configuration page for the application'],
+              [<code>name</code>, 'Unique id: 1-13 characters, a-z, 0-9, - and _'],
+              [<code>title</code>, 'Name in the menu, up to 23 characters'],
+              [<code>polls</code>, 'Web requests the device makes on a schedule, up to 4'],
+              [<code>hosts</code>, 'Servers the app may contact'],
+              [<code>settings</code>, 'Up to 8. Types: text, secret, number, choice, toggle, place, url, link, list'],
+              [<code>intents</code>, 'System events to receive: device start, clock change, network back'],
+              [<code>icon</code>, '11 x 11 pixel icon: # black, . white'],
+              [<code>fullscreen</code>, 'Use the whole screen, without the top bar'],
+              [<code>writes_files</code>, 'The app saves files; 32 KB are reserved for it'],
+              [<code>system</code>, 'Access to device settings, clock and apps; the user confirms on install'],
+              [<code>certificates</code>, 'Certificates for servers that browsers do not trust'],
+              [<code>companion</code>, 'A web page that helps the user set the app up'],
             ]}
           />
           <p>
-            Apps read settings with <code>kv_get()</code>; URLs and headers use them as <code>{'{{key}}'}</code>.
+            The app reads a setting with <code>kv_get()</code>. In URLs and headers, <code>{'{{key}}'}</code> is replaced
+            with the setting.
           </p>
         </Chapter>
 
         <Chapter chapter={model}>
           <p>
-            The device calls these functions by name. Each call has 3 seconds.
+            Functions the app exports; the device calls them by name. Each call must finish within 3 seconds.
           </p>
           <Table
-            head={['Handler', 'When']}
+            head={['Function', 'Called when']}
             rows={[
-              [<code>app_init()</code>, 'Instance loaded'],
-              [<code>app_on_focus() / app_on_blur()</code>, 'Screen gained or lost'],
-              [<code>app_on_terminate()</code>, 'Before unload, for any reason. Save state here'],
-              [<code>app_on_button(event)</code>, 'Button event: down, up, short or long press'],
-              [<code>app_on_back()</code>, 'Short BACK press, for applications with their own navigation'],
-              [<code>app_on_draw()</code>, 'Frame requested'],
-              [<code>app_on_timer(id)</code>, 'timer_set() expired, while on screen'],
-              [<code>app_on_alarm(id)</code>, 'Alarm fired, on or off screen'],
-              [<code>app_on_values(poll, status)</code>, 'Picked values of a response'],
-              [<code>app_on_data(...)</code>, 'Chunk of a raw response'],
-              [<code>app_on_settings()</code>, 'Settings changed'],
-              [<code>app_on_intent(type)</code>, 'Subscribed event'],
-              [<code>app_on_installed() / app_on_updated()</code>, 'First run after install or update'],
+              [<code>app_init()</code>, 'The app starts'],
+              [<code>app_on_focus() / app_on_blur()</code>, 'The app appears on screen or leaves it'],
+              [<code>app_on_terminate()</code>, 'The app is about to close: save state here'],
+              [<code>app_on_button(event)</code>, 'A button is pressed, released, or held'],
+              [<code>app_on_back()</code>, 'BACK is pressed, for apps with several pages'],
+              [<code>app_on_draw()</code>, 'The screen needs drawing'],
+              [<code>app_on_timer(id)</code>, 'A timer fired, while the app is on screen'],
+              [<code>app_on_alarm(id)</code>, 'An alarm fired, even if the app is closed'],
+              [<code>app_on_values(poll, status)</code>, 'Scheduled data arrived, already parsed'],
+              [<code>app_on_data(...)</code>, 'A piece of a response arrived'],
+              [<code>app_on_settings()</code>, 'The user changed the settings'],
+              [<code>app_on_intent(type)</code>, 'A system event the app asked for'],
+              [<code>app_on_installed() / app_on_updated()</code>, 'First start after install or update'],
             ]}
           />
           <h3>Buttons</h3>
           <p>
-            Fixed layout: <span className="kbd">1</span> up, <span className="kbd">2</span> OK,{' '}
-            <span className="kbd">3</span> down, <span className="kbd">4</span> back. A long press on BACK opens the
-            menu and is not delivered to the application.
+            The same everywhere: <span className="kbd">1</span> up, <span className="kbd">2</span> OK,{' '}
+            <span className="kbd">3</span> down, <span className="kbd">4</span> back. Holding BACK opens the menu; the
+            app does not get that press.
           </p>
           <h3>State</h3>
           <p>
-            Apps are unloaded when they leave the screen. Save state with <code>kv_set()</code>, read it back with{' '}
-            <code>kv_get()</code>. Larger data goes to files.
+            An app is closed whenever it leaves the screen. Save what must survive with <code>kv_set()</code> and read
+            it back with <code>kv_get()</code>. Larger data goes to files.
           </p>
         </Chapter>
 
         <Chapter chapter={data}>
           <p>
-            Apps describe requests; the device makes them and delivers the response, on screen or not.
+            The app does not connect to the network itself: it asks the device, and the device delivers the response,
+            even when the app is not on screen.
           </p>
           <Facts
             rows={[
-              ['Polls', 'In the manifest, on a schedule'],
-              ['Requests', 'http_request() from app code'],
-              ['Values', 'With "pick", JSON is parsed for the app: app_on_values()'],
-              ['Raw', 'Without it, the body comes in chunks: app_on_data()'],
-              ['Focus', 'request_focus() brings the app to the screen'],
+              ['On a schedule', 'Requests in the manifest'],
+              ['On demand', 'http_request() from the code'],
+              ['Ready values', 'List JSON paths in "pick": app_on_values() gets the values'],
+              ['Raw response', 'Without "pick": app_on_data() gets the response piece by piece'],
+              ['Show on screen', 'request_focus() opens the app when its data arrives'],
             ]}
           />
           <Code label="weather.c">{VALUES}</Code>
@@ -268,19 +272,19 @@ tools/perinkpheral log --follow
 
         <Chapter chapter={kit}>
           <p>
-            1-bit graphics, two typefaces, six sizes. The UI kit has the parts the system screens are made of.
+            Black and white graphics, two typefaces, six sizes. The UI kit has ready parts: lists, dialogs, charts.
           </p>
           <Table
-            head={['Component', 'Functions']}
+            head={['Part', 'Functions']}
             rows={[
-              ['Text, four styles', 'ui_text, ui_text_lines, ui_title'],
+              ['Text in four styles', 'ui_text, ui_text_lines, ui_title'],
               ['List with scroll bar', 'ui_list_row, ui_list_visible'],
-              ['Notice: text, icon, actions', 'ui_notice'],
-              ['Cell: name, picture, value', 'ui_cell, ui_cell_fit'],
+              ['Dialog: text, icon, buttons', 'ui_notice'],
+              ['Tile: name, picture, value', 'ui_cell, ui_cell_fit'],
               ['Chart: line, area, bars, steps', 'ui_chart'],
               ['Value with unit', 'ui_value'],
-              ['Picker, date and time', 'ui_picker, ui_date'],
-              ['Empty state: loading, not set up, no network', 'ui_reason'],
+              ['Choice of a value, date and time', 'ui_picker, ui_date'],
+              ['Message while there is nothing to show', 'ui_reason'],
             ]}
           />
           <div className="grid two">
@@ -291,42 +295,42 @@ tools/perinkpheral log --follow
 
         <Chapter chapter={limits}>
           <Table
-            head={['Resource', 'Limit']}
+            head={['What', 'Limit']}
             rows={[
-              ['Module, app.wasm', '48 KB'],
-              ['Instance memory', '64 KB: 8 KB stack, data, arena'],
-              ['Handler run time', '3 s'],
-              ['Store', '1 KB per value, 2 KB total, keys up to 15 characters'],
-              ['Files', '64 KB per package; 32 KB for applications that write'],
-              ['Polls', '4, every 10 s to 1 day'],
-              ['Queued requests', '16 per application'],
-              ['Response', '256 KB with pick; 4 MB as chunks'],
+              ['App size', '48 KB'],
+              ['Memory', '64 KB'],
+              ['Time per call', '3 s'],
+              ['Saved data', '2 KB, up to 1 KB per value'],
+              ['Files', '64 KB in the package; 32 KB if the app writes files'],
+              ['Scheduled requests', '4, every 10 s to 1 day'],
+              ['Requests at once', '16'],
+              ['Response size', '256 KB parsed, 4 MB piece by piece'],
               ['Settings', '8, values up to 255 bytes'],
               ['Timers and alarms', '4 and 4'],
-              ['Installed applications', 'Up to 24, subject to free space'],
+              ['Apps on a device', 'Up to 24, while there is space'],
             ]}
           />
         </Chapter>
 
         <Chapter chapter={tools}>
           <p>
-            One command line tool. <code>tools/perinkpheral</code> lists all commands.
+            One command line tool; <code>tools/perinkpheral</code> without arguments lists all commands.
           </p>
           <Table
             head={['Command', 'Description']}
             rows={[
-              [<code>new &lt;dir&gt;</code>, 'New application from the sample'],
-              [<code>build &lt;app&gt; --out &lt;dir&gt;</code>, 'Build, validate, report sizes'],
-              [<code>sim &lt;app&gt;</code>, 'Run in the simulator, 127.0.0.1:8401'],
-              [<code>run &lt;app&gt;</code>, 'Build, upload, restart the device, open the application'],
-              [<code>serve [app]</code>, 'Web UI: live screen, buttons, log, Run'],
-              [<code>shot / press / open</code>, 'Screenshot, button presses, open an application'],
+              [<code>new &lt;dir&gt;</code>, 'Start a new app'],
+              [<code>build &lt;app&gt; --out &lt;dir&gt;</code>, 'Build and check'],
+              [<code>sim &lt;app&gt;</code>, 'Run in the simulator'],
+              [<code>run &lt;app&gt;</code>, 'Run on the device'],
+              [<code>serve [app]</code>, 'A page with the device screen, buttons and log'],
+              [<code>shot / press / open</code>, 'Screenshot, press buttons, open an app'],
               [<code>log [--follow]</code>, 'Device log'],
-              [<code>set &lt;app&gt; &lt;key&gt; &lt;value&gt;</code>, 'Write a setting'],
+              [<code>set &lt;app&gt; &lt;key&gt; &lt;value&gt;</code>, 'Change an app setting'],
               [<code>catalog &lt;folder&gt; --out &lt;dir&gt;</code>, 'Build a catalog'],
-              [<code>strings export / import</code>, 'Translations as CSV'],
-              [<code>flash [image]</code>, 'Firmware update over Wi-Fi'],
-              [<code>usb &lt;port&gt;</code>, 'Device access over USB'],
+              [<code>strings export / import</code>, 'Translations as a spreadsheet'],
+              [<code>flash [image]</code>, 'Update the firmware over Wi-Fi'],
+              [<code>usb &lt;port&gt;</code>, 'Control a device over USB'],
             ]}
           />
         </Chapter>
@@ -349,7 +353,8 @@ tools/perinkpheral log --follow
 
         <Chapter chapter={publishing}>
           <p>
-            Apps are published in catalogs: static folders on any HTTPS host.
+            Apps are published in catalogs: a folder of files on any web server with HTTPS. Users add the catalog's
+            address on the device's web page.
           </p>
           <Code label="shell">{`tools/perinkpheral catalog apps --out catalog`}</Code>
           <p>
@@ -362,23 +367,23 @@ tools/perinkpheral log --follow
           <div className="grid">
             <a className="panel" href={files.guidePdf}>
               <h3>Application guide</h3>
-              <p className="dim">Datasheet, guide and API reference. PDF, English.</p>
+              <p className="dim">Everything above in detail, with the full API. PDF.</p>
             </a>
             <a className="panel" href={files.guidePdfRu}>
               <h3>Application guide, Russian</h3>
-              <p className="dim">Russian translation. The English version takes precedence.</p>
+              <p className="dim">The same guide in Russian.</p>
             </a>
             <a className="panel" href={files.hostApi}>
               <h3>host_api.h</h3>
-              <p className="dim">Full API with documentation comments.</p>
+              <p className="dim">Every function, with a comment.</p>
             </a>
             <a className="panel" href={files.hello}>
               <h3>Sample application</h3>
-              <p className="dim">sdk/apps/hello: text output, button input, persistent state.</p>
+              <p className="dim">A small app: text, a button, a saved counter.</p>
             </a>
             <a className="panel" href={files.sdkLib}>
               <h3>sdk/lib</h3>
-              <p className="dim">Helpers for text, numbers, values, state, settings and UI input.</p>
+              <p className="dim">Helpers for text, numbers, settings and saved state.</p>
             </a>
             <a className="panel" href={repo.apps}>
               <h3>Official applications</h3>

@@ -6,7 +6,7 @@ import { files } from '../content/links'
 const CHAPTERS = [
   { id: 'overview', title: 'Overview' },
   { id: 'parts', title: 'Parts' },
-  { id: 'constraints', title: 'Constraints' },
+  { id: 'constraints', title: 'Before assembly' },
   { id: 'printing', title: 'Printed parts' },
   { id: 'wiring', title: 'Wiring' },
   { id: 'assembly', title: 'Assembly' },
@@ -47,11 +47,11 @@ export function Hardware() {
           <Facts
             rows={[
               ['Size', '111.5 x 103.5 x 86.5 mm with the feet'],
-              ['Frame', 'Tilted at 15 degrees, visible window 84 x 62.5 mm'],
+              ['Screen tilt', '15 degrees'],
               ['Board', 'Seeed Studio XIAO ESP32-C6'],
-              ['Display', 'Waveshare 4.2" e-Paper Module V2, SSD1683, 400 x 300'],
-              ['Battery', '1S Li-Ion with protection, up to 4000 mAh, charged over USB-C'],
-              ['Fasteners', 'Countersunk M2.5 screws only'],
+              ['Display', 'Waveshare 4.2" e-Paper Module V2, 400 x 300 pixels'],
+              ['Battery', 'Li-Ion 3.7 V with a protection board, up to 4000 mAh, charges over USB-C'],
+              ['Screws', 'M2.5 countersunk'],
               ['Tools', 'Soldering iron, screwdriver, FDM printer'],
             ]}
           />
@@ -61,15 +61,15 @@ export function Hardware() {
           <Table
             head={['Part', 'Model', 'Qty', 'Notes']}
             rows={[
-              ['Microcontroller', 'Seeed Studio XIAO ESP32-C6', '1', '21 x 18 mm, USB-C, Li-Ion charger, U.FL'],
-              ['Display', 'Waveshare 4.2inch e-Paper Module, V2 (SSD1683)', '1', 'Board 103.5 x 78.5, glass 91 x 77, PH 8-pin cable'],
-              ['Antenna', 'Seeed FPC Antenna A-01, 2.4/5 GHz', '1', '40 x 20 x 0.2, 80 mm cable, IPEX1'],
-              ['Buttons', '"Independent key switch module 4P"', '1', '55 x 15 without the rail, pull-ups on board, active low'],
-              ['Battery', 'Li-Ion/LiPo 1S 3.7 V, 955465, 4000 mAh, with PCM', '1', '65 x 54 x 9.5 plus a 5 mm protection board'],
+              ['Microcontroller', 'Seeed Studio XIAO ESP32-C6', '1', 'Has a battery charger and an antenna connector'],
+              ['Display', 'Waveshare 4.2inch e-Paper Module, V2 (SSD1683)', '1', 'Version 2 only'],
+              ['Antenna', 'Seeed FPC Antenna A-01, 2.4/5 GHz', '1', 'Flat antenna with an 80 mm cable'],
+              ['Buttons', '"Independent key switch module 4P"', '1', 'A small board with four buttons, sold under this name'],
+              ['Battery', 'Li-Ion/LiPo 3.7 V, size code 955465, 4000 mAh', '1', 'With a protection board'],
               ['Screws', 'M2.5 x 4, countersunk (DIN 965)', '5', '3 display to frame, 2 back panel'],
               ['Screws', 'M2.5 x 6, countersunk (DIN 965)', '7', '4 bottom to cover, 2 sole, 1 display corner'],
-              ['Wire', 'Hook-up, 0.07-0.12 mm2', '~0.3\u00a0m', 'Buttons and battery'],
-              ['Heat shrink', '1.5-2 mm', '~0.1\u00a0m', 'Button V and G splices'],
+              ['Wire', 'Thin hook-up wire', '~0.3\u00a0m', 'Buttons and battery'],
+              ['Heat shrink tube', '1.5-2 mm', '~0.1\u00a0m', 'Insulating the joined wires'],
               ['Tape', 'Thin double-sided', '-', 'Antenna and battery'],
             ]}
           />
@@ -78,26 +78,26 @@ export function Hardware() {
         <Chapter chapter={constraints}>
           <h3>Display</h3>
           <ul>
-            <li>Waveshare 4.2" V2 only (V2 sticker, SSD1683 controller). V1 (UC8176) is not supported.</li>
-            <li>Remove the brass standoffs: the display is screwed directly to the frame.</li>
-            <li>Connect the JST PH 8 cable before mounting: the side connector is not accessible afterwards.</li>
-            <li>Do not bend the glass flex cable towards the front or at a right angle.</li>
+            <li>Only version 2 of the display works: look for the V2 sticker on the back.</li>
+            <li>Unscrew the brass spacers: the display is screwed straight to the frame.</li>
+            <li>Plug in the display cable first: the connector cannot be reached once the display is in place.</li>
+            <li>Do not bend the thin ribbon at the glass edge sharply.</li>
           </ul>
           <h3>Board</h3>
           <ul>
-            <li>USB-C opening: 10 x 4.5 mm in the right wall.</li>
-            <li>BAT+ and BAT- pads are on the underside; the bottom has a 0.5 mm recess below them.</li>
-                      </ul>
+            <li>The USB-C port goes into the opening in the right wall.</li>
+            <li>The battery pads are on the underside of the board.</li>
+          </ul>
           <h3>Battery</h3>
           <ul>
-            <li>1S Li-Ion or LiPo with a protection board only: the XIAO has no over-discharge cut-off.</li>
-            <li>Compartment: 70 x 54 x 12.5 mm. Capacity 2000-4000 mAh, length with PCM up to 70 mm.</li>
+            <li>Use a battery with a protection board: the XIAO does not protect the battery from deep discharge.</li>
+            <li>The battery compartment fits up to 70 x 54 x 12.5 mm.</li>
           </ul>
           <h3>Buttons</h3>
           <ul>
-            <li>Remove the 3 mm break-off rail: with it the board is 18.5 mm wide and does not fit.</li>
-            <li>Mounting holes fit 2 mm pins in the bottom. Pads V G 1 2 3 4 face the XIAO.</li>
-            <li>6 x 6 mm switches, 3.5 mm plunger; caps have a 4 mm socket.</li>
+            <li>Snap off the narrow strip along the edge of the button board, or it does not fit.</li>
+            <li>The board sits on two pins in the bottom, solder pads towards the XIAO.</li>
+            <li>The caps fit standard 6 x 6 mm buttons.</li>
           </ul>
         </Chapter>
 
@@ -105,42 +105,37 @@ export function Hardware() {
           <Table
             head={['Part', 'Qty', 'Material', 'Orientation']}
             rows={[
-              ['Slab: the frame', '1', 'PLA copper', 'Face down on textured PEI'],
-              ['Logo: the wordmark inlay', '1', 'PLA black, 0.6 mm', 'With the frame, one object of two parts'],
-              ['BackPlate: the back panel', '1', 'PLA copper', 'Outer side down'],
-              ['CornerBracket', '1', 'PLA', 'Flange down'],
-              ['Foot: the base cover', '1', 'PLA copper', 'Upside down, top on PEI'],
-              ['FootCover: the bottom', '1', 'PLA copper', 'Bottom side down'],
-              ['Cap1-4: button caps', '4', 'PLA black', 'Flange down'],
-              ['Foot1-6: feet', '6', 'TPU', 'Washer down, pressed into the bottom'],
+              ['Frame', '1', 'PLA, copper', 'Front side down'],
+              ['Logo', '1', 'PLA, black', 'Together with the frame, second color'],
+              ['Back panel', '1', 'PLA, copper', 'Outer side down'],
+              ['Corner bracket', '1', 'PLA', 'Wide side down'],
+              ['Base', '1', 'PLA, copper', 'Top side down'],
+              ['Bottom', '1', 'PLA, copper', 'Bottom side down'],
+              ['Button caps', '4', 'PLA, black', 'Wide side down'],
+              ['Feet', '6', 'TPU', 'Flat side down'],
             ]}
           />
           <ul>
-            <li>No supports. Minimum wall 1.5 mm, 0.4 mm chamfer on bed edges.</li>
-            <li>Frame and wordmark: one 3MF, one object of two parts (multi-material).</li>
+            <li>No supports needed.</li>
+            <li>The logo is printed in black together with the frame: a printer with a second color or a color change.</li>
           </ul>
         </Chapter>
 
         <Chapter chapter={wiring}>
           <WiringDiagram />
           <Table
-            head={['From', 'To the XIAO']}
+            head={['Wire', 'Pin on the XIAO']}
             rows={[
-              ['Display VCC / GND', '3V3 / GND'],
-              ['Display DIN / CLK', 'D10 (GPIO18) / D8 (GPIO19)'],
-              ['Display CS / DC', 'D7 (GPIO17) / D5 (GPIO23)'],
-              ['Display RST / BUSY', 'D4 (GPIO22) / D6 (GPIO16)'],
-              ['Buttons 1-4', 'D0 (GPIO0), D1 (GPIO1), D2 (GPIO2), D3 (GPIO21)'],
-              ['Buttons V / G', 'Spliced into display VCC / GND'],
-              ['Battery + / -', 'BAT+ / BAT- pads on the underside'],
-              ['Antenna', 'U.FL'],
+              ['Display VCC, GND', '3V3, GND'],
+              ['Display DIN, CLK', 'D10, D8'],
+              ['Display CS, DC', 'D7, D5'],
+              ['Display RST, BUSY', 'D4, D6'],
+              ['Buttons 1, 2, 3, 4', 'D0, D1, D2, D3'],
+              ['Buttons V, G', 'Joined to the display\'s VCC and GND wires'],
+              ['Battery +, -', 'BAT+, BAT- pads under the board'],
+              ['Antenna', 'Antenna connector'],
             ]}
           />
-          <div className="note">
-            <p>
-              Reserved: GPIO3 and GPIO14 (antenna switch), GPIO9 (BOOT), GPIO12 and GPIO13 (USB). Free: D9 (GPIO20).
-            </p>
-          </div>
         </Chapter>
 
         <Chapter chapter={assembly}>
@@ -152,36 +147,35 @@ export function Hardware() {
             <li>
               <h3>Mount the display</h3>
               <p>
-                Remove the standoffs, connect the cable, insert the display into the frame from below. Three corners:
-                M2.5 x 4. Bottom right corner: M2.5 x 6 through the corner bracket.
+                Unscrew the spacers, plug in the cable and put the display into the frame from the back. Three corners:
+                M2.5 x 4 screws. Bottom right corner: M2.5 x 6 through the corner bracket.
               </p>
             </li>
             <li>
               <h3>Install the board, buttons and battery</h3>
               <p>
-                XIAO on its two supports, USB-C in the right wall opening. Button module on its pins, pads towards the
-                XIAO. Battery in its compartment, protection board towards the XIAO.
+                Put the XIAO on its two supports with USB-C in the opening of the right wall, the button board on its
+                pins and the battery in its compartment.
               </p>
             </li>
             <li>
               <h3>Solder</h3>
               <p>
-                Display harness and buttons as in the wiring table; button wires up to 35 mm. Battery to the BAT+ and
-                BAT- pads.
+                Solder the display and the buttons as in the wiring table, button wires no longer than 35 mm. Solder the
+                battery to the pads under the XIAO.
               </p>
             </li>
             <li>
               <h3>Antenna</h3>
               <p>
-                Attach to the cover ceiling with double-sided tape, in the 40 x 20 mm zone away from the battery. Connect
-                to U.FL.
+                Stick the antenna inside the base cover, away from the battery, and plug it into the XIAO.
               </p>
             </li>
             <li>
               <h3>Close the case</h3>
               <p>
-                Back panel to frame: 2 x M2.5 x 4. Bottom to cover: 4 x M2.5 x 6. Sole to back panel: 2 x M2.5 x 6.
-                Fit the button caps.
+                Screw the back panel to the frame, the bottom to the base and the base to the back panel. Put on the
+                button caps.
               </p>
             </li>
           </ol>
@@ -191,20 +185,20 @@ export function Hardware() {
           <Table
             head={['Where', 'Screw', 'Qty', 'Note']}
             rows={[
-              ['Display to frame, three corners', 'M2.5 x 4', '3', 'Pilot hole 3 mm deep'],
-              ['Display, bottom right, through the bracket', 'M2.5 x 6', '1', 'Exactly 6 mm: tip ends 2 mm from the face'],
-              ['Back panel to the left boss of the frame', 'M2.5 x 4', '1', 'No longer screw'],
-              ['Back panel to the corner bracket', 'M2.5 x 4', '1', 'Pilot hole 2 mm'],
-              ['Bottom to the cover', 'M2.5 x 6', '4', 'Up to 8 allowed'],
-              ['Sole to the back panel', 'M2.5 x 6', '2', 'No longer than 6'],
+              ['Display to frame, three corners', 'M2.5 x 4', '3', ''],
+              ['Display, bottom right corner', 'M2.5 x 6', '1', 'Exactly 6 mm, a longer one shows on the front'],
+              ['Back panel to frame', 'M2.5 x 4', '1', 'No longer than 4 mm'],
+              ['Back panel to corner bracket', 'M2.5 x 4', '1', ''],
+              ['Bottom to base', 'M2.5 x 6', '4', 'Up to 8 mm'],
+              ['Base to back panel', 'M2.5 x 6', '2', 'No longer than 6 mm'],
             ]}
           />
         </Chapter>
 
         <Chapter chapter={flashing}>
           <p>
-            The first flash requires USB; later updates can be installed over Wi-Fi from the device web UI.
-            Requirements: ESP-IDF, wasi-sdk.
+            The first flash needs a USB cable. Later updates install over Wi-Fi from the device's web page. To build
+            and flash from the source you need ESP-IDF and wasi-sdk.
           </p>
           <div className="code">
             <div className="label">
@@ -219,25 +213,25 @@ idf.py -p <port> flash`}</code>
             </pre>
           </div>
           <p>
-            On first boot the device starts an open access point, <code>Perinkpheral-XXXX</code>. Connect to it and
-            open <code>http://192.168.4.1</code> to configure Wi-Fi. If the board is not detected by the flasher, hold
-            BOOT while connecting USB.
+            On first start the device creates its own Wi-Fi network, <code>Perinkpheral-XXXX</code>. Connect to it and
+            open <code>http://192.168.4.1</code> to choose your network. If the computer does not see the board, hold
+            the BOOT button while plugging in the cable.
           </p>
         </Chapter>
 
         <Chapter chapter={filesChapter}>
           <div className="grid">
             <a className="panel" href={files.step}>
-              <h3>STEP model</h3>
-              <p className="dim">Full enclosure model, all parts.</p>
+              <h3>3D model</h3>
+              <p className="dim">The case with all its parts, STEP file.</p>
             </a>
             <a className="panel" href={files.bomPage}>
               <h3>Drawings</h3>
-              <p className="dim">Dimensioned drawings of the enclosure and components.</p>
+              <p className="dim">Dimensions of the case and the parts inside.</p>
             </a>
             <a className="panel" href={files.hardwareNotes}>
-              <h3>Bench notes</h3>
-              <p className="dim">Display driver sequence, timings, known issues, references.</p>
+              <h3>Display notes</h3>
+              <p className="dim">How the display is driven, known issues, sources.</p>
             </a>
           </div>
         </Chapter>

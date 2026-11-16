@@ -27,7 +27,7 @@ export function Firmware() {
           <Facts
             rows={[
               ['Chip', 'ESP32-C6'],
-              ['Apps', 'WebAssembly, up to 24 installed'],
+              ['Apps', 'Up to 24 installed'],
               ['Network', 'Wi-Fi 6, HTTP and HTTPS'],
               ['Updates', 'Over Wi-Fi'],
               ['Languages', 'English, Russian'],
@@ -46,7 +46,7 @@ export function Firmware() {
         </Chapter>
 
         <Chapter chapter={catalogs}>
-          <p>Apps come from catalogs: static folders on any HTTPS host. No restart after install.</p>
+          <p>Apps come from catalogs: folders of files on any web server. Installing takes seconds, without a restart.</p>
           <InstallDiagram />
         </Chapter>
 
@@ -73,14 +73,11 @@ export function Firmware() {
         </Chapter>
 
         <Chapter chapter={power}>
-          <Table
-            head={['Mode', 'Wi-Fi']}
-            rows={[
-              ['Plugged in', 'Always on'],
-              ['Power saving', 'On for updates only'],
-              ['Auto', 'Power saving without a computer on USB'],
-            ]}
-          />
+          <ul>
+            <li>Power saving off: Wi-Fi is always on, the device's web page always opens.</li>
+            <li>Power saving on: Wi-Fi turns on only to update data. The web page opens for 2 minutes after a button press.</li>
+            <li>Auto: power saving whenever no computer is connected over USB.</li>
+          </ul>
         </Chapter>
 
         <Chapter chapter={api}>

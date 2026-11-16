@@ -227,19 +227,19 @@ export function FlashDiagram() {
 const PANEL_PINS: [string, string][] = [
   ['VCC', '3V3'],
   ['GND', 'GND'],
-  ['DIN', 'D10 / GPIO18'],
-  ['CLK', 'D8 / GPIO19'],
-  ['CS', 'D7 / GPIO17'],
-  ['DC', 'D5 / GPIO23'],
-  ['RST', 'D4 / GPIO22'],
-  ['BUSY', 'D6 / GPIO16'],
+  ['DIN', 'D10'],
+  ['CLK', 'D8'],
+  ['CS', 'D7'],
+  ['DC', 'D5'],
+  ['RST', 'D4'],
+  ['BUSY', 'D6'],
 ]
 
 const BUTTON_PINS: [string, string][] = [
-  ['1 UP', 'D0 / GPIO0'],
-  ['2 OK', 'D1 / GPIO1'],
-  ['3 DOWN', 'D2 / GPIO2'],
-  ['4 BACK', 'D3 / GPIO21'],
+  ['1 UP', 'D0'],
+  ['2 OK', 'D1'],
+  ['3 DOWN', 'D2'],
+  ['4 BACK', 'D3'],
 ]
 
 export function WiringDiagram() {
@@ -251,7 +251,7 @@ export function WiringDiagram() {
       width={760}
       height={height + 20}
       label="Wiring of the display and the buttons to the XIAO ESP32-C6"
-      caption="Display on bit-banged SPI; buttons on the LP GPIO group, active low. Button module V and G spliced into display VCC and GND."
+      caption="Display and buttons to the XIAO. The button board's V and G are joined to the display's VCC and GND."
     >
       <rect x={10} y={10} width={170} height={height - 10} fill={PAPER} stroke={INK} strokeWidth={1.5} />
       <text x={95} y={32} textAnchor="middle" fontSize={13}>
@@ -293,12 +293,6 @@ export function WiringDiagram() {
           </g>
         )
       })}
-      <text x={580} y={top + row * BUTTON_PINS.length + 22} fontSize={11} fill={DIM}>
-        active low
-      </text>
-      <text x={580} y={top + row * BUTTON_PINS.length + 40} fontSize={11} fill={DIM}>
-        pull-ups on the module
-      </text>
     </Diagram>
   )
 }
