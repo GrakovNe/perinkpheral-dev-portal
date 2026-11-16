@@ -91,22 +91,22 @@ export function LayersDiagram() {
       width={760}
       height={430}
       label="The layers of the firmware, from the applications down to the hardware"
-      caption="Each layer depends only on the layers below it. Services run alongside and do not access the display."
+      caption="Firmware layers. Services on the right."
     >
-      <Box x={10} y={10} w={530} h={50} title="Applications" sub="WebAssembly modules, one instance at a time" filled />
-      <Box x={10} y={74} w={530} h={50} title="Host API and interpreter" sub="sdk/host_api.h, wasm3, 128 KB application area" />
-      <Box x={10} y={138} w={260} h={50} title="Window manager" sub="scene stack, header" />
-      <Box x={280} y={138} w={260} h={50} title="Scenes and views" sub="menu, notices, applications" />
-      <Box x={10} y={202} w={530} h={50} title="Graphics and UI kit" sub="surfaces, fonts, lists, cells, charts" />
-      <Box x={10} y={266} w={530} h={50} title="Display service" sub="double buffer, refresh policy" />
-      <Box x={10} y={330} w={530} h={50} title="Drivers" sub="SSD1683 panel, buttons, antenna switch" />
-      <Box x={10} y={394} w={740} h={28} title="ESP-IDF 5.5 and FreeRTOS on the ESP32-C6" />
-      <Box x={560} y={10} w={190} h={50} title="Event queue" sub="input first" filled />
-      <Box x={560} y={74} w={190} h={50} title="Deadlines" sub="one table, one timer" />
-      <Box x={560} y={138} w={190} h={50} title="Poller" sub="polls, requests, TLS" />
-      <Box x={560} y={202} w={190} h={50} title="Wi-Fi and the clock" sub="setup, rescue, SNTP" />
-      <Box x={560} y={266} w={190} h={50} title="Web server" sub="page, API, OTA" />
-      <Box x={560} y={330} w={190} h={50} title="Storage" sub="LittleFS, NVS, code" />
+      <Box x={10} y={10} w={530} h={50} title="Apps" sub="installed from catalogs" filled />
+      <Box x={10} y={74} w={530} h={50} title="App runtime" sub="what apps can call" />
+      <Box x={10} y={138} w={260} h={50} title="Navigation" sub="screens, BACK, menu" />
+      <Box x={280} y={138} w={260} h={50} title="Screens" sub="menu, dialogs, apps" />
+      <Box x={10} y={202} w={530} h={50} title="Graphics" sub="text, icons, lists, charts" />
+      <Box x={10} y={266} w={530} h={50} title="Screen refresh" />
+      <Box x={10} y={330} w={530} h={50} title="Drivers" sub="display, buttons, antenna" />
+      <Box x={10} y={394} w={740} h={28} title="ESP32-C6" />
+      <Box x={560} y={10} w={190} h={50} title="Events" sub="buttons first" filled />
+      <Box x={560} y={74} w={190} h={50} title="Timers" sub="alarms, schedules" />
+      <Box x={560} y={138} w={190} h={50} title="Network" sub="data for apps" />
+      <Box x={560} y={202} w={190} h={50} title="Wi-Fi and time" sub="setup, time sync" />
+      <Box x={560} y={266} w={190} h={50} title="Web page" sub="settings, updates" />
+      <Box x={560} y={330} w={190} h={50} title="Storage" sub="apps, settings" />
     </Diagram>
   )
 }
@@ -119,32 +119,29 @@ export function DeliveryDiagram() {
       width={820}
       height={400}
       label="How the answer to a poll or a request reaches its application"
-      caption="Requests are processed one at a time. An application that is not on screen is loaded to receive its data and unloaded afterwards, unless it requests focus."
+      caption="Data reaches an app whether it is on screen or not."
     >
-      <Box x={10} y={20} w={180} h={56} title="Manifest polls" sub="url, every, pick" />
-      <Box x={10} y={100} w={180} h={56} title="http_request()" sub="tag, method, hosts" />
+      <Box x={10} y={20} w={180} h={56} title="Schedule" sub="from the manifest" />
+      <Box x={10} y={100} w={180} h={56} title="On demand" sub="from app code" />
       <Arrow points={[[190, 48], [235, 48], [235, 80], [260, 80]]} />
       <Arrow points={[[190, 128], [235, 128], [235, 96], [260, 96]]} />
-      <Box x={260} y={60} w={180} h={56} title="Poller" sub="schedule and queue" filled />
+      <Box x={260} y={60} w={180} h={56} title="Device" sub="fetches" filled />
       <Arrow points={[[440, 88], [490, 88]]} />
-      <Box x={490} y={60} w={150} h={56} title="Network" sub="HTTP(S), redirects" />
+      <Box x={490} y={60} w={150} h={56} title="Source" sub="any web API" />
       <Arrow points={[[640, 88], [680, 88]]} />
-      <Box x={680} y={60} w={130} h={56} title="Response" sub="status, body" />
+      <Box x={680} y={60} w={130} h={56} title="Response" />
       <Arrow points={[[745, 116], [745, 176], [640, 176]]} label="pick" labelAt={[775, 150]} />
-      <Box x={440} y={151} w={200} h={50} title="JSON picker" sub="values or raw chunks" />
+      <Box x={440} y={151} w={200} h={50} title="Values" sub="picked from JSON" />
       <Arrow points={[[440, 176], [390, 176]]} />
       <Box x={200} y={151} w={190} h={50} title="App on screen?" filled />
       <Arrow points={[[295, 201], [295, 232], [115, 232], [115, 260]]} label="yes" labelAt={[205, 225]} />
       <Arrow points={[[295, 201], [295, 232], [450, 232], [450, 260]]} label="no" labelAt={[375, 225]} />
-      <Box x={10} y={260} w={210} h={56} title="app_on_values()" sub="or app_on_data() in chunks" />
-      <Box x={290} y={260} w={320} h={56} title="Load app in background" sub="deliver, then unload" />
+      <Box x={10} y={260} w={210} h={56} title="App updates" />
+      <Box x={290} y={260} w={320} h={56} title="App updates in background" />
       <Arrow points={[[610, 288], [670, 288]]} dashed />
-      <Box x={670} y={260} w={140} h={56} title="App" sub="takes focus" dashed />
-      <text x={740} y={336} fontSize={11} fill={DIM} textAnchor="middle">
-        on request_focus()
-      </text>
+      <Box x={670} y={260} w={140} h={56} title="App" sub="can take the screen" dashed />
       <Arrow points={[[450, 316], [450, 360], [400, 360]]} />
-      <Box x={150} y={340} w={250} h={40} title="Previous scene restored" />
+      <Box x={150} y={340} w={250} h={40} title="Back to the previous screen" />
     </Diagram>
   )
 }
@@ -158,19 +155,19 @@ export function InstallDiagram() {
       width={820}
       height={160}
       label="Installing an application from a catalog"
-      caption="The browser reads the catalog index. The device checks free space, downloads and verifies the files and commits them atomically. No restart."
+      caption="Install from the device page. No restart."
     >
-      <Box x={0} y={20} w={140} h={56} title="Catalog" sub="catalog.json, HTTPS" />
+      <Box x={0} y={20} w={140} h={56} title="Catalog" sub="any HTTPS host" />
       <Arrow points={[[140, 48], [step, 48]]} />
-      <Box x={step} y={20} w={140} h={56} title="Web UI" sub="list, Install" />
+      <Box x={step} y={20} w={140} h={56} title="Device page" sub="Install" />
       <Arrow points={[[step + 140, 48], [2 * step, 48]]} />
-      <Box x={2 * step} y={20} w={140} h={56} title="Space check" sub="store, code, files" filled />
+      <Box x={2 * step} y={20} w={140} h={56} title="Space check" filled />
       <Arrow points={[[2 * step + 140, 48], [3 * step, 48]]} />
-      <Box x={3 * step} y={20} w={140} h={56} title="Download" sub="size, SHA-256" />
+      <Box x={3 * step} y={20} w={140} h={56} title="Download" sub="verified" />
       <Arrow points={[[3 * step + 140, 48], [4 * step, 48]]} />
-      <Box x={4 * step} y={20} w={140} h={56} title="Commit" sub="atomic" filled />
+      <Box x={4 * step} y={20} w={140} h={56} title="Installed" filled />
       <Arrow points={[[4 * step + 70, 76], [4 * step + 70, 125], [2 * step + 320, 125]]} />
-      <Box x={2 * step + 20} y={105} w={300} h={40} title="Reload apps, code to flash" />
+      <Box x={2 * step + 20} y={105} w={300} h={40} title="App in the menu" />
     </Diagram>
   )
 }
@@ -178,13 +175,13 @@ export function InstallDiagram() {
 // ---- the flash ----
 
 const PARTITIONS: { name: string; size: string; weight: number; filled?: boolean }[] = [
-  { name: 'nvs', size: '24K', weight: 1 },
-  { name: 'appkv', size: '56K', weight: 1.1 },
-  { name: 'ota_0', size: '1.44M', weight: 3.2, filled: true },
-  { name: 'ota_1', size: '1.44M', weight: 3.2, filled: true },
-  { name: 'appcode', size: '320K', weight: 1.6 },
-  { name: 'apps', size: '640K', weight: 2.2 },
-  { name: 'glyphs', size: '64K', weight: 1.1 },
+  { name: 'settings', size: '24K', weight: 1.4 },
+  { name: 'app data', size: '56K', weight: 1.4 },
+  { name: 'firmware', size: '1.44M', weight: 3, filled: true },
+  { name: 'update', size: '1.44M', weight: 3, filled: true },
+  { name: 'app code', size: '320K', weight: 1.6 },
+  { name: 'app files', size: '640K', weight: 2 },
+  { name: 'fonts', size: '64K', weight: 1.1 },
 ]
 
 export function FlashDiagram() {
@@ -198,7 +195,7 @@ export function FlashDiagram() {
       width={width}
       height={120}
       label="The 4 MB flash and its partitions"
-      caption="4 MB flash, in order, not to scale. Two firmware slots for OTA; separate partitions for application code, files and stores."
+      caption="4 MB of flash. Two firmware copies for safe updates; app code, files and settings. Not to scale."
     >
       {PARTITIONS.map((part, index) => {
         const w = (part.weight / total) * width

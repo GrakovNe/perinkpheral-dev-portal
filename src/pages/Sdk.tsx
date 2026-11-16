@@ -111,13 +111,11 @@ export function Sdk() {
         <Chapter chapter={overview}>
           <Facts
             rows={[
-              ['Language', 'C11, compiled with clang of wasi-sdk to wasm32'],
+              ['Language', 'C, compiled to WebAssembly'],
               ['Contract', <a href={files.hostApi}>sdk/host_api.h</a>],
-              ['Memory', 'One 64 KB page: 8 KB of stack, static data, an arena for the rest'],
-              ['C library', 'None. sdk/lib provides text, number, state and settings helpers'],
-              ['Numbers', 'Integers only, no floating point. Fixed point: app_fixed.h'],
-              ['Instances', 'One loaded at a time. Background applications are loaded for data delivery and unloaded'],
-              ['Package', 'app.wasm, manifest.json, translations, pictures, optional files'],
+              ['Memory', '64 KB per app'],
+              ['Numbers', 'Integers only'],
+              ['Package', 'app.wasm, manifest.json, translations, pictures, files'],
             ]}
           />
           <div className="note">
@@ -132,8 +130,7 @@ export function Sdk() {
             <li>
               <h3>Install the toolchain</h3>
               <p>
-                Requirements: wasi-sdk (tested with 34) with <code>WASI_SDK_PATH</code> set, Java 21 or later, git.
-                The tools are built with Gradle on first run.
+                Requirements: wasi-sdk with <code>WASI_SDK_PATH</code> set, Java, git.
               </p>
               <Code label="shell">{`
 git clone ${repo.firmware}.git
@@ -150,24 +147,21 @@ tools/perinkpheral
             <li>
               <h3>Build</h3>
               <p>
-                Compiles the application, validates the module against the device rules and reports module size,
-                code size, memory, files and store usage.
+                Compiles and checks the app, and reports its size.
               </p>
               <Code label="shell">{`tools/perinkpheral build ../myapp --out ../myapp/build`}</Code>
             </li>
             <li>
               <h3>Run in the simulator</h3>
               <p>
-                The simulator runs the firmware's interpreter, host API and UI kit natively, so the output matches
-                the device. Web UI with the screen and the buttons: <code>http://127.0.0.1:8401</code>.
+                Runs the app on your computer as on the device. Screen and buttons: <code>http://127.0.0.1:8401</code>.
               </p>
               <Code label="shell">{`tools/perinkpheral sim ../myapp`}</Code>
             </li>
             <li>
               <h3>Run on the device</h3>
               <p>
-                Requires development firmware. Builds, uploads over Wi-Fi, restarts the device and opens the
-                application in about 10 seconds.
+                Uploads the app over Wi-Fi and opens it on the device.
               </p>
               <Code label="shell">{`
 export PERINKPHERAL_HOST=perinkpheral-xxxx.local
@@ -181,8 +175,7 @@ tools/perinkpheral log --follow
 
         <Chapter chapter={application}>
           <p>
-            Handlers update state and request a redraw. The host calls <code>app_on_draw()</code> with a blank
-            surface when a frame is needed. Drawing calls outside <code>app_on_draw()</code> have no effect.
+            Handlers change state and request a redraw; <code>app_on_draw()</code> draws the screen.
           </p>
           <Code label="hello.c">{HELLO}</Code>
           <div className="grid two">
@@ -193,9 +186,8 @@ tools/perinkpheral log --follow
 
         <Chapter chapter={manifest}>
           <p>
-            The manifest declares the application's name, title, network hosts, polls, settings and event
-            subscriptions. The host and the web UI read it without running the application; the web UI generates the
-            settings form from it.
+            The manifest describes the app: name, data sources, settings. The device page builds the settings form from
+            it.
           </p>
           <Code label="manifest.json">{MANIFEST}</Code>
           <Table
@@ -216,16 +208,13 @@ tools/perinkpheral log --follow
             ]}
           />
           <p>
-            Settings are stored in the application's key-value store under their keys, read with{' '}
-            <code>kv_get()</code> and substituted into URLs and headers as <code>{'{{key}}'}</code>. Secret values are
-            write-only from the web UI.
+            Apps read settings with <code>kv_get()</code>; URLs and headers use them as <code>{'{{key}}'}</code>.
           </p>
         </Chapter>
 
         <Chapter chapter={model}>
           <p>
-            The host calls exported functions with fixed names; missing exports are skipped. No function pointers.
-            One handler runs at a time, with a 3 s limit.
+            The device calls these functions by name. Each call has 3 seconds.
           </p>
           <Table
             head={['Handler', 'When']}
@@ -253,27 +242,22 @@ tools/perinkpheral log --follow
           </p>
           <h3>State</h3>
           <p>
-            Applications are unloaded when they leave the screen and after background delivery. Persistent state is
-            stored with <code>kv_get()</code> and <code>kv_set()</code>: up to 1 KB per value, 2 KB in total including
-            settings. Larger data: <code>file_read()</code> for package files, <code>file_write()</code> with{' '}
-            <code>"writes_files": true</code>.
+            Apps are unloaded when they leave the screen. Save state with <code>kv_set()</code>, read it back with{' '}
+            <code>kv_get()</code>. Larger data goes to files.
           </p>
         </Chapter>
 
         <Chapter chapter={data}>
           <p>
-            Applications do not open connections. The host performs requests one at a time for the whole device, over
-            HTTP or HTTPS with the browser root certificate set, and delivers responses whether or not the application
-            is on screen.
+            Apps describe requests; the device makes them and delivers the response, on screen or not.
           </p>
           <Facts
             rows={[
-              ['Polls', 'Declared in the manifest, scheduled by the host. A poll may iterate over a list setting'],
-              ['Requests', 'http_request(tag, method, url, headers, body), up to 16 waiting'],
-              ['Values', 'With "pick", the host parses JSON and passes values to app_on_values()'],
-              ['Raw', 'Without "pick", the response arrives in 1 KB chunks: app_on_data()'],
-              ['Errors', 'No network, no response, timeout, host not allowed, certificate'],
-              ['Focus', 'request_focus() during background delivery requests the screen'],
+              ['Polls', 'In the manifest, on a schedule'],
+              ['Requests', 'http_request() from app code'],
+              ['Values', 'With "pick", JSON is parsed for the app: app_on_values()'],
+              ['Raw', 'Without it, the body comes in chunks: app_on_data()'],
+              ['Focus', 'request_focus() brings the app to the screen'],
             ]}
           />
           <Code label="weather.c">{VALUES}</Code>
@@ -284,9 +268,7 @@ tools/perinkpheral log --follow
 
         <Chapter chapter={kit}>
           <p>
-            Graphics are 1-bit. <code>gfx_*</code> functions draw text, lines, rectangles, bitmaps, QR codes and system
-            icons, in two user-selectable typefaces and six sizes. The UI kit provides the components used by the
-            system screens.
+            1-bit graphics, two typefaces, six sizes. The UI kit has the parts the system screens are made of.
           </p>
           <Table
             head={['Component', 'Functions']}
@@ -313,7 +295,6 @@ tools/perinkpheral log --follow
             rows={[
               ['Module, app.wasm', '48 KB'],
               ['Instance memory', '64 KB: 8 KB stack, data, arena'],
-              ['Interpreter memory', '64 KB: about 11 KB plus 4 bytes per byte of executed code'],
               ['Handler run time', '3 s'],
               ['Store', '1 KB per value, 2 KB total, keys up to 15 characters'],
               ['Files', '64 KB per package; 32 KB for applications that write'],
@@ -329,8 +310,7 @@ tools/perinkpheral log --follow
 
         <Chapter chapter={tools}>
           <p>
-            A single Kotlin toolset, used as a CLI and as a library: build, simulator, device access over Wi-Fi and USB,
-            catalogs, translations. Run <code>tools/perinkpheral</code> without arguments for the full list.
+            One command line tool. <code>tools/perinkpheral</code> lists all commands.
           </p>
           <Table
             head={['Command', 'Description']}
@@ -353,32 +333,28 @@ tools/perinkpheral log --follow
 
         <Chapter chapter={clion}>
           <p>
-            The plugin integrates the same core into CLion. Application folders open as CMake projects compiled with
-            the device build flags.
+            Build and run apps from CLion, on the device or in the simulator.
           </p>
           <ul>
-            <li>Toolchain setup: SDK checkout and wasi-sdk 34 in ~/.perinkpheral.</li>
-            <li>Run configurations for the device and the simulator; live screen in a tool window.</li>
-            <li>Manifest validation and completion by JSON schema.</li>
-            <li>Firmware upload over Wi-Fi, and over USB with esptool.</li>
+            <li>Toolchain setup in one step.</li>
+            <li>Live device screen in a tool window.</li>
+            <li>Manifest completion and checks.</li>
+            <li>Firmware upload over Wi-Fi or USB.</li>
           </ul>
           <p>
-            CLion 2026.2 or later. Simulator: macOS and Linux. Source:{' '}
+            Simulator: macOS and Linux. Source:{' '}
             <a href={repo.clion}>perinkpheral-clion-plugin</a>.
           </p>
         </Chapter>
 
         <Chapter chapter={publishing}>
           <p>
-            Applications are distributed through catalogs: static folders with a <code>catalog.json</code> index, served
-            over HTTPS. The device web UI lists catalog contents and installs applications; each file is verified by
-            size and SHA-256.
+            Apps are published in catalogs: static folders on any HTTPS host.
           </p>
           <Code label="shell">{`tools/perinkpheral catalog apps --out catalog`}</Code>
           <p>
-            The official catalog, <a href={repo.apps}>perinkpheral-apps</a>, is always the first source. Up to three
-            additional sources can be added. Translations: one JSON file per language in <code>strings/</code>,
-            validated at build time.
+            Official catalog: <a href={repo.apps}>perinkpheral-apps</a>. Translations: one JSON file per language in{' '}
+            <code>strings/</code>.
           </p>
         </Chapter>
 

@@ -20,12 +20,12 @@ const FEATURES: [string, string][] = [
 ]
 
 const SCREENS = [
+  { name: 'weather', caption: 'Weather' },
   { name: 'stocks', caption: 'Stocks' },
   { name: 'clock', caption: 'Clock' },
-  { name: 'menu', caption: 'Menu' },
-  { name: 'timer', caption: 'Timer' },
   { name: 'sun', caption: 'Sun and Moon' },
-  { name: 'settings', caption: 'Settings' },
+  { name: 'timer', caption: 'Timer' },
+  { name: 'stopwatch', caption: 'Stopwatch' },
 ]
 
 const RENDERS = [
@@ -100,7 +100,6 @@ export function Home() {
         <div className="wrap">
           <div className="band-head">
             <h2>Apps</h2>
-            <p>From the catalog, in one click. Or write your own.</p>
           </div>
           <div className="apps">
             {APPS.map((app) => (
@@ -151,7 +150,6 @@ export function Home() {
         <div className="wrap">
           <div className="band-head">
             <h2>The case</h2>
-            <p>Printed at home, no supports.</p>
           </div>
           <Gallery shots={RENDERS} />
         </div>

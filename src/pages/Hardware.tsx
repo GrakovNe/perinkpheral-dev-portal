@@ -42,13 +42,13 @@ export function Hardware() {
           <Render
             name="front34r"
             alt="The device, front right view"
-            caption="Enclosure v16l: copper PLA, black PLA wordmark inlay."
+            caption="Copper PLA, black wordmark inlay."
           />
           <Facts
             rows={[
               ['Size', '111.5 x 103.5 x 86.5 mm with the feet'],
               ['Frame', 'Tilted at 15 degrees, visible window 84 x 62.5 mm'],
-              ['Board', 'Seeed Studio XIAO ESP32-C6, no PSRAM, 4 MB flash'],
+              ['Board', 'Seeed Studio XIAO ESP32-C6'],
               ['Display', 'Waveshare 4.2" e-Paper Module V2, SSD1683, 400 x 300'],
               ['Battery', '1S Li-Ion with protection, up to 4000 mAh, charged over USB-C'],
               ['Fasteners', 'Countersunk M2.5 screws only'],
@@ -87,8 +87,7 @@ export function Hardware() {
           <ul>
             <li>USB-C opening: 10 x 4.5 mm in the right wall.</li>
             <li>BAT+ and BAT- pads are on the underside; the bottom has a 0.5 mm recess below them.</li>
-            <li>Antenna selection is a firmware build option (external antenna: GPIO14 high).</li>
-          </ul>
+                      </ul>
           <h3>Battery</h3>
           <ul>
             <li>1S Li-Ion or LiPo with a protection board only: the XIAO has no over-discharge cut-off.</li>
@@ -205,7 +204,7 @@ export function Hardware() {
         <Chapter chapter={flashing}>
           <p>
             The first flash requires USB; later updates can be installed over Wi-Fi from the device web UI.
-            Requirements: ESP-IDF 5.5, wasi-sdk.
+            Requirements: ESP-IDF, wasi-sdk.
           </p>
           <div className="code">
             <div className="label">
