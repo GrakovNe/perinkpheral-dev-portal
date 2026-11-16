@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Mark } from '../components/Brand'
-import { Carousel, Gallery, Screen } from '../components/Pictures'
+import { Carousel, Gallery } from '../components/Pictures'
 import { APPS } from '../content/apps'
 import { useT } from '../i18n'
 
@@ -13,108 +13,11 @@ const SPECS: [string, string, string, string][] = [
   ['Case', 'Корпус', '3D-printed', '3D-печать'],
 ]
 
-// Each with a picture of 22 x 22 cells, drawn as the app icons are.
-const FEATURES: { en: string; ru: string; icon: string[] }[] = [
-  {
-    en: 'No account, no cloud',
-    ru: 'Без аккаунта и облака',
-    icon: [
-      '......................',
-      '##....................',
-      '###...................',
-      '.###......###.........',
-      '...##...#######.......',
-      '....##.#########......',
-      '.....##.#########.....',
-      '......##..#######.....',
-      '.......##..########...',
-      '....##..##..########..',
-      '...####..##..########.',
-      '..######..##..#######.',
-      '..#######..##..#######',
-      '.#########..##..#####.',
-      '..#########..##..####.',
-      '.###########..##..###.',
-      '.#############.##..##.',
-      '.##############.##..#.',
-      '..##############.##...',
-      '..................###.',
-      '...................###',
-      '....................##',
-    ],
-  },
-  {
-    en: 'Easy to build',
-    ru: 'Простая сборка',
-    icon: [
-      '......................',
-      '..............###.....',
-      '............#####.....',
-      '...........#####......',
-      '...........####.......',
-      '..........####.....##.',
-      '..........####....###.',
-      '..........####...####.',
-      '...........#########..',
-      '..........##########..',
-      '.........##########...',
-      '........#####.###.....',
-      '.......#####..........',
-      '......#####...........',
-      '....######............',
-      '..#######.............',
-      '..##.###..............',
-      '.##...##..............',
-      '..##.##...............',
-      '..#####...............',
-      '....#.................',
-      '......................',
-    ],
-  },
-  {
-    en: 'Intuitive controls',
-    ru: 'Интуитивное управление',
-    icon: [
-      '......................',
-      '.####################.',
-      '.####################.',
-      '.##................##.',
-      '.##................##.',
-      '.##..########......##.',
-      '.##................##.',
-      '.##................##.',
-      '.##..###########...##.',
-      '.##................##.',
-      '.##................##.',
-      '.####################.',
-      '.####################.',
-      '......................',
-      '......................',
-      '.####.####......####..',
-      '.#..#.#..#......#..#..',
-      '.#..#.#..#.####.#..#..',
-      '.#..#.#..#.####.#..#..',
-      '.#..#.#..#.####.#..#..',
-      '.####.####.####.####..',
-      '......................',
-    ],
-  },
-]
-
 const HERO = [
   { name: 'hero-weather', en: 'Weather', ru: 'Погода' },
   { name: 'hero-sun', en: 'Sun and Moon', ru: 'Солнце и Луна' },
   { name: 'hero-stocks', en: 'Stocks', ru: 'Акции' },
   { name: 'hero-timer', en: 'Timer', ru: 'Таймер' },
-]
-
-const SCREENS = [
-  { name: 'weather', en: 'Weather', ru: 'Погода' },
-  { name: 'stocks', en: 'Stocks', ru: 'Акции' },
-  { name: 'clock', en: 'Clock', ru: 'Часы' },
-  { name: 'sun', en: 'Sun and Moon', ru: 'Солнце и Луна' },
-  { name: 'timer', en: 'Timer', ru: 'Таймер' },
-  { name: 'stopwatch', en: 'Stopwatch', ru: 'Секундомер' },
 ]
 
 const RENDERS = [
@@ -189,46 +92,34 @@ export function Home() {
           <div className="apps">
             {APPS.map((app) => (
               <article key={app.name} className="panel app">
-                <AppIcon rows={app.icon} />
-                <h3>{t(app.title, app.titleRu)}</h3>
-                <p>{t(app.text, app.textRu)}</p>
+                <img
+                  className="app-screen"
+                  src={`${import.meta.env.BASE_URL}screens/${app.name}.png`}
+                  alt={t(app.title, app.titleRu)}
+                  width={800}
+                  height={600}
+                  loading="lazy"
+                />
+                <div className="app-name">
+                  <AppIcon rows={app.icon} />
+                  <div>
+                    <h3>{t(app.title, app.titleRu)}</h3>
+                    <p>{t(app.text, app.textRu)}</p>
+                  </div>
+                </div>
               </article>
             ))}
             <Link to="/sdk" className="panel app own">
-              <span className="plus" aria-hidden="true">
+              <span className="app-screen plus" aria-hidden="true">
                 <svg viewBox="0 0 11 11" shapeRendering="crispEdges">
                   <rect x={5} y={2} width={1} height={7} />
                   <rect x={2} y={5} width={7} height={1} />
                 </svg>
               </span>
-              <h3>{t('Your own', 'Что угодно')}</h3>
+              <div className="app-name">
+                <h3>{t('Your own', 'Что угодно')}</h3>
+              </div>
             </Link>
-          </div>
-        </div>
-      </section>
-
-      <section className="band">
-        <div className="wrap">
-          <div className="features">
-            {FEATURES.map((feature) => (
-              <article key={feature.en}>
-                <AppIcon rows={feature.icon} />
-                <h3>{t(feature.en, feature.ru)}</h3>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="band">
-        <div className="wrap">
-          <div className="band-head">
-            <h2>{t('On the screen', 'На экране')}</h2>
-          </div>
-          <div className="screens">
-            {SCREENS.map(caption).map((screen) => (
-              <Screen key={screen.name} name={screen.name} alt={screen.caption} caption={screen.caption} />
-            ))}
           </div>
         </div>
       </section>
