@@ -299,6 +299,18 @@
   }
 }
 
+.flash-console {
+  height: 20rem;
+  margin: 0 0 1.25rem;
+  padding: 0.9rem 1rem;
+  overflow: auto;
+  font-size: 0.75rem;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  color: var(--paper);
+  background: var(--ink);
+}
+
 .flash-percent {
   float: right;
 }

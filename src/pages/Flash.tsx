@@ -21,6 +21,7 @@ type Manifest = { version: string; builds: { chipFamily: string; parts: Part[] }
 
 type Phase =
   | { name: 'idle' }
+  | { name: 'monitor' }
   | { name: 'connecting' }
   | { name: 'connected'; chip: string; mac: string; saved?: string }
   | { name: 'reading'; chip: string; mac: string; done: number }
@@ -50,6 +51,17 @@ export function Flash() {
   const [phase, setPhase] = useState<Phase>({ name: 'idle' })
   const [log, setLog] = useState('')
   const loader = useRef<ESPLoader | null>(null)
+  const monitorPort = useRef<SerialPort | null>(null)
+  const monitorReader = useRef<ReadableStreamDefaultReader<Uint8Array> | null>(null)
+  const consoleView = useRef<HTMLPreElement | null>(null)
+
+  // the console follows what comes last
+  useEffect(() => {
+    const view = consoleView.current
+    if (view) {
+      view.scrollTop = view.scrollHeight
+    }
+  }, [log])
   const transport = useRef<Transport | null>(null)
 
   useEffect(() => {
@@ -145,6 +157,57 @@ export function Flash() {
     }
   }
 
+  // What the board's firmware writes on its console, from a restart on: the
+  // way to see why a board that does not answer does not.
+  const monitor = async () => {
+    try {
+      const port = await navigator.serial.requestPort({ filters: [{ usbVendorId: ESPRESSIF }] })
+      await port.open({ baudRate: 115200 })
+      monitorPort.current = port
+      setLog('')
+      setPhase({ name: 'monitor' })
+      // a reset into the firmware, as esptool's hard reset over USB-JTAG
+      await port.setSignals({ dataTerminalReady: false, requestToSend: true })
+      await new Promise((resolve) => setTimeout(resolve, 100))
+      await port.setSignals({ requestToSend: false })
+      const decoder = new TextDecoder()
+      while (port.readable && monitorPort.current === port) {
+        const reader = port.readable.getReader()
+        monitorReader.current = reader
+        try {
+          for (;;) {
+            const { value, done } = await reader.read()
+            if (done) {
+              break
+            }
+            say(decoder.decode(value, { stream: true }))
+          }
+        } catch {
+          // the board went away, or Stop was pressed
+        } finally {
+          reader.releaseLock()
+        }
+      }
+    } catch (error) {
+      const cancelled = error instanceof DOMException && error.name === 'NotFoundError'
+      if (!cancelled) {
+        setPhase({ name: 'error', message: t('The port does not open.', 'Порт не открывается.') })
+      }
+    }
+  }
+
+  const stopMonitor = async () => {
+    const port = monitorPort.current
+    monitorPort.current = null
+    try {
+      await monitorReader.current?.cancel()
+      await port?.close()
+    } catch {
+      // closed already
+    }
+    setPhase({ name: 'idle' })
+  }
+
   // the whole flash into a file the browser saves
   const save = async (chip: string, mac: string) => {
     if (!loader.current) {
@@ -184,6 +247,26 @@ export function Flash() {
         <div className="buttons">
           <button type="button" className="button" onClick={connect} disabled={busy || !version}>
             {phase.name === 'connecting' ? t('Connecting', 'Подключение') : t('Connect', 'Подключить')}
+          </button>
+          <button type="button" className="button quiet" onClick={monitor} disabled={busy}>
+            {t('Monitor', 'Монитор')}
+          </button>
+        </div>
+      </>
+    )
+  } else if (phase.name === 'monitor') {
+    body = (
+      <>
+        <p>{t('The board restarts; what it writes is below.', 'Плата перезапускается, её вывод ниже.')}</p>
+        <pre className="flash-console" ref={consoleView}>
+          {log || '...'}
+        </pre>
+        <div className="buttons">
+          <button type="button" className="button quiet" onClick={() => navigator.clipboard.writeText(log)}>
+            {t('Copy', 'Копировать')}
+          </button>
+          <button type="button" className="button quiet" onClick={stopMonitor}>
+            {t('Stop', 'Остановить')}
           </button>
         </div>
       </>
@@ -291,7 +374,7 @@ export function Flash() {
             <span>{version ?? ''}</span>
           </div>
           <div className="flasher-body">{body}</div>
-          {log && (
+          {log && phase.name !== 'monitor' && (
             <details className="flasher-log">
               <summary>{t('Log', 'Журнал')}</summary>
               <pre>{log}</pre>
