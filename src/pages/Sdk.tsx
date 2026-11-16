@@ -189,6 +189,7 @@ tools/perinkpheral log --follow
               [<code>system</code>, t('Access to device settings, clock and apps; the user confirms on install', 'Доступ к настройкам устройства, часам и приложениям; пользователь подтверждает при установке')],
               [<code>certificates</code>, t('Certificates for servers that browsers do not trust', 'Сертификаты для серверов, которым не доверяют браузеры')],
               [<code>companion</code>, t('A web page that helps the user set the app up', 'Веб-страница, которая помогает настроить приложение')],
+              [<code>firmware</code>, t('The oldest firmware the app runs on; the build works it out from the calls it makes', 'Самая старая прошивка, на которой работает приложение; сборка вычисляет её по вызовам')],
             ]}
           />
         </Chapter>
