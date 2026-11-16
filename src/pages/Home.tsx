@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Mark, Wordmark } from '../components/Brand'
+import { Mark } from '../components/Brand'
 import { Carousel, Gallery, Screen } from '../components/Pictures'
 import { APPS } from '../content/apps'
 import { useT } from '../i18n'
@@ -73,10 +73,7 @@ export function Home() {
         <div className="wrap">
           <div className="hero-text">
             <Mark className="hero-mark" title={t('The perINKpheral mark', 'Знак perINKpheral')} />
-            <h1>
-              <Wordmark className="hero-wordmark" />
-            </h1>
-            <p className="hero-line">{t('A paper-like screen for your desk, with apps.', 'E-Ink экран для рабочего стола, с приложениями.')}</p>
+            <h1 className="hero-line">{t('A paper-like screen for your desk, with apps.', 'E-Ink экран для рабочего стола, с приложениями.')}</h1>
             <p className="hero-lead">{t('Weather, calendar, stocks, smart home and more.', 'Погода, календарь, акции, умный дом и не только.')}</p>
             <div className="buttons">
               <Link className="button" to="/hardware">
