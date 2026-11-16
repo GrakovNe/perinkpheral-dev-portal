@@ -317,20 +317,20 @@
   }
 
   article {
-    display: flex;
-    align-items: center;
-    gap: 1.25rem;
+    border-top: 3px solid var(--ink);
+    padding-top: 1.5rem;
   }
 
   .app-icon {
-    flex: none;
-    width: 3.5rem;
-    height: 3.5rem;
+    display: block;
+    width: 4.5rem;
+    height: 4.5rem;
+    margin-bottom: 1.25rem;
     fill: var(--ink);
   }
 
   h3 {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     margin: 0;
   }
 }
