@@ -100,8 +100,8 @@ export type Slide = { name: string; caption: string }
 
 const TURN_MS = 5000
 
-// Renders that turn by themselves, one every few seconds, and by the arrows
-// and the squares under them. Held while the pointer is over them, and still
+// Renders that turn by themselves, one every few seconds, and by the squares
+// under them. Held while the pointer is over them, and still
 // for a reader who asked for less motion.
 export function Carousel({ slides, sizes }: { slides: Slide[]; sizes: string }) {
   const [shown, setShown] = useState(0)
@@ -115,7 +115,6 @@ export function Carousel({ slides, sizes }: { slides: Slide[]; sizes: string }) 
     const timer = setTimeout(() => setShown((shown + 1) % slides.length), TURN_MS)
     return () => clearTimeout(timer)
   }, [shown, held, still, slides.length])
-  const go = (index: number) => setShown((index + slides.length) % slides.length)
   return (
     <div
       className="carousel"
@@ -142,25 +141,18 @@ export function Carousel({ slides, sizes }: { slides: Slide[]; sizes: string }) 
         ))}
       </div>
       <div className="controls">
-        <button type="button" onClick={() => go(shown - 1)} aria-label="Previous">
-          &lt;
-        </button>
         <div className="dots">
           {slides.map((slide, index) => (
             <button
               key={slide.name}
               type="button"
               className={index === shown ? 'dot shown' : 'dot'}
-              onClick={() => go(index)}
+              onClick={() => setShown(index)}
               aria-label={slide.caption}
               aria-current={index === shown}
             />
           ))}
         </div>
-        <span className="caption">{slides[shown].caption}</span>
-        <button type="button" onClick={() => go(shown + 1)} aria-label="Next">
-          &gt;
-        </button>
       </div>
     </div>
   )
