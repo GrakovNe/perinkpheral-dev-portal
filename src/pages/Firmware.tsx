@@ -1,7 +1,7 @@
 import { Chapter, DocBody, Facts, PageHead } from '../components/Doc'
 import { DeliveryDiagram, FlashDiagram, LayersDiagram } from '../components/Diagrams'
 import { files, repo } from '../content/links'
-import { useT } from '../i18n'
+import { EnglishOnly, useT } from '../i18n'
 
 const CHAPTERS = [
   { id: 'overview', en: 'Overview', ru: 'Обзор' },
@@ -19,38 +19,44 @@ export function Firmware() {
   const [overview, architecture, delivery, storage, display, network, api] = chapters
   return (
     <>
-      <PageHead title={t('Firmware', 'Прошивка')} />
+      <PageHead title="Firmware" />
       <DocBody chapters={chapters}>
         <Chapter chapter={overview}>
           <Facts
             rows={[
-              [t('Chip', 'Чип'), 'ESP32-C6'],
-              [t('Apps', 'Приложения'), t('Up to 24', 'До 24')],
-              [t('Network', 'Сеть'), 'Wi-Fi 6, HTTP, HTTPS'],
-              [t('Updates', 'Обновления'), t('Over Wi-Fi', 'По Wi-Fi')],
-              [t('Languages', 'Языки'), t('English, Russian', 'Английский, русский')],
-              [t('Source', 'Исходники'), <a href={repo.firmware}>GrakovNe/perinkpheral</a>],
+              ['Chip', 'ESP32-C6'],
+              ['Apps', 'Up to 24'],
+              ['Network', 'Wi-Fi 6, HTTP, HTTPS'],
+              ['Updates', 'Over Wi-Fi'],
+              ['Languages', 'English, Russian'],
+              ['Source', <a href={repo.firmware}>GrakovNe/perinkpheral</a>],
             ]}
           />
         </Chapter>
 
         <Chapter chapter={architecture}>
-          <LayersDiagram />
+          <EnglishOnly>
+            <LayersDiagram />
+          </EnglishOnly>
         </Chapter>
 
         <Chapter chapter={delivery}>
-          <DeliveryDiagram />
+          <EnglishOnly>
+            <DeliveryDiagram />
+          </EnglishOnly>
         </Chapter>
 
         <Chapter chapter={storage}>
-          <FlashDiagram />
+          <EnglishOnly>
+            <FlashDiagram />
+          </EnglishOnly>
         </Chapter>
 
         <Chapter chapter={display}>
           <Facts
             rows={[
-              [t('Frame rate', 'Частота кадров'), t('Up to 1.5 fps', 'До 1.5 fps')],
-              [t('Delay', 'Задержка'), t('0.5 s; 2.5 s when switching apps', '0.5 с; 2.5 с при смене приложения')],
+              ['Frame rate', 'Up to 1.5 fps'],
+              ['Delay', '0.5 s; 2.5 s when switching apps'],
             ]}
           />
         </Chapter>
@@ -58,16 +64,16 @@ export function Firmware() {
         <Chapter chapter={network}>
           <Facts
             rows={[
-              [t('First setup', 'Первая настройка'), t('From a phone, over the device’s own Wi-Fi', 'С телефона, через Wi-Fi самого устройства')],
-              [t('Firmware updates', 'Обновления прошивки'), t('From the device’s web page', 'Со страницы устройства')],
-              [t('Confirmation', 'Подтверждение'), t('Button on the device', 'Кнопкой на устройстве')],
+              ['First setup', 'From a phone, over the device’s own Wi-Fi'],
+              ['Firmware updates', 'From the device’s web page'],
+              ['Confirmation', 'Button on the device'],
             ]}
           />
         </Chapter>
 
         <Chapter chapter={api}>
           <p>
-            <a href={files.openapi}>{t('OpenAPI specification', 'Спецификация OpenAPI')}</a>
+            <a href={files.openapi}>OpenAPI specification</a>
           </p>
         </Chapter>
       </DocBody>

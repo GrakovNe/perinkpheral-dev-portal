@@ -51,7 +51,7 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/sdk" element={<EnglishOnly><Sdk /></EnglishOnly>} />
         <Route path="/hardware" element={<Hardware />} />
-        <Route path="/firmware" element={<EnglishOnly><Firmware /></EnglishOnly>} />
+        <Route path="/firmware" element={<Firmware />} />
         <Route path="/contacts" element={<Contacts />} />
         <Route path="/credits" element={<Credits />} />
         <Route path="*" element={<NotFound />} />
