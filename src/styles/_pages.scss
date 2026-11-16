@@ -285,6 +285,10 @@
     grid-template-rows: auto;
     align-items: center;
 
+    .plus {
+      grid-row: auto;
+    }
+
     h3 {
       margin: 0;
     }
