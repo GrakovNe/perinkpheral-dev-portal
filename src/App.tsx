@@ -50,7 +50,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/sdk" element={<EnglishOnly><Sdk /></EnglishOnly>} />
-        <Route path="/hardware" element={<EnglishOnly><Hardware /></EnglishOnly>} />
+        <Route path="/hardware" element={<Hardware />} />
         <Route path="/firmware" element={<EnglishOnly><Firmware /></EnglishOnly>} />
         <Route path="/contacts" element={<Contacts />} />
         <Route path="/credits" element={<Credits />} />

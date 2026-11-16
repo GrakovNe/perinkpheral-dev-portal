@@ -8,8 +8,8 @@ const CHAPTERS = [
   { id: 'overview', en: 'Overview', ru: 'Обзор' },
   { id: 'parts', en: 'Parts', ru: 'Детали' },
   { id: 'constraints', en: 'Before assembly', ru: 'Перед сборкой' },
-  { id: 'printing', en: 'Printed parts', ru: 'Печатные детали' },
-  { id: 'wiring', en: 'Wiring', ru: 'Проводка' },
+  { id: 'printing', en: 'Printed parts', ru: 'Детали корпуса' },
+  { id: 'wiring', en: 'Wiring', ru: 'Схема сборки' },
   { id: 'assembly', en: 'Assembly', ru: 'Сборка' },
   { id: 'fasteners', en: 'Fasteners', ru: 'Крепёж' },
   { id: 'flashing', en: 'First flash', ru: 'Первая прошивка' },
@@ -36,7 +36,7 @@ export function Hardware() {
     chapters
   return (
     <>
-      <PageHead title={t('Hardware', 'Железо')} />
+      <PageHead title="Hardware" />
       <DocBody chapters={chapters}>
         <Chapter chapter={overview}>
           <Render name="front34r" alt={t('The device, front right view', 'Устройство спереди справа')} />
@@ -162,7 +162,7 @@ export function Hardware() {
               <p>
                 {t(
                   'Solder the display and the buttons as in the wiring table, button wires no longer than 35 mm. Solder the battery to the pads under the XIAO.',
-                  'Припаяйте экран и кнопки по таблице проводки, провода кнопок не длиннее 35 мм. Аккумулятор припаяйте к площадкам под XIAO.',
+                  'Припаяйте экран и кнопки по схеме сборки, провода кнопок не длиннее 35 мм. Аккумулятор припаяйте к площадкам под XIAO.',
                 )}
               </p>
             </li>
