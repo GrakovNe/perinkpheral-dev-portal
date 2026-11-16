@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Mark, Wordmark } from '../components/Brand'
-import { Gallery, Render, Screen } from '../components/Pictures'
+import { Carousel, Gallery, Screen } from '../components/Pictures'
 import { APPS } from '../content/apps'
 
 const SPECS: [string, string][] = [
@@ -17,6 +17,13 @@ const FEATURES: [string, string][] = [
   ['No account', 'No sign-up and no cloud. Data comes straight from the source.'],
   ['Set up in a browser', 'Install apps and change settings from your phone or computer.'],
   ['Buttons', 'Switch apps, flip pages, start a timer.'],
+]
+
+const HERO = [
+  { name: 'hero-sun', caption: 'Sun and Moon' },
+  { name: 'hero-weather', caption: 'Weather' },
+  { name: 'hero-stocks', caption: 'Stocks' },
+  { name: 'hero-timer', caption: 'Timer' },
 ]
 
 const SCREENS = [
@@ -78,7 +85,7 @@ export function Home() {
             </div>
           </div>
           <div className="hero-picture">
-            <Render name="hero" alt="perINKpheral on a desk" sizes="(max-width: 64rem) 100vw, 56vw" eager />
+            <Carousel slides={HERO} sizes="(max-width: 64rem) 100vw, 56vw" />
           </div>
         </div>
       </section>

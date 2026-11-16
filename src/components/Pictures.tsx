@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 const BASE = import.meta.env.BASE_URL
 
@@ -93,5 +93,75 @@ export function Gallery({ shots }: { shots: Shot[] }) {
         </div>
       </dialog>
     </>
+  )
+}
+
+export type Slide = { name: string; caption: string }
+
+const TURN_MS = 5000
+
+// Renders that turn by themselves, one every few seconds, and by the arrows
+// and the squares under them. Held while the pointer is over them, and still
+// for a reader who asked for less motion.
+export function Carousel({ slides, sizes }: { slides: Slide[]; sizes: string }) {
+  const [shown, setShown] = useState(0)
+  const [held, setHeld] = useState(false)
+  const still =
+    typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  useEffect(() => {
+    if (held || still) {
+      return
+    }
+    const timer = setTimeout(() => setShown((shown + 1) % slides.length), TURN_MS)
+    return () => clearTimeout(timer)
+  }, [shown, held, still, slides.length])
+  const go = (index: number) => setShown((index + slides.length) % slides.length)
+  return (
+    <div
+      className="carousel"
+      onMouseEnter={() => setHeld(true)}
+      onMouseLeave={() => setHeld(false)}
+      onFocus={() => setHeld(true)}
+      onBlur={() => setHeld(false)}
+      aria-roledescription="carousel"
+    >
+      <div className="slides">
+        {slides.map((slide, index) => (
+          <img
+            key={slide.name}
+            {...renderSources(slide.name)}
+            sizes={sizes}
+            alt={`perINKpheral showing ${slide.caption}`}
+            width={1600}
+            height={1067}
+            className={index === shown ? 'shown' : undefined}
+            aria-hidden={index !== shown}
+            loading={index === 0 ? 'eager' : 'lazy'}
+            fetchPriority={index === 0 ? 'high' : undefined}
+          />
+        ))}
+      </div>
+      <div className="controls">
+        <button type="button" onClick={() => go(shown - 1)} aria-label="Previous">
+          &lt;
+        </button>
+        <div className="dots">
+          {slides.map((slide, index) => (
+            <button
+              key={slide.name}
+              type="button"
+              className={index === shown ? 'dot shown' : 'dot'}
+              onClick={() => go(index)}
+              aria-label={slide.caption}
+              aria-current={index === shown}
+            />
+          ))}
+        </div>
+        <span className="caption">{slides[shown].caption}</span>
+        <button type="button" onClick={() => go(shown + 1)} aria-label="Next">
+          &gt;
+        </button>
+      </div>
+    </div>
   )
 }
