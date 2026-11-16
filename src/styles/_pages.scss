@@ -43,6 +43,11 @@
     display: block;
   }
 
+  // an empty line between the two
+  .typed-line + .typed-line {
+    margin-top: 1lh;
+  }
+
   .typed-rest {
     color: transparent;
   }
