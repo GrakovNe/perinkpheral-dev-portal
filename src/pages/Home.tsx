@@ -120,8 +120,7 @@ export function Home() {
               <span className="plus" aria-hidden="true">
                 +
               </span>
-              <h3>{t('Your own', 'Своё')}</h3>
-              <p>{t('In C', 'На C')}</p>
+              <h3>{t('Your own', 'Что угодно')}</h3>
             </Link>
           </div>
         </div>
