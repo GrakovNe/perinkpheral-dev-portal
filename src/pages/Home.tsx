@@ -425,7 +425,7 @@ export function Home() {
           <div className="hero-text">
             <TypedHeading
               className="hero-line"
-              lines={[t('A paper-like screen for your desk.', 'E-Ink экран для рабочего стола.'), t('Apps included.', 'С приложениями.')]}
+              lines={[t('A paper-like screen for your desk', 'E-Ink экран для рабочего стола'), t('Apps included', 'С приложениями')]}
             />
             <p className="hero-lead">{t('Weather, calendar, stocks, smart home and more.', 'Погода, календарь, акции, умный дом и не только.')}</p>
             <div className="buttons">
