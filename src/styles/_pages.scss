@@ -105,47 +105,22 @@
   }
 }
 
-// ---- Getting started: the steps as cards, as the apps' are ----
-
-.start-band {
-  padding: 3rem 0;
-  border-bottom: 1px solid var(--ink);
-}
+// ---- Getting started: a step a row, its picture beside it ----
 
 .start {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 2.25rem 1.25rem;
-  margin: 0;
+  margin: 0 0 clamp(3rem, 7vw, 5rem);
   padding: 0;
   list-style: none;
+}
 
-  @include tablet {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  @include phone {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  li {
-    margin: 0;
-  }
-
-  a {
-    display: block;
-    color: inherit;
-    text-decoration: none;
-
-    .start-picture {
-      transition: transform 0.08s ease-out, box-shadow 0.08s ease-out;
-    }
-
-    &:hover .start-picture {
-      transform: translate(-4px, -4px);
-      box-shadow: 4px 4px 0 var(--ink);
-    }
-  }
+.start-step {
+  display: grid;
+  grid-template-columns: minmax(0, 18rem) minmax(0, 1fr);
+  gap: 2.5rem;
+  align-items: center;
+  margin: 0;
+  padding: 2.5rem 0;
+  border-bottom: 1px solid var(--line);
 
   .start-picture {
     display: grid;
@@ -163,32 +138,58 @@
     fill: var(--ink);
   }
 
-  .done .start-picture {
-    background: var(--ink);
-
-    .app-icon {
-      fill: var(--paper);
-    }
-  }
-
-  h3 {
+  h2 {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    min-height: 1.75rem;
-    margin: 1rem 0 0;
-    font-size: 1.05rem;
+    gap: 0.9rem;
+    margin: 0 0 0.9rem;
+    font-size: 1.4rem;
+  }
+
+  p {
+    max-width: 40rem;
+    margin: 0 0 1.25rem;
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+
+  // on a phone the picture is a small square beside the words
+  @include phone {
+    grid-template-columns: 4.5rem minmax(0, 1fr);
+    gap: 1rem;
+    align-items: start;
+    padding: 1.75rem 0;
+
+    .start-picture {
+      align-self: start;
+      height: 4.5rem;
+      aspect-ratio: 1;
+    }
+
+    .app-icon {
+      width: 48px;
+      height: 48px;
+      max-width: none;
+      max-height: none;
+    }
+
+    h2 {
+      font-size: 1.15rem;
+    }
   }
 }
 
 .start-number {
   display: inline-grid;
+  flex: none;
   place-items: center;
-  width: 1.75rem;
-  height: 1.75rem;
+  width: 2.25rem;
+  height: 2.25rem;
   color: var(--paper);
   background: var(--ink);
-  font-size: 0.95rem;
+  font-size: 1.1rem;
 }
 
 // ---- bands of the landing page ----

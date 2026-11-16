@@ -498,7 +498,7 @@ export function Home() {
             <p className="hero-lead">{t('Weather, calendar, stocks, smart home and more.', 'Погода, календарь, акции, умный дом и не только.')}</p>
             <div className="buttons">
               <Link className="button" to="/start">
-                {t('Build one', 'Собрать')} <span className="arrow">-&gt;</span>
+                {t('Getting started', 'Начало работы')} <span className="arrow">-&gt;</span>
               </Link>
               <KitButton />
             </div>
