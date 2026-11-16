@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Carousel, Gallery } from '../components/Pictures'
+import { StartDiagram } from '../components/Diagrams'
 import { keepWords } from '../components/Doc'
 import { APPS } from '../content/apps'
 import { useT } from '../i18n'
@@ -533,8 +534,8 @@ const STEPS: { en: string; ru: string; icon: string[] }[] = [
     ],
   },
   {
-    en: 'Connect to Wi-Fi from a phone',
-    ru: 'Подключить к Wi-Fi с телефона',
+    en: 'Connect to Wi-Fi',
+    ru: 'Подключить к Wi-Fi',
     icon: [
       '................................................................',
       '................................................................',
@@ -753,16 +754,11 @@ export function Home() {
           <div className="band-head">
             <h2>{t('Getting started', 'Как начать')}</h2>
           </div>
-          <ol className="steps-row">
-            {STEPS.map((step, index) => (
-              <li key={step.en}>
-                <AppIcon rows={step.icon} />
-                <h3>
-                  {index + 1}. {t(step.en, step.ru)}
-                </h3>
-              </li>
-            ))}
-          </ol>
+          <StartDiagram
+            label={t('From parts to apps on the screen', 'От деталей до приложений на экране')}
+            steps={STEPS.map((step) => ({ label: t(step.en, step.ru), icon: step.icon }))}
+            result={{ label: t('Apps on the screen', 'Приложения на экране'), icon: SPECS[0].icon }}
+          />
         </div>
       </section>
 

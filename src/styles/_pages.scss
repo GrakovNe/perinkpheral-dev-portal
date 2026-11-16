@@ -107,47 +107,27 @@
 
 // ---- the steps from parts to a screen ----
 
-.steps-row {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 2rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
+// The same diagram across the page, and down it on a phone.
+.start-down {
+  display: none;
+}
 
-  @include phone {
-    grid-template-columns: minmax(0, 1fr);
+@include phone {
+  .start-across {
+    display: none;
   }
 
-  li {
-    position: relative;
-    margin: 0;
-  }
-
-  // an arrow from one step to the next
-  li + li::before {
-    content: '->';
-    position: absolute;
-    left: -1.6rem;
-    top: 20px;
-    color: var(--dim);
-
-    @include phone {
-      content: none;
-    }
-  }
-
-  .app-icon {
+  .start-down {
     display: block;
-    width: 64px;
-    height: 64px;
-    margin-bottom: 1rem;
-    fill: var(--ink);
-  }
 
-  h3 {
-    font-size: 1.1rem;
-    margin: 0;
+    .canvas {
+      max-width: 22rem;
+      margin: 0 auto;
+    }
+
+    svg {
+      min-width: 0;
+    }
   }
 }
 
