@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { Carousel, Gallery } from '../components/Pictures'
 import { keepWords } from '../components/Doc'
 import { PixelIcon } from '../components/PixelIcon'
+import { TypedHeading } from '../components/Typed'
 import { APPS } from '../content/apps'
 import { useT } from '../i18n'
 
@@ -494,7 +495,10 @@ export function Home() {
       <section className="hero">
         <div className="wrap">
           <div className="hero-text">
-            <h1 className="hero-line">{t('A paper-like screen for your desk, with apps.', 'E-Ink экран для рабочего стола, с приложениями.')}</h1>
+            <TypedHeading
+              className="hero-line"
+              lines={[t('A paper-like screen for your desk', 'E-Ink экран для рабочего стола'), t('Apps included', 'с приложениями')]}
+            />
             <p className="hero-lead">{t('Weather, calendar, stocks, smart home and more.', 'Погода, календарь, акции, умный дом и не только.')}</p>
             <div className="buttons">
               <Link className="button" to="/start">

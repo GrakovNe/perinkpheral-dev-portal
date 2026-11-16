@@ -36,6 +36,47 @@
   margin: 0 0 1rem;
 }
 
+// ---- a heading typed out, the carriage after it ----
+
+.typed {
+  display: grid;
+
+  .typed-ghost,
+  .typed-text {
+    grid-area: 1 / 1;
+  }
+
+  .typed-ghost {
+    visibility: hidden;
+  }
+
+  .typed-line {
+    display: block;
+  }
+
+  .caret {
+    display: inline-block;
+    width: 0.55em;
+    height: 1em;
+    margin-left: 0.08em;
+    vertical-align: -0.12em;
+    background: var(--ink);
+    animation: caret 1.1s steps(1) infinite;
+  }
+}
+
+@keyframes caret {
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .typed .caret {
+    animation: none;
+  }
+}
+
 .hero-lead {
   font-size: 1.05rem;
   color: #3a3936;
