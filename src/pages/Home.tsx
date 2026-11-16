@@ -103,10 +103,7 @@ export function Home() {
                 />
                 <div className="app-name">
                   <AppIcon rows={app.icon} />
-                  <div>
-                    <h3>{t(app.title, app.titleRu)}</h3>
-                    <p>{t(app.text, app.textRu)}</p>
-                  </div>
+                  <h3>{t(app.title, app.titleRu)}</h3>
                 </div>
               </article>
             ))}
@@ -118,9 +115,7 @@ export function Home() {
                 </svg>
               </span>
               <div className="app-name">
-                <div>
-                  <h3>{t('Your own', 'Что угодно')}</h3>
-                </div>
+                <h3>{t('Your own', 'Что угодно')}</h3>
               </div>
             </Link>
           </div>
