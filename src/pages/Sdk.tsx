@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom'
 import { Chapter, Code, DocBody, Facts, PageHead, Table } from '../components/Doc'
 import { Screen } from '../components/Pictures'
 import { files, repo } from '../content/links'
@@ -104,9 +103,7 @@ void app_on_values(int32_t poll, int32_t http_status)
 export function Sdk() {
   return (
     <>
-      <PageHead eyebrow="SDK" title="Application development">
-        Write an app in C, test it in the simulator, run it on the device.
-      </PageHead>
+      <PageHead title="SDK" />
       <DocBody chapters={CHAPTERS}>
         <Chapter chapter={overview}>
           <Facts
@@ -118,20 +115,13 @@ export function Sdk() {
               ['Package', 'app.wasm, manifest.json, translations, pictures, files'],
             ]}
           />
-          <div className="note">
-            <p>
-              The API may change before the first release; apps are then rebuilt.
-            </p>
-          </div>
         </Chapter>
 
         <Chapter chapter={start}>
           <ol className="steps">
             <li>
               <h3>Install the toolchain</h3>
-              <p>
-                You need wasi-sdk (the C compiler for WebAssembly), Java and git.
-              </p>
+              <p>wasi-sdk, Java, git.</p>
               <Code label="shell">{`
 git clone ${repo.firmware}.git
 cd perinkpheral
@@ -141,29 +131,18 @@ tools/perinkpheral
             </li>
             <li>
               <h3>Create an application</h3>
-              <p>Creates an application folder from the SDK sample.</p>
               <Code label="shell">{`tools/perinkpheral new ../myapp --title "My App"`}</Code>
             </li>
             <li>
               <h3>Build</h3>
-              <p>
-                Compiles and checks the app, and reports its size.
-              </p>
               <Code label="shell">{`tools/perinkpheral build ../myapp --out ../myapp/build`}</Code>
             </li>
             <li>
               <h3>Run in the simulator</h3>
-              <p>
-                Runs the app on your computer as on the device. Screen and buttons: <code>http://127.0.0.1:8401</code>.
-              </p>
               <Code label="shell">{`tools/perinkpheral sim ../myapp`}</Code>
             </li>
             <li>
               <h3>Run on the device</h3>
-              <p>
-                Uploads the app over Wi-Fi and opens it on the device. Needs firmware with developer tools, the
-                default.
-              </p>
               <Code label="shell">{`
 export PERINKPHERAL_HOST=perinkpheral-xxxx.local
 tools/perinkpheral run ../myapp --shot screen.png
@@ -175,10 +154,6 @@ tools/perinkpheral log --follow
         </Chapter>
 
         <Chapter chapter={application}>
-          <p>
-            The device calls the app's functions on events. The app changes its state and asks for a redraw; the
-            screen is drawn in <code>app_on_draw()</code>.
-          </p>
           <Code label="hello.c">{HELLO}</Code>
           <div className="grid two">
             <Screen name="kit-list" alt="A list drawn with the kit" caption="List" />
@@ -187,10 +162,6 @@ tools/perinkpheral log --follow
         </Chapter>
 
         <Chapter chapter={manifest}>
-          <p>
-            The manifest describes the app: its name, the servers it uses, its settings. The device's web page shows the
-            settings form from it.
-          </p>
           <Code label="manifest.json">{MANIFEST}</Code>
           <Table
             head={['Key', 'Meaning']}
@@ -209,16 +180,9 @@ tools/perinkpheral log --follow
               [<code>companion</code>, 'A web page that helps the user set the app up'],
             ]}
           />
-          <p>
-            The app reads a setting with <code>kv_get()</code>. In URLs and headers, <code>{'{{key}}'}</code> is replaced
-            with the setting.
-          </p>
         </Chapter>
 
         <Chapter chapter={model}>
-          <p>
-            Functions the app exports; the device calls them by name. Each call must finish within 3 seconds.
-          </p>
           <Table
             head={['Function', 'Called when']}
             rows={[
@@ -237,24 +201,16 @@ tools/perinkpheral log --follow
               [<code>app_on_installed() / app_on_updated()</code>, 'First start after install or update'],
             ]}
           />
-          <h3>Buttons</h3>
-          <p>
-            The same everywhere: <span className="kbd">1</span> up, <span className="kbd">2</span> OK,{' '}
-            <span className="kbd">3</span> down, <span className="kbd">4</span> back. Holding BACK opens the menu; the
-            app does not get that press.
-          </p>
-          <h3>State</h3>
-          <p>
-            An app is closed whenever it leaves the screen. Save what must survive with <code>kv_set()</code> and read
-            it back with <code>kv_get()</code>. Larger data goes to files.
-          </p>
+          <h3>Buttons and state</h3>
+          <Facts
+            rows={[
+              ['Buttons', '1 up, 2 OK, 3 down, 4 back; hold BACK for the menu'],
+              ['Saved data', 'kv_set(), kv_get()'],
+            ]}
+          />
         </Chapter>
 
         <Chapter chapter={data}>
-          <p>
-            The app does not connect to the network itself: it asks the device, and the device delivers the response,
-            even when the app is not on screen.
-          </p>
           <Facts
             rows={[
               ['On a schedule', 'Requests in the manifest'],
@@ -265,15 +221,9 @@ tools/perinkpheral log --follow
             ]}
           />
           <Code label="weather.c">{VALUES}</Code>
-          <p>
-            See <Link to="/firmware#delivery">Firmware: Data delivery</Link>.
-          </p>
         </Chapter>
 
         <Chapter chapter={kit}>
-          <p>
-            Black and white graphics, two typefaces, six sizes. The UI kit has ready parts: lists, dialogs, charts.
-          </p>
           <Table
             head={['Part', 'Functions']}
             rows={[
@@ -313,9 +263,6 @@ tools/perinkpheral log --follow
         </Chapter>
 
         <Chapter chapter={tools}>
-          <p>
-            One command line tool; <code>tools/perinkpheral</code> without arguments lists all commands.
-          </p>
           <Table
             head={['Command', 'Description']}
             rows={[
@@ -336,31 +283,17 @@ tools/perinkpheral log --follow
         </Chapter>
 
         <Chapter chapter={clion}>
-          <p>
-            Build and run apps from CLion, on the device or in the simulator.
-          </p>
-          <ul>
-            <li>Toolchain setup in one step.</li>
-            <li>Live device screen in a tool window.</li>
-            <li>Manifest completion and checks.</li>
-            <li>Firmware upload over Wi-Fi or USB.</li>
-          </ul>
-          <p>
-            Simulator: macOS and Linux. Source:{' '}
-            <a href={repo.clion}>perinkpheral-clion-plugin</a>.
-          </p>
+          <Facts
+            rows={[
+              ['Runs on', 'Device, simulator (macOS, Linux)'],
+              ['Includes', 'Toolchain setup, live device screen, manifest checks, firmware upload'],
+              ['Source', <a href={repo.clion}>perinkpheral-clion-plugin</a>],
+            ]}
+          />
         </Chapter>
 
         <Chapter chapter={publishing}>
-          <p>
-            Apps are published in catalogs: a folder of files on any web server with HTTPS. Users add the catalog's
-            address on the device's web page.
-          </p>
           <Code label="shell">{`tools/perinkpheral catalog apps --out catalog`}</Code>
-          <p>
-            Official catalog: <a href={repo.apps}>perinkpheral-apps</a>. Translations: one JSON file per language in{' '}
-            <code>strings/</code>.
-          </p>
         </Chapter>
 
         <Chapter chapter={reference}>

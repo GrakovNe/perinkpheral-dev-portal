@@ -70,7 +70,7 @@ function Arrow({ points, label, dashed = false, labelAt }: { points: [number, nu
   )
 }
 
-function Diagram({ width, height, caption, label, children }: { width: number; height: number; caption: string; label: string; children: ReactNode }) {
+function Diagram({ width, height, label, children }: { width: number; height: number; label: string; children: ReactNode }) {
   return (
     <figure className="diagram">
       <div className="canvas">
@@ -78,7 +78,6 @@ function Diagram({ width, height, caption, label, children }: { width: number; h
           {children}
         </svg>
       </div>
-      <figcaption>{caption}</figcaption>
     </figure>
   )
 }
@@ -91,22 +90,21 @@ export function LayersDiagram() {
       width={760}
       height={430}
       label="The layers of the firmware, from the applications down to the hardware"
-      caption="Firmware layers. Services on the right."
     >
-      <Box x={10} y={10} w={530} h={50} title="Apps" sub="installed from catalogs" filled />
-      <Box x={10} y={74} w={530} h={50} title="App runtime" sub="what apps can call" />
-      <Box x={10} y={138} w={260} h={50} title="Navigation" sub="screens, BACK, menu" />
-      <Box x={280} y={138} w={260} h={50} title="Screens" sub="menu, dialogs, apps" />
-      <Box x={10} y={202} w={530} h={50} title="Graphics" sub="text, icons, lists, charts" />
+      <Box x={10} y={10} w={530} h={50} title="Apps" filled />
+      <Box x={10} y={74} w={530} h={50} title="App runtime" />
+      <Box x={10} y={138} w={260} h={50} title="Navigation" />
+      <Box x={280} y={138} w={260} h={50} title="Screens" />
+      <Box x={10} y={202} w={530} h={50} title="Graphics" />
       <Box x={10} y={266} w={530} h={50} title="Screen refresh" />
-      <Box x={10} y={330} w={530} h={50} title="Drivers" sub="display, buttons, antenna" />
+      <Box x={10} y={330} w={530} h={50} title="Drivers" />
       <Box x={10} y={394} w={740} h={28} title="ESP32-C6" />
-      <Box x={560} y={10} w={190} h={50} title="Events" sub="buttons first" filled />
-      <Box x={560} y={74} w={190} h={50} title="Timers" sub="alarms, schedules" />
-      <Box x={560} y={138} w={190} h={50} title="Network" sub="data for apps" />
-      <Box x={560} y={202} w={190} h={50} title="Wi-Fi and time" sub="setup, time sync" />
-      <Box x={560} y={266} w={190} h={50} title="Web page" sub="settings, updates" />
-      <Box x={560} y={330} w={190} h={50} title="Storage" sub="apps, settings" />
+      <Box x={560} y={10} w={190} h={50} title="Events" filled />
+      <Box x={560} y={74} w={190} h={50} title="Timers" />
+      <Box x={560} y={138} w={190} h={50} title="Network" />
+      <Box x={560} y={202} w={190} h={50} title="Wi-Fi and time" />
+      <Box x={560} y={266} w={190} h={50} title="Web page" />
+      <Box x={560} y={330} w={190} h={50} title="Storage" />
     </Diagram>
   )
 }
@@ -119,29 +117,28 @@ export function DeliveryDiagram() {
       width={820}
       height={400}
       label="How the answer to a poll or a request reaches its application"
-      caption="Data reaches an app whether it is on screen or not."
     >
-      <Box x={10} y={20} w={180} h={56} title="Schedule" sub="from the manifest" />
-      <Box x={10} y={100} w={180} h={56} title="On demand" sub="from app code" />
+      <Box x={10} y={20} w={180} h={56} title="Schedule" />
+      <Box x={10} y={100} w={180} h={56} title="On demand" />
       <Arrow points={[[190, 48], [235, 48], [235, 80], [260, 80]]} />
       <Arrow points={[[190, 128], [235, 128], [235, 96], [260, 96]]} />
-      <Box x={260} y={60} w={180} h={56} title="Device" sub="fetches" filled />
+      <Box x={260} y={60} w={180} h={56} title="Device" filled />
       <Arrow points={[[440, 88], [490, 88]]} />
-      <Box x={490} y={60} w={150} h={56} title="Source" sub="any web API" />
+      <Box x={490} y={60} w={150} h={56} title="Source" />
       <Arrow points={[[640, 88], [680, 88]]} />
       <Box x={680} y={60} w={130} h={56} title="Response" />
       <Arrow points={[[745, 116], [745, 176], [640, 176]]} label="pick" labelAt={[775, 150]} />
-      <Box x={440} y={151} w={200} h={50} title="Values" sub="picked from JSON" />
+      <Box x={440} y={151} w={200} h={50} title="Values" />
       <Arrow points={[[440, 176], [390, 176]]} />
       <Box x={200} y={151} w={190} h={50} title="App on screen?" filled />
       <Arrow points={[[295, 201], [295, 232], [115, 232], [115, 260]]} label="yes" labelAt={[205, 225]} />
       <Arrow points={[[295, 201], [295, 232], [450, 232], [450, 260]]} label="no" labelAt={[375, 225]} />
-      <Box x={10} y={260} w={210} h={56} title="App updates" />
-      <Box x={290} y={260} w={320} h={56} title="App updates in background" />
+      <Box x={10} y={260} w={210} h={56} title="App" />
+      <Box x={290} y={260} w={320} h={56} title="App in background" />
       <Arrow points={[[610, 288], [670, 288]]} dashed />
-      <Box x={670} y={260} w={140} h={56} title="App" sub="can take the screen" dashed />
+      <Box x={670} y={260} w={140} h={56} title="Focus" dashed />
       <Arrow points={[[450, 316], [450, 360], [400, 360]]} />
-      <Box x={150} y={340} w={250} h={40} title="Back to the previous screen" />
+      <Box x={150} y={340} w={250} h={40} title="Previous screen" />
     </Diagram>
   )
 }
@@ -155,19 +152,18 @@ export function InstallDiagram() {
       width={820}
       height={160}
       label="Installing an application from a catalog"
-      caption="Install from the device page. No restart."
     >
-      <Box x={0} y={20} w={140} h={56} title="Catalog" sub="any HTTPS host" />
+      <Box x={0} y={20} w={140} h={56} title="Catalog" />
       <Arrow points={[[140, 48], [step, 48]]} />
-      <Box x={step} y={20} w={140} h={56} title="Device page" sub="Install" />
+      <Box x={step} y={20} w={140} h={56} title="Device page" />
       <Arrow points={[[step + 140, 48], [2 * step, 48]]} />
       <Box x={2 * step} y={20} w={140} h={56} title="Space check" filled />
       <Arrow points={[[2 * step + 140, 48], [3 * step, 48]]} />
-      <Box x={3 * step} y={20} w={140} h={56} title="Download" sub="verified" />
+      <Box x={3 * step} y={20} w={140} h={56} title="Download" />
       <Arrow points={[[3 * step + 140, 48], [4 * step, 48]]} />
       <Box x={4 * step} y={20} w={140} h={56} title="Installed" filled />
       <Arrow points={[[4 * step + 70, 76], [4 * step + 70, 125], [2 * step + 320, 125]]} />
-      <Box x={2 * step + 20} y={105} w={300} h={40} title="App in the menu" />
+      <Box x={2 * step + 20} y={105} w={300} h={40} title="Menu" />
     </Diagram>
   )
 }
@@ -195,7 +191,6 @@ export function FlashDiagram() {
       width={width}
       height={120}
       label="The 4 MB flash and its partitions"
-      caption="4 MB of flash. Two firmware copies for safe updates; app code, files and settings. Not to scale."
     >
       {PARTITIONS.map((part, index) => {
         const w = (part.weight / total) * width
@@ -251,7 +246,6 @@ export function WiringDiagram() {
       width={760}
       height={height + 20}
       label="Wiring of the display and the buttons to the XIAO ESP32-C6"
-      caption="Display and buttons to the XIAO. The button board's V and G are joined to the display's VCC and GND."
     >
       <rect x={10} y={10} width={170} height={height - 10} fill={PAPER} stroke={INK} strokeWidth={1.5} />
       <text x={95} y={32} textAnchor="middle" fontSize={13}>

@@ -1,14 +1,13 @@
 import { useState, type ReactNode } from 'react'
 
-// The head of a page: what section of the portal it is, its title and one
-// paragraph of what is on it.
-export function PageHead({ eyebrow, title, children }: { eyebrow: string; title: string; children: ReactNode }) {
+// The head of a page: its title, and a line under it when there is one.
+export function PageHead({ eyebrow, title, children }: { eyebrow?: string; title: string; children?: ReactNode }) {
   return (
     <header className="page-head">
       <div className="wrap">
-        <p className="eyebrow">{eyebrow}</p>
+        {eyebrow && <p className="eyebrow">{eyebrow}</p>}
         <h1>{title}</h1>
-        <p className="lead">{children}</p>
+        {children && <p className="lead">{children}</p>}
       </div>
     </header>
   )

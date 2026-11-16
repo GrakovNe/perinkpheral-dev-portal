@@ -6,9 +6,7 @@ const BASE = import.meta.env.BASE_URL
 export function Credits() {
   return (
     <>
-      <PageHead eyebrow="Credits" title="Credits and licenses">
-        MIT License. Third-party components below.
-      </PageHead>
+      <PageHead title="Credits" />
       <div className="wrap page-body single">
         <div className="doc">
           <section>
@@ -56,7 +54,6 @@ export function Credits() {
                 ],
               ]}
             />
-            <p className="dim">Departure Mono is used on the device and on this site.</p>
           </section>
 
           <section>
@@ -69,10 +66,6 @@ export function Credits() {
                 ['FPC Antenna A-01', 'Seeed Studio'],
               ]}
             />
-            <p className="dim">
-              The display driver is based on Waveshare's reference code. GxEPD2 by Jean-Marc Zingg was used as a
-              reference for the same panel.
-            </p>
           </section>
 
           <section>
@@ -88,10 +81,6 @@ export function Credits() {
                 [<a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, 'place data for Photon, ODbL'],
               ]}
             />
-            <p className="dim">
-              sun: sunrise and sunset by the NOAA solar equations; moon phase by Jean Meeus, Astronomical
-              Algorithms.
-            </p>
           </section>
 
           <section>
@@ -106,13 +95,6 @@ export function Credits() {
                 [<a href="https://react.dev">React</a>, 'This site, with Vite and Sass'],
               ]}
             />
-          </section>
-
-          <section>
-            <h2>Inspiration</h2>
-            <p>
-              Pebble: application model and companion configuration page.
-            </p>
           </section>
         </div>
       </div>

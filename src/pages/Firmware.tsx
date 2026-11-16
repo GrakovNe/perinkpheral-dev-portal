@@ -19,16 +19,14 @@ const [overview, architecture, delivery, catalogs, storage, display, network, po
 export function Firmware() {
   return (
     <>
-      <PageHead eyebrow="Firmware" title="Firmware">
-        How the device runs apps, gets their data and draws the screen.
-      </PageHead>
+      <PageHead title="Firmware" />
       <DocBody chapters={CHAPTERS}>
         <Chapter chapter={overview}>
           <Facts
             rows={[
               ['Chip', 'ESP32-C6'],
-              ['Apps', 'Up to 24 installed'],
-              ['Network', 'Wi-Fi 6, HTTP and HTTPS'],
+              ['Apps', 'Up to 24'],
+              ['Network', 'Wi-Fi 6, HTTP, HTTPS'],
               ['Updates', 'Over Wi-Fi'],
               ['Languages', 'English, Russian'],
               ['Source', <a href={repo.firmware}>GrakovNe/perinkpheral</a>],
@@ -41,43 +39,46 @@ export function Firmware() {
         </Chapter>
 
         <Chapter chapter={delivery}>
-          <p>Apps say what data they need. The device fetches it and hands it to the app, even when the app is not on screen.</p>
           <DeliveryDiagram />
         </Chapter>
 
         <Chapter chapter={catalogs}>
-          <p>Apps come from catalogs: folders of files on any web server. Installing takes seconds, without a restart.</p>
           <InstallDiagram />
         </Chapter>
 
         <Chapter chapter={storage}>
-          <p>Every app keeps its settings and data on the device. A removed app keeps its settings for next time.</p>
           <FlashDiagram />
         </Chapter>
 
         <Chapter chapter={display}>
-          <ul>
-            <li>Press a button: the screen changes in about half a second.</li>
-            <li>Open another app: the screen flashes once and redraws in about 2.5 seconds.</li>
-            <li>Weather, prices and other data refresh at most once a minute.</li>
-            <li>The picture stays on the screen without using power.</li>
-          </ul>
+          <Facts
+            rows={[
+              ['Button press', '0.5 s'],
+              ['Switching apps', '2.5 s'],
+              ['Data updates', 'Up to once a minute'],
+              ['Power to keep the picture', 'None'],
+            ]}
+          />
         </Chapter>
 
         <Chapter chapter={network}>
-          <ul>
-            <li>First setup: connect a phone to the device's own Wi-Fi and choose your network.</li>
-            <li>Firmware updates: from the device's web page.</li>
-            <li>Updates, factory reset and a new network are confirmed with a button on the device.</li>
-          </ul>
+          <Facts
+            rows={[
+              ['First setup', 'From a phone, over the device’s own Wi-Fi'],
+              ['Firmware updates', 'From the device’s web page'],
+              ['Confirmation', 'Button on the device'],
+            ]}
+          />
         </Chapter>
 
         <Chapter chapter={power}>
-          <ul>
-            <li>Power saving off: Wi-Fi is always on, the device's web page always opens.</li>
-            <li>Power saving on: Wi-Fi turns on only to update data. The web page opens for 2 minutes after a button press.</li>
-            <li>Auto: power saving whenever no computer is connected over USB.</li>
-          </ul>
+          <Facts
+            rows={[
+              ['Power saving off', 'Wi-Fi always on'],
+              ['Power saving on', 'Wi-Fi only for data updates'],
+              ['Auto', 'Power saving without a computer on USB'],
+            ]}
+          />
         </Chapter>
 
         <Chapter chapter={api}>
@@ -94,7 +95,7 @@ export function Firmware() {
             ]}
           />
           <p>
-            Security notes: <a href={files.security}>SECURITY.md</a>.
+            <a href={files.security}>SECURITY.md</a>
           </p>
         </Chapter>
       </DocBody>

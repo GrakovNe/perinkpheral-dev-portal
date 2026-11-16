@@ -12,12 +12,7 @@ const SPECS: [string, string][] = [
   ['Case', '3D-printed'],
 ]
 
-const FEATURES: [string, string][] = [
-  ['Looks like paper', 'No backlight, no glare. Readable in daylight.'],
-  ['No account', 'No sign-up and no cloud. Data comes straight from the source.'],
-  ['Set up in a browser', 'Install apps and change settings from your phone or computer.'],
-  ['Buttons', 'Switch apps, flip pages, start a timer.'],
-]
+const FEATURES = ['No backlight', 'No account, no cloud', 'Set up in a browser', 'Four buttons']
 
 const HERO = [
   { name: 'hero-sun', caption: 'Sun and Moon' },
@@ -48,9 +43,9 @@ const RENDERS = [
 ]
 
 const DOORS = [
-  { to: '/hardware', title: 'Build one', text: 'Parts, wiring and the printed case.' },
-  { to: '/sdk', title: 'Write an app', text: 'C, a simulator and one command to run it.' },
-  { to: '/firmware', title: 'How it works', text: 'Inside the firmware.' },
+  { to: '/hardware', title: 'Hardware' },
+  { to: '/sdk', title: 'SDK' },
+  { to: '/firmware', title: 'Firmware' },
 ]
 
 function AppIcon({ rows }: { rows: string[] }) {
@@ -74,7 +69,7 @@ export function Home() {
               <Wordmark className="hero-wordmark" />
             </h1>
             <p className="hero-line">A paper-like screen for your desk, with apps.</p>
-            <p className="hero-lead">Weather, calendar, stocks, your smart home and more. Install apps in one click.</p>
+            <p className="hero-lead">Weather, calendar, stocks, smart home and more.</p>
             <div className="buttons">
               <Link className="button" to="/hardware">
                 Build one <span className="arrow">-&gt;</span>
@@ -121,7 +116,7 @@ export function Home() {
                 +
               </span>
               <h3>Your own</h3>
-              <p>Write an app in C.</p>
+              <p>In C</p>
             </Link>
           </div>
         </div>
@@ -130,10 +125,9 @@ export function Home() {
       <section className="band">
         <div className="wrap">
           <div className="features">
-            {FEATURES.map(([title, text]) => (
+            {FEATURES.map((title) => (
               <article key={title}>
                 <h3>{title}</h3>
-                <p>{text}</p>
               </article>
             ))}
           </div>
@@ -170,7 +164,6 @@ export function Home() {
                 <h3>
                   {door.title} <span className="arrow">-&gt;</span>
                 </h3>
-                <p>{door.text}</p>
               </Link>
             ))}
           </div>

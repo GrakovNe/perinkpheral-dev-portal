@@ -34,15 +34,12 @@ const RENDERS = [
 export function Hardware() {
   return (
     <>
-      <PageHead eyebrow="Hardware" title="Build guide">
-        Parts, wiring, printing and assembly. No custom PCB.
-      </PageHead>
+      <PageHead title="Hardware" />
       <DocBody chapters={CHAPTERS}>
         <Chapter chapter={overview}>
           <Render
             name="front34r"
             alt="The device, front right view"
-            caption="Copper PLA, black wordmark inlay."
           />
           <Facts
             rows={[
@@ -116,8 +113,8 @@ export function Hardware() {
             ]}
           />
           <ul>
-            <li>No supports needed.</li>
-            <li>The logo is printed in black together with the frame: a printer with a second color or a color change.</li>
+            <li>No supports.</li>
+            <li>Logo: second color, printed with the frame.</li>
           </ul>
         </Chapter>
 
@@ -196,10 +193,6 @@ export function Hardware() {
         </Chapter>
 
         <Chapter chapter={flashing}>
-          <p>
-            The first flash needs a USB cable. Later updates install over Wi-Fi from the device's web page. To build
-            and flash from the source you need ESP-IDF and wasi-sdk.
-          </p>
           <div className="code">
             <div className="label">
               <span>shell</span>
@@ -212,26 +205,26 @@ idf.py build
 idf.py -p <port> flash`}</code>
             </pre>
           </div>
-          <p>
-            On first start the device creates its own Wi-Fi network, <code>Perinkpheral-XXXX</code>. Connect to it and
-            open <code>http://192.168.4.1</code> to choose your network. If the computer does not see the board, hold
-            the BOOT button while plugging in the cable.
-          </p>
+          <Facts
+            rows={[
+              ['Needs', 'ESP-IDF, wasi-sdk, USB cable'],
+              ['Board not found', 'Hold BOOT while plugging in'],
+              ['Wi-Fi setup', <>Join <code>Perinkpheral-XXXX</code>, open <code>http://192.168.4.1</code></>],
+              ['Later updates', 'Over Wi-Fi'],
+            ]}
+          />
         </Chapter>
 
         <Chapter chapter={filesChapter}>
           <div className="grid">
             <a className="panel" href={files.step}>
               <h3>3D model</h3>
-              <p className="dim">The case with all its parts, STEP file.</p>
             </a>
             <a className="panel" href={files.bomPage}>
               <h3>Drawings</h3>
-              <p className="dim">Dimensions of the case and the parts inside.</p>
             </a>
             <a className="panel" href={files.hardwareNotes}>
               <h3>Display notes</h3>
-              <p className="dim">How the display is driven, known issues, sources.</p>
             </a>
           </div>
         </Chapter>

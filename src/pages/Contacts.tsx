@@ -4,9 +4,7 @@ import { author, repo } from '../content/links'
 export function Contacts() {
   return (
     <>
-      <PageHead eyebrow="Contacts" title="Contacts">
-        Bugs and ideas: GitHub issues. Anything else: email or Telegram.
-      </PageHead>
+      <PageHead title="Contacts" />
       <div className="wrap page-body single">
         <div className="doc">
           <div className="contacts">
