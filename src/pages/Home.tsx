@@ -390,6 +390,14 @@ const RENDERS = [
   { name: 'right', en: 'Right', ru: 'Справа' },
 ]
 
+// What the hero's second line types in turn.
+const PHRASES = [
+  { en: 'Apps included', ru: 'С приложениями' },
+  { en: 'Cloudless', ru: 'Без облака' },
+  { en: 'Open source', ru: 'Открытый код' },
+  { en: 'Made to be built', ru: 'Собирается за вечер' },
+]
+
 // A kit to buy: not yet. The button looks off, and a press says so.
 function KitButton() {
   const t = useT()
@@ -426,7 +434,8 @@ export function Home() {
           <div className="hero-text">
             <TypedHeading
               className="hero-line"
-              lines={[t('A paper-like screen for your desk', 'E-Ink экран для рабочего стола'), t('Apps included', 'С приложениями')]}
+              lead={t('A paper-like screen for your desk', 'E-Ink экран для рабочего стола')}
+              phrases={PHRASES.map((one) => t(one.en, one.ru))}
             />
             <p className="hero-lead">{t('Weather, calendar, stocks, smart home and more.', 'Погода, календарь, акции, умный дом и не только.')}</p>
             <div className="buttons">

@@ -42,8 +42,18 @@
     margin-top: 1lh;
   }
 
-  .typed-rest {
-    color: transparent;
+  // the phrases in turn: each takes the same place, the unseen ones only
+  // to make the line as tall as the tallest
+  .typed-turns {
+    display: grid;
+
+    > * {
+      grid-area: 1 / 1;
+    }
+  }
+
+  .typed-room {
+    visibility: hidden;
   }
 
   // an empty inline: no room of its own and no place to break a line at,
@@ -60,6 +70,11 @@
       height: 1em;
       background: var(--ink);
       animation: caret 1.1s steps(1) infinite;
+    }
+
+    // while letters come and go the carriage stands
+    &.steady::after {
+      animation: none;
     }
   }
 }

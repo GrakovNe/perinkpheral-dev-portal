@@ -1,58 +1,96 @@
 import { useEffect, useState } from 'react'
 
-const STEP_MS = 95
-const START_MS = STEP_MS
+const TYPE_MS = 95 // a letter typed, on the average
+const TYPE_JITTER_MS = 30 // so much sooner or later, at random: a hand, not a clock
+const ERASE_MS = 40 // a letter taken back
+const HOLD_MS = 2600 // a phrase typed out, read
+const GAP_MS = 500 // the line empty between two phrases
+const BLINK_MS = 1100 // the carriage's blink, as in the stylesheet
+const FIRST_BLINKS = 1 // an empty line blinks so long before the first phrase
 
-// A heading whose last line is typed out a letter at a time, a carriage
-// after it; the lines before it stand from the start. The whole text is
-// there from the start, the letters not yet typed unseen, so every line
-// breaks where it will end up and nothing moves as it is typed; a reader
-// that asks for less motion gets it at once.
-export function TypedHeading({ lines, className = '' }: { lines: string[]; className?: string }) {
-  const total = lines.reduce((sum, line) => sum + line.length, 0)
-  const standing = total - lines[lines.length - 1].length
-  const [shown, setShown] = useState(standing)
-  const key = lines.join('\n')
+// A heading of a line that stands and a line below it that is typed out,
+// taken back and typed again with the next phrase, round and round, a
+// carriage at its end. At first the second line is empty and the carriage
+// blinks once, so that the eye has found it before anything is
+// typed. The phrases lie under one another unseen and the line is as tall
+// as the tallest of them, so nothing below moves as they change; a reader
+// that asks for less motion gets the first phrase and no more.
+export function TypedHeading({
+  lead,
+  phrases,
+  className = '',
+}: {
+  lead: string
+  phrases: string[]
+  className?: string
+}) {
+  const [phrase, setPhrase] = useState(0)
+  const [shown, setShown] = useState(0)
+  const [isBusy, setBusy] = useState(false) // typing or erasing: the carriage does not blink
+  const key = phrases.join('\n')
 
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setShown(total)
+      setPhrase(0)
+      setShown(phrases[0].length)
       return
     }
-    setShown(standing)
-    let count = standing
     let timer = 0
-    const next = () => {
+    let index = 0
+    let count = 0
+    const wait = (ms: number, then: () => void) => {
+      timer = window.setTimeout(then, ms)
+    }
+    const type = () => {
+      setBusy(true)
       count += 1
       setShown(count)
-      if (count < total) {
-        timer = window.setTimeout(next, STEP_MS)
+      if (count < phrases[index].length) {
+        wait(TYPE_MS + Math.round((Math.random() * 2 - 1) * TYPE_JITTER_MS), type)
+      } else {
+        setBusy(false)
+        wait(HOLD_MS, erase)
       }
     }
-    timer = window.setTimeout(next, START_MS)
+    const erase = () => {
+      setBusy(true)
+      count -= 1
+      setShown(count)
+      if (count > 0) {
+        wait(ERASE_MS, erase)
+      } else {
+        setBusy(false)
+        index = (index + 1) % phrases.length
+        setPhrase(index)
+        wait(GAP_MS, type)
+      }
+    }
+    setPhrase(0)
+    setShown(0)
+    setBusy(false)
+    wait(FIRST_BLINKS * BLINK_MS, type)
     return () => window.clearTimeout(timer)
-    // the text is the dependency, by its contents
+    // the phrases are the dependency, by their contents
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [key, total])
-
-  let left = shown
-  const typed = lines.map((line) => {
-    const count = Math.min(line.length, Math.max(0, left))
-    left -= line.length
-    return count
-  })
-  const caretLine = shown >= total ? lines.length - 1 : typed.findIndex((count, index) => count < lines[index].length)
+  }, [key])
 
   return (
     <h1 className={`typed ${className}`}>
-      <span className="unseen">{lines.join('. ')}</span>
-      {lines.map((line, index) => (
-        <span key={index} className="typed-line" aria-hidden="true">
-          {line.slice(0, typed[index])}
-          {index === caretLine && <span className="caret" />}
-          <span className="typed-rest">{line.slice(typed[index])}</span>
+      <span className="unseen">{`${lead}. ${phrases[0]}`}</span>
+      <span className="typed-line" aria-hidden="true">
+        {lead}
+      </span>
+      <span className="typed-line typed-turns" aria-hidden="true">
+        {phrases.map((one) => (
+          <span key={one} className="typed-room">
+            {one}
+          </span>
+        ))}
+        <span className="typed-now">
+          {phrases[phrase].slice(0, shown)}
+          <span className={isBusy ? 'caret steady' : 'caret'} />
         </span>
-      ))}
+      </span>
     </h1>
   )
 }
