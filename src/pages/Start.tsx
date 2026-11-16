@@ -9,12 +9,14 @@ import { useLocal, useT } from '../i18n'
 // rest is told.
 
 function Step({
+  id,
   number,
   icon,
   title,
   children,
   more,
 }: {
+  id: string
   number: number
   icon: string[]
   title: string
@@ -22,7 +24,7 @@ function Step({
   more?: ReactNode
 }) {
   return (
-    <li className="start-step">
+    <li className="start-step" id={id}>
       <span className="start-picture">
         <PixelIcon rows={icon} />
       </span>
@@ -47,6 +49,7 @@ export function Start() {
       <div className="wrap">
         <ol className="start">
           <Step
+            id="build"
             number={1}
             icon={STEP_ICONS.build}
             title={t('Build it', 'Соберите устройство')}
@@ -62,27 +65,28 @@ export function Start() {
             )}
           </Step>
           <Step
+            id="flash"
             number={2}
             icon={STEP_ICONS.flash}
             title={t('Flash the firmware', 'Прошейте')}
             more={
-              <Link className="button quiet" to={local('/hardware#flashing')}>
-                {t('First flash', 'Первая прошивка')} <span className="arrow">-&gt;</span>
+              <Link className="button quiet" to={local('/flash')}>
+                {t('Flash', 'Прошить')} <span className="arrow">-&gt;</span>
               </Link>
             }
           >
             {t(
-              'Connect the board to a computer over USB-C. Later updates install over Wi-Fi.',
-              'Подключите плату к компьютеру по USB-C. Дальше обновления ставятся по Wi-Fi.',
+              'From a browser, with the board on a USB-C cable. Later updates install over Wi-Fi.',
+              'Из браузера, с платой на кабеле USB-C. Дальше обновления ставятся по Wi-Fi.',
             )}
           </Step>
-          <Step number={3} icon={STEP_ICONS.connect} title={t('Connect to Wi-Fi', 'Подключите к Wi-Fi')}>
+          <Step id="wifi" number={3} icon={STEP_ICONS.connect} title={t('Connect to Wi-Fi', 'Подключите к Wi-Fi')}>
             {t(
               'Scan the QR code on the screen with a phone, pick your network and press OK on the device.',
               'Отсканируйте телефоном QR-код на экране, выберите свою сеть и нажмите OK на устройстве.',
             )}
           </Step>
-          <Step number={4} icon={STEP_ICONS.install} title={t('Install apps', 'Установите приложения')}>
+          <Step id="apps" number={4} icon={STEP_ICONS.install} title={t('Install apps', 'Установите приложения')}>
             {t('Open', 'Откройте в браузере')} <code>perinkpheral-xxxx.local</code>
             {t(' in a browser and add apps from the catalog.', ' и добавьте приложения из каталога.')}
           </Step>

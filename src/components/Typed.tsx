@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 const STEP_MS = 95
-const START_MS = 700
+const START_MS = STEP_MS
 
 // A heading whose last line is typed out a letter at a time, a carriage
 // after it; the lines before it stand from the start. The whole text is

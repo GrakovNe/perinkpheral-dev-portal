@@ -12,6 +12,7 @@
     "check": "tsc -b && oxlint"
   },
   "dependencies": {
+    "esptool-js": "0.7.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "react-router-dom": "^7.18.5"
@@ -20,6 +21,7 @@
     "@types/node": "^24.19.2",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
+    "@types/w3c-web-serial": "1.0.9",
     "@vitejs/plugin-react": "^6.1.2",
     "oxlint": "^1.90.0",
     "sass": "^1.108.2",

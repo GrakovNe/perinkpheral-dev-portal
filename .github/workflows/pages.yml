@@ -1,5 +1,6 @@
 # The portal on GitHub Pages, at perinkpheral.dev: built, checked and
 # published when somebody presses Run workflow - a push does not publish.
+# The files of the latest firmware release go beside it, for the flasher.
 
 name: Publish
 
@@ -26,6 +27,16 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run check
+      - name: The latest firmware release, for the web flasher
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p public/firmware
+          if gh release download --repo GrakovNe/perinkpheral --pattern manifest.json --dir public/firmware; then
+            gh release download --repo GrakovNe/perinkpheral --pattern '*.bin' --dir public/firmware
+          else
+            echo "No firmware release with a manifest: the flasher says so."
+          fi
       - run: npm run build
         env:
           PORTAL_BASE: /

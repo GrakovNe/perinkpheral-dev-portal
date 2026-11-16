@@ -1,8 +1,9 @@
+import { Link } from 'react-router-dom'
 import { Chapter, DocBody, Facts, PageHead, Table } from '../components/Doc'
 import { WiringDiagram } from '../components/Diagrams'
 import { Render } from '../components/Pictures'
 import { files } from '../content/links'
-import { useT } from '../i18n'
+import { useLocal, useT } from '../i18n'
 
 const CHAPTERS = [
   { id: 'overview', en: 'Overview', ru: 'Обзор' },
@@ -18,6 +19,7 @@ const CHAPTERS = [
 
 export function Hardware() {
   const t = useT()
+  const local = useLocal()
   const chapters = CHAPTERS.map((one) => ({ id: one.id, title: t(one.en, one.ru) }))
   const [overview, parts, constraints, printing, wiring, assembly, fasteners, flashing, filesChapter] =
     chapters
@@ -189,26 +191,19 @@ export function Hardware() {
         </Chapter>
 
         <Chapter chapter={flashing}>
-          <div className="code">
-            <div className="label">
-              <span>shell</span>
-            </div>
-            <pre>
-              <code>{`. "$IDF_PATH/export.sh"
-cd firmware
-idf.py set-target esp32c6
-idf.py build
-idf.py -p <port> flash`}</code>
-            </pre>
-          </div>
           <Facts
             rows={[
-              [t('Needs', 'Нужно'), t('ESP-IDF, wasi-sdk, USB cable', 'ESP-IDF, wasi-sdk, кабель USB')],
+              [t('Needs', 'Нужно'), t('Chrome or Edge on a computer, a USB-C cable', 'Chrome или Edge на компьютере, кабель USB-C')],
               [t('Board not found', 'Плата не видна'), t('Hold BOOT while plugging in', 'Держите BOOT при подключении')],
               [t('Wi-Fi setup', 'Настройка Wi-Fi'), <>{t('Join', 'Подключиться к')} <code>Perinkpheral-XXXX</code>, {t('open', 'открыть')} <code>http://192.168.4.1</code></>],
               [t('Later updates', 'Дальнейшие обновления'), t('Over Wi-Fi', 'По Wi-Fi')],
             ]}
           />
+          <div className="buttons">
+            <Link className="button" to={local('/flash')}>
+              {t('Flash from a browser', 'Прошить из браузера')} <span className="arrow">-&gt;</span>
+            </Link>
+          </div>
         </Chapter>
 
         <Chapter chapter={filesChapter}>

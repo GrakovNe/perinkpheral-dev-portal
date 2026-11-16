@@ -4,6 +4,7 @@ import { Layout } from './components/Layout'
 import { Contacts } from './pages/Contacts'
 import { Credits } from './pages/Credits'
 import { Firmware } from './pages/Firmware'
+import { Flash } from './pages/Flash'
 import { Hardware } from './pages/Hardware'
 import { Home } from './pages/Home'
 import { Sdk } from './pages/Sdk'
@@ -35,6 +36,7 @@ function Navigation() {
 const ROUTES: [string, ReactElement][] = [
   ['', <Home />],
   ['/start', <Start />],
+  ['/flash', <Flash />],
   ['/hardware', <Hardware />],
   ['/firmware', <Firmware />],
   ['/sdk', <Sdk />],

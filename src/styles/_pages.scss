@@ -249,6 +249,100 @@
   font-size: 1.1rem;
 }
 
+// ---- the web flasher ----
+
+.flash-page {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 3rem;
+  align-items: start;
+  padding-top: 2.5rem;
+  padding-bottom: 5rem;
+
+  @include tablet {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2rem;
+  }
+}
+
+// a box with a line of its own on top, as the device's screen has
+.flasher {
+  border: 1px solid var(--ink);
+  box-shadow: 6px 6px 0 var(--ink);
+
+  .flasher-head {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.6rem 1.25rem;
+    border-bottom: 1px solid var(--ink);
+    font-size: 0.9rem;
+  }
+
+  .flasher-body {
+    padding: 1.5rem 1.25rem;
+    min-height: 11rem;
+
+    > p {
+      margin: 0 0 1.25rem;
+    }
+
+    > :last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .button:disabled {
+    opacity: 0.4;
+    cursor: default;
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+.flash-percent {
+  float: right;
+}
+
+.flash-warning {
+  padding-left: 0.75rem;
+  border-left: 3px solid var(--ink);
+}
+
+// how much is written: a frame filled with ink from the left
+.flash-bar {
+  height: 1.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid var(--ink);
+  padding: 2px;
+
+  span {
+    display: block;
+    height: 100%;
+    background: var(--ink);
+    transition: width 0.2s linear;
+  }
+}
+
+.flasher-log {
+  border-top: 1px solid var(--ink);
+
+  summary {
+    padding: 0.6rem 1.25rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+  }
+
+  pre {
+    max-height: 16rem;
+    margin: 0;
+    padding: 0.9rem 1.25rem;
+    overflow: auto;
+    font-size: 0.8rem;
+    color: var(--paper);
+    background: var(--ink);
+  }
+}
+
 // ---- bands of the landing page ----
 
 .band {

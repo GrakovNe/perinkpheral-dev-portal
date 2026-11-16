@@ -1,7 +1,8 @@
 // The sections of the portal, in the order the bar and the footer list
-// them. Credits are the footer's only.
+// them. Flash and Credits are the footer's only.
 export const PAGES = [
   { to: '/start', en: 'Getting started', ru: 'Начало работы', inBar: true },
+  { to: '/flash', en: 'Flash', ru: 'Прошивка', inBar: false },
   { to: '/hardware', en: 'Hardware', ru: 'Hardware', inBar: true },
   { to: '/firmware', en: 'Firmware', ru: 'Firmware', inBar: true },
   { to: '/sdk', en: 'SDK', ru: 'SDK', inBar: true },
@@ -19,6 +20,10 @@ export const DESCRIPTIONS: Record<string, { en: string; ru: string }> = {
   '/start': {
     en: 'From parts to a screen with apps: build it, flash it, connect it to Wi-Fi, install apps.',
     ru: 'От деталей до экрана с приложениями: собрать, прошить, подключить к Wi-Fi, установить приложения.',
+  },
+  '/flash': {
+    en: 'The first flash of perINKpheral from a browser: the board on a USB-C cable, Chrome or Edge, one button.',
+    ru: 'Первая прошивка perINKpheral из браузера: плата на кабеле USB-C, Chrome или Edge, одна кнопка.',
   },
   '/hardware': {
     en: 'The parts, the printed case, the wiring, the assembly and the first flash of the perINKpheral display.',
