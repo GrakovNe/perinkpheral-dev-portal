@@ -212,15 +212,12 @@ idf.py -p <port> flash`}</code>
         </Chapter>
 
         <Chapter chapter={filesChapter}>
-          <div className="grid">
-            <a className="panel" href={files.step}>
-              <h3>{t('3D model', '3D-модель')}</h3>
+          <div className="buttons">
+            <a className="button quiet" href={files.step} download="perinkpheral.step">
+              {t('3D model, STEP', '3D-модель, STEP')}
             </a>
-            <a className="panel" href={files.bomPage}>
-              <h3>{t('Drawings', 'Чертежи')}</h3>
-            </a>
-            <a className="panel" href={files.hardwareNotes}>
-              <h3>{t('Display notes', 'Заметки об экране')}</h3>
+            <a className="button quiet" href={files.hardwareNotes}>
+              {t('Display notes', 'Заметки об экране')} <span className="arrow">-&gt;</span>
             </a>
           </div>
         </Chapter>

@@ -29,11 +29,11 @@ export function Contacts() {
             <Table
               head={[t('Repository', 'Репозиторий'), t('Description', 'Описание')]}
               rows={[
-                [<a href={repo.firmware}>perinkpheral</a>, 'Firmware, SDK, tools, hardware, application guide'],
+                [<a href={repo.firmware}>perinkpheral</a>, t('Firmware, SDK, tools, hardware, application guide', 'Firmware, SDK, инструменты, hardware, руководство разработчика')],
                 [<a href={repo.apps}>perinkpheral-apps</a>, t('Official applications and catalog', 'Официальные приложения и каталог')],
-                [<a href={repo.clion}>perinkpheral-clion-plugin</a>, 'CLion plugin'],
+                [<a href={repo.clion}>perinkpheral-clion-plugin</a>, t('CLion plugin', 'Плагин CLion')],
                 [<a href={repo.homeAssistant}>perinkpheral-hacs</a>, t('Home Assistant integration', 'Интеграция Home Assistant')],
-                [<a href={repo.portal}>perinkpheral-dev-portal</a>, 'Developer portal'],
+                [<a href={repo.portal}>perinkpheral-dev-portal</a>, t('Developer portal', 'Портал разработчика')],
               ]}
             />
           </section>

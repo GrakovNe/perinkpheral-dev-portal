@@ -1,12 +1,15 @@
 import { useState, type ReactNode } from 'react'
 import { useT } from '../i18n'
 
-// A word with a hyphen in it - USB-C, Li-Ion - is not broken at the hyphen.
+// What is read as one word is not broken: a word with a hyphen in it -
+// USB-C, Li-Ion - and a size, M2.5 x 4 or 70 x 54 x 12.5.
+const WHOLE = /(\S+(?: x \S+)+|\S*\S-\S\S*)/
+
 export function keepWords(node: ReactNode): ReactNode {
-  if (typeof node !== 'string' || !node.includes('-')) {
+  if (typeof node !== 'string' || !WHOLE.test(node)) {
     return node
   }
-  return node.split(/(\S*\S-\S\S*)/).map((part, index) =>
+  return node.split(WHOLE).map((part, index) =>
     index % 2 === 1 ? (
       <span key={index} className="nowrap">
         {part}

@@ -52,7 +52,7 @@ export function Credits() {
                 [
                   <a href="https://github.com/scfried/soft-type-jersey">Jersey</a>,
                   t('The Soft Type Project Authors; Cyrillic added', 'The Soft Type Project Authors; кириллица добавлена'),
-                  'SIL Open Font License 1.1',
+                  <a href={`${BASE}licenses/OFL-Jersey.txt`}>SIL Open Font License 1.1</a>,
                 ],
               ]}
             />
@@ -90,8 +90,8 @@ export function Credits() {
             <Table
               head={[t('Tool', 'Инструмент'), t('Use', 'Назначение')]}
               rows={[
-                [<a href="https://github.com/WebAssembly/wasi-sdk">wasi-sdk</a>, 'Application compiler'],
-                [<a href="https://kotlinlang.org">Kotlin</a>, 'SDK tools and CLion plugin'],
+                [<a href="https://github.com/WebAssembly/wasi-sdk">wasi-sdk</a>, t('Application compiler', 'Компилятор приложений')],
+                [<a href="https://kotlinlang.org">Kotlin</a>, t('SDK tools and CLion plugin', 'Инструменты SDK и плагин CLion')],
                 [<a href="https://www.blender.org">Blender</a>, t('Enclosure renders', 'Рендеры корпуса')],
                 [<a href="https://www.autodesk.com/products/fusion-360">Fusion</a>, t('Enclosure model', 'Модель корпуса')],
                 [<a href="https://react.dev">React</a>, t('This site, with Vite and Sass', 'Этот сайт, вместе с Vite и Sass')],

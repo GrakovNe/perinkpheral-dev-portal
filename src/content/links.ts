@@ -21,8 +21,8 @@ export const files = {
   companion: blob('sdk/companion/example.html'),
   guidePdf: raw('docs/guide/perinkpheral-app-guide.pdf'),
   guidePdfRu: raw('docs/guide/perinkpheral-app-guide.ru.pdf'),
-  step: raw('hardware/step/perinkpheral.step'),
-  bomPage: blob('hardware/bom/index.html'),
+  // a CDN that serves it as model/step, so a browser saves it rather than shows it as text
+  step: 'https://cdn.jsdelivr.net/gh/GrakovNe/perinkpheral@main/hardware/step/perinkpheral.step',
   hardwareNotes: blob('hardware/README.md'),
   partitions: blob('firmware/partitions.csv'),
   security: blob('SECURITY.md'),

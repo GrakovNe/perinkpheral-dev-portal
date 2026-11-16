@@ -262,8 +262,8 @@
 }
 
 .lightbox {
-  width: min(96vw, 110rem);
-  max-width: none;
+  width: fit-content;
+  max-width: 96vw;
   max-height: 96vh;
   padding: 0;
   border: 1px solid var(--ink);
@@ -275,10 +275,11 @@
   }
 
   img {
-    width: 100%;
+    display: block;
+    width: auto;
     height: auto;
+    max-width: calc(96vw - 2px);
     max-height: calc(96vh - 3.5rem);
-    object-fit: contain;
   }
 
   .row {
@@ -471,7 +472,8 @@
         color: var(--dim);
       }
 
-      &:empty {
+      &:empty,
+      &:has(> span:empty) {
         display: none;
       }
     }

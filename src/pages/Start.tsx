@@ -29,7 +29,7 @@ function Step({
       <div>
         <h2>
           <span className="start-number">{number}</span>
-          {title}
+          <span>{keepWords(title)}</span>
         </h2>
         <p>{keepWords(children)}</p>
         {more}
