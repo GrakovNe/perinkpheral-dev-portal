@@ -71,21 +71,9 @@ function Arrow({ points, label, dashed = false, labelAt }: { points: [number, nu
   )
 }
 
-function Diagram({
-  width,
-  height,
-  label,
-  className = '',
-  children,
-}: {
-  width: number
-  height: number
-  label: string
-  className?: string
-  children: ReactNode
-}) {
+function Diagram({ width, height, label, children }: { width: number; height: number; label: string; children: ReactNode }) {
   return (
-    <figure className={`diagram ${className}`}>
+    <figure className="diagram">
       <div className="canvas">
         <svg viewBox={`0 0 ${width} ${height}`} role="img" aria-label={label}>
           {children}
@@ -282,103 +270,5 @@ export function WiringDiagram() {
         )
       })}
     </Diagram>
-  )
-}
-
-// ---- from parts to a screen with apps ----
-
-// A picture of '#' and '.' rows, a run of ink a rectangle.
-function Pixels({ rows, x, y, size, fill }: { rows: string[]; x: number; y: number; size: number; fill: string }) {
-  const cell = size / rows.length
-  const runs: ReactNode[] = []
-  rows.forEach((row, r) => {
-    for (const match of row.matchAll(/#+/g)) {
-      runs.push(
-        <rect
-          key={`${r}-${match.index}`}
-          x={x + (match.index ?? 0) * cell}
-          y={y + r * cell}
-          width={match[0].length * cell}
-          height={cell}
-          fill={fill}
-        />,
-      )
-    }
-  })
-  return <g shapeRendering="crispEdges">{runs}</g>
-}
-
-export type Stage = { label: string; icon: string[] }
-
-function StageBox({ stage, x, y, w, h, number }: { stage: Stage; x: number; y: number; w: number; h: number; number?: number }) {
-  const last = number === undefined
-  return (
-    <g>
-      <rect x={x} y={y} width={w} height={h} fill={last ? INK : PAPER} stroke={INK} strokeWidth={1.5} />
-      <Pixels rows={stage.icon} x={x + w / 2 - 32} y={y + 26} size={64} fill={last ? PAPER : INK} />
-      <text x={x + w / 2} y={y + h - 24} textAnchor="middle" fontSize={14} fill={last ? PAPER : INK}>
-        {stage.label}
-      </text>
-      {!last && (
-        <g>
-          <rect x={x} y={y} width={26} height={26} fill={INK} />
-          <text x={x + 13} y={y + 18} textAnchor="middle" fontSize={14} fill={PAPER}>
-            {number}
-          </text>
-        </g>
-      )}
-    </g>
-  )
-}
-
-// Three steps and what they come to: across the page, and down it on a phone.
-export function StartDiagram({ steps, result, label }: { steps: Stage[]; result: Stage; label: string }) {
-  const stages = [...steps, result]
-  const w = 200
-  const h = 150
-  const gap = 60
-  const across = stages.length * w + (stages.length - 1) * gap
-  const downW = 260
-  const downGap = 44
-  const down = stages.length * h + (stages.length - 1) * downGap
-  return (
-    <>
-      <Diagram width={across + 20} height={h + 20} label={label} className="start-across">
-        {stages.map((stage, index) => {
-          const x = 10 + index * (w + gap)
-          return (
-            <g key={stage.label}>
-              <StageBox stage={stage} x={x} y={10} w={w} h={h} number={index < steps.length ? index + 1 : undefined} />
-              {index > 0 && (
-                <Arrow
-                  points={[
-                    [x - gap + 8, 10 + h / 2],
-                    [x - 8, 10 + h / 2],
-                  ]}
-                />
-              )}
-            </g>
-          )
-        })}
-      </Diagram>
-      <Diagram width={downW + 20} height={down + 20} label={label} className="start-down">
-        {stages.map((stage, index) => {
-          const y = 10 + index * (h + downGap)
-          return (
-            <g key={stage.label}>
-              <StageBox stage={stage} x={10} y={y} w={downW} h={h} number={index < steps.length ? index + 1 : undefined} />
-              {index > 0 && (
-                <Arrow
-                  points={[
-                    [10 + downW / 2, y - downGap + 6],
-                    [10 + downW / 2, y - 6],
-                  ]}
-                />
-              )}
-            </g>
-          )
-        })}
-      </Diagram>
-    </>
   )
 }

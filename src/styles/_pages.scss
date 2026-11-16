@@ -105,34 +105,70 @@
   }
 }
 
-// ---- the steps from parts to a screen ----
+// ---- the steps from parts to a screen: cards, as the apps' are ----
 
-// The same diagram across the page, and down it on a phone. Never drawn
-// larger than it is, so that a cell of an icon is a pixel.
-.start-across svg {
-  max-width: 1000px;
-  margin: 0 auto;
-}
+.start {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 2.25rem 1.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 
-.start-down {
-  display: none;
-}
-
-// below the width at which the row of four would be drawn smaller than 0.9
-@media (max-width: 60rem) {
-  .start-across {
-    display: none;
+  @include tablet {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .start-down {
-    display: block;
+  li {
+    margin: 0;
+  }
 
-    svg {
-      min-width: 0;
-      max-width: 280px;
-      margin: 0 auto;
+  .start-picture {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 4 / 3;
+    border: 1px solid var(--ink);
+  }
+
+  // two pixels a cell
+  .app-icon {
+    width: 128px;
+    height: 128px;
+    max-width: 50%;
+    max-height: 50%;
+    fill: var(--ink);
+  }
+
+  .done .start-picture {
+    background: var(--ink);
+
+    .app-icon {
+      fill: var(--paper);
     }
   }
+
+  h3 {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 1.75rem;
+    margin: 1rem 0 0;
+    font-size: 1.05rem;
+  }
+}
+
+.start-number {
+  display: inline-grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  color: var(--paper);
+  background: var(--ink);
+  font-size: 0.95rem;
+}
+
+.start-buttons {
+  margin-top: 2.5rem;
 }
 
 // ---- bands of the landing page ----

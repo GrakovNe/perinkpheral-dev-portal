@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Carousel, Gallery } from '../components/Pictures'
-import { StartDiagram } from '../components/Diagrams'
 import { keepWords } from '../components/Doc'
 import { APPS } from '../content/apps'
 import { useT } from '../i18n'
@@ -534,8 +533,8 @@ const STEPS: { en: string; ru: string; icon: string[] }[] = [
     ],
   },
   {
-    en: 'Connect to Wi-Fi',
-    ru: 'Подключить к Wi-Fi',
+    en: 'Wi-Fi',
+    ru: 'Wi-Fi',
     icon: [
       '................................................................',
       '................................................................',
@@ -604,8 +603,8 @@ const STEPS: { en: string; ru: string; icon: string[] }[] = [
     ],
   },
   {
-    en: 'Install apps',
-    ru: 'Поставить приложения',
+    en: 'Apps',
+    ru: 'Приложения',
     icon: [
       '................................................................',
       '................................................................',
@@ -752,19 +751,6 @@ export function Home() {
       <section className="band">
         <div className="wrap">
           <div className="band-head">
-            <h2>{t('Getting started', 'Как начать')}</h2>
-          </div>
-          <StartDiagram
-            label={t('From parts to apps on the screen', 'От деталей до приложений на экране')}
-            steps={STEPS.map((step) => ({ label: t(step.en, step.ru), icon: step.icon }))}
-            result={{ label: t('Apps on the screen', 'Приложения на экране'), icon: SPECS[0].icon }}
-          />
-        </div>
-      </section>
-
-      <section className="band">
-        <div className="wrap">
-          <div className="band-head">
             <h2>{t('Example apps', 'Примеры приложений')}</h2>
           </div>
           <div className="apps">
@@ -805,6 +791,39 @@ export function Home() {
             <h2>{t('Gallery', 'Галерея')}</h2>
           </div>
           <Gallery shots={RENDERS.map(caption)} />
+        </div>
+      </section>
+
+      <section className="band">
+        <div className="wrap">
+          <div className="band-head">
+            <h2>{t('Getting started', 'Как начать')}</h2>
+          </div>
+          <ol className="start">
+            {STEPS.map((step, index) => (
+              <li key={step.en}>
+                <span className="start-picture">
+                  <AppIcon rows={step.icon} />
+                </span>
+                <h3>
+                  <span className="start-number">{index + 1}</span>
+                  {t(step.en, step.ru)}
+                </h3>
+              </li>
+            ))}
+            <li className="done">
+              <span className="start-picture">
+                <AppIcon rows={SPECS[0].icon} />
+              </span>
+              <h3>{t('Done', 'Готово')}</h3>
+            </li>
+          </ol>
+          <div className="buttons start-buttons">
+            <Link className="button" to="/hardware">
+              {t('Build one', 'Собрать')} <span className="arrow">-&gt;</span>
+            </Link>
+            <KitButton />
+          </div>
         </div>
       </section>
     </>
