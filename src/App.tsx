@@ -9,7 +9,7 @@ import { Home } from './pages/Home'
 import { Sdk } from './pages/Sdk'
 
 import { PAGES } from './content/pages'
-import { useLang, useT } from './i18n'
+import { EnglishOnly, useLang, useT } from './i18n'
 
 // A new page starts at its top, or at the section its address names; the
 // title of the tab says which page it is.
@@ -49,9 +49,9 @@ export default function App() {
       <Navigation />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/sdk" element={<Sdk />} />
-        <Route path="/hardware" element={<Hardware />} />
-        <Route path="/firmware" element={<Firmware />} />
+        <Route path="/sdk" element={<EnglishOnly><Sdk /></EnglishOnly>} />
+        <Route path="/hardware" element={<EnglishOnly><Hardware /></EnglishOnly>} />
+        <Route path="/firmware" element={<EnglishOnly><Firmware /></EnglishOnly>} />
         <Route path="/contacts" element={<Contacts />} />
         <Route path="/credits" element={<Credits />} />
         <Route path="*" element={<NotFound />} />

@@ -41,6 +41,13 @@ export function LangProvider({ children }: { children: ReactNode }) {
   return <LangContext.Provider value={{ lang, setLang }}>{children}</LangContext.Provider>
 }
 
+// Technical pages - the SDK, the hardware, the firmware - are English in
+// both languages: they are read with the code, the datasheets and the tools.
+export function EnglishOnly({ children }: { children: ReactNode }) {
+  const { setLang } = useContext(LangContext)
+  return <LangContext.Provider value={{ lang: 'en', setLang }}>{children}</LangContext.Provider>
+}
+
 export function useLang() {
   return useContext(LangContext)
 }

@@ -95,7 +95,7 @@ function Foot() {
               <Mark />
               <Wordmark />
             </Link>
-            <p>{t('An open desk e-paper display. Hardware, firmware and SDK under the MIT License.', 'Открытый настольный e-paper дисплей. Железо, прошивка и SDK под лицензией MIT.')}</p>
+            <p>{t('An open desk e-paper display. Hardware, firmware and SDK under the MIT License.', 'Открытый настольный E-Ink дисплей. Hardware, firmware и SDK под лицензией MIT.')}</p>
           </div>
           <div>
             <h4>{t('Portal', 'Портал')}</h4>
@@ -111,13 +111,13 @@ function Foot() {
             <h4>{t('Repositories', 'Репозитории')}</h4>
             <ul>
               <li>
-                <a href={repo.firmware}>{t('Firmware and SDK', 'Прошивка и SDK')}</a>
+                <a href={repo.firmware}>Firmware and SDK</a>
               </li>
               <li>
                 <a href={repo.apps}>{t('Applications', 'Приложения')}</a>
               </li>
               <li>
-                <a href={repo.clion}>{t('CLion plugin', 'Плагин CLion')}</a>
+                <a href={repo.clion}>CLion plugin</a>
               </li>
               <li>
                 <a href={repo.homeAssistant}>Home Assistant</a>

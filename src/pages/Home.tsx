@@ -5,7 +5,7 @@ import { APPS } from '../content/apps'
 import { useT } from '../i18n'
 
 const SPECS: [string, string, string, string][] = [
-  ['Screen', 'Экран', '4.2" e-paper', '4.2" e-paper'],
+  ['Screen', 'Экран', '4.2" e-paper', '4.2" E-Ink'],
   ['Apps', 'Приложения', 'Up to 24', 'До 24'],
   ['Controls', 'Управление', '4 buttons', '4 кнопки'],
   ['Connection', 'Связь', 'Wi-Fi', 'Wi-Fi'],
@@ -49,9 +49,9 @@ const RENDERS = [
 ]
 
 const DOORS = [
-  { to: '/hardware', en: 'Hardware', ru: 'Железо' },
+  { to: '/hardware', en: 'Hardware', ru: 'Hardware' },
   { to: '/sdk', en: 'SDK', ru: 'SDK' },
-  { to: '/firmware', en: 'Firmware', ru: 'Прошивка' },
+  { to: '/firmware', en: 'Firmware', ru: 'Firmware' },
 ]
 
 function AppIcon({ rows }: { rows: string[] }) {
@@ -76,7 +76,7 @@ export function Home() {
             <h1>
               <Wordmark className="hero-wordmark" />
             </h1>
-            <p className="hero-line">{t('A paper-like screen for your desk, with apps.', 'Экран как бумага для рабочего стола, с приложениями.')}</p>
+            <p className="hero-line">{t('A paper-like screen for your desk, with apps.', 'E-Ink экран для рабочего стола, с приложениями.')}</p>
             <p className="hero-lead">{t('Weather, calendar, stocks, smart home and more.', 'Погода, календарь, акции, умный дом и не только.')}</p>
             <div className="buttons">
               <Link className="button" to="/hardware">

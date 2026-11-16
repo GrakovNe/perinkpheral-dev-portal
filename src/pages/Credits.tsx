@@ -17,7 +17,7 @@ export function Credits() {
               rows={[
                 [t('Author', 'Автор'), author.name],
                 [t('License', 'Лицензия'), <a href={files.license}>MIT</a>],
-                [t('Firmware, SDK, hardware', 'Прошивка, SDK, железо'), <a href={repo.firmware}>perinkpheral</a>],
+                ['Firmware, SDK, hardware', <a href={repo.firmware}>perinkpheral</a>],
                 [t('Applications', 'Приложения'), <a href={repo.apps}>perinkpheral-apps</a>],
               ]}
             />
@@ -59,7 +59,7 @@ export function Credits() {
           </section>
 
           <section>
-            <h2>{t('Hardware', 'Железо')}</h2>
+            <h2>Hardware</h2>
             <Table
               head={[t('Part', 'Деталь'), t('Maker', 'Производитель')]}
               rows={[
@@ -90,8 +90,8 @@ export function Credits() {
             <Table
               head={[t('Tool', 'Инструмент'), t('Use', 'Назначение')]}
               rows={[
-                [<a href="https://github.com/WebAssembly/wasi-sdk">wasi-sdk</a>, t('Application compiler', 'Компилятор приложений')],
-                [<a href="https://kotlinlang.org">Kotlin</a>, t('SDK tools and CLion plugin', 'Инструменты SDK и плагин CLion')],
+                [<a href="https://github.com/WebAssembly/wasi-sdk">wasi-sdk</a>, 'Application compiler'],
+                [<a href="https://kotlinlang.org">Kotlin</a>, 'SDK tools and CLion plugin'],
                 [<a href="https://www.blender.org">Blender</a>, t('Enclosure renders', 'Рендеры корпуса')],
                 [<a href="https://www.autodesk.com/products/fusion-360">Fusion</a>, t('Enclosure model', 'Модель корпуса')],
                 [<a href="https://react.dev">React</a>, t('This site, with Vite and Sass', 'Этот сайт, вместе с Vite и Sass')],
