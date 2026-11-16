@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Mark, Wordmark } from '../components/Brand'
 import { Gallery, Render, Screen } from '../components/Pictures'
-import { repo } from '../content/links'
 
 const SPECS: [string, string][] = [
   ['Display', '4.2" e-paper, 400 x 300, 1 bit'],
@@ -101,9 +100,6 @@ export function Home() {
               <Link className="button quiet" to="/hardware">
                 Build one
               </Link>
-              <a className="button quiet" href={repo.firmware}>
-                GitHub
-              </a>
             </div>
           </div>
           <div className="hero-picture">
@@ -135,8 +131,8 @@ export function Home() {
           <div className="band-head">
             <h2>What it is</h2>
             <p>
-              A separate screen for the desk that is not a second monitor. In one line: a TRMNL without the server
-              and with buttons, on hardware that can be built at home.
+              A separate screen for the desk that is not a second monitor: no server behind it, buttons in front of
+              it, on hardware that can be built at home.
             </p>
           </div>
           <div className="principles">

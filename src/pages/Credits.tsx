@@ -111,8 +111,7 @@ export function Credits() {
           <section>
             <h2>Inspiration</h2>
             <p>
-              Pebble, for applications on a small host with buttons and a companion page. TRMNL, for an e-paper screen on
-              the desk.
+              Pebble, for applications on a small host with buttons and a companion page.
             </p>
           </section>
         </div>
