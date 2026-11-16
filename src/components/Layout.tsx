@@ -160,7 +160,11 @@ function Foot() {
             </ul>
           </div>
         </div>
-        <p className="small">(c) 2026 {author.name}. MIT License.</p>
+        <p className="small">
+          (c) 2026 {author.name}. MIT License.
+          <br />
+          Saint Petersburg, Russia
+        </p>
       </div>
     </footer>
   )
