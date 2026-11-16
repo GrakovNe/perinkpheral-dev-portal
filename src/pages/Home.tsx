@@ -15,8 +15,8 @@ const SPECS: [string, string][] = [
 const FEATURES = ['No backlight', 'No account, no cloud', 'Set up in a browser', 'Four buttons']
 
 const HERO = [
-  { name: 'hero-sun', caption: 'Sun and Moon' },
   { name: 'hero-weather', caption: 'Weather' },
+  { name: 'hero-sun', caption: 'Sun and Moon' },
   { name: 'hero-stocks', caption: 'Stocks' },
   { name: 'hero-timer', caption: 'Timer' },
 ]
