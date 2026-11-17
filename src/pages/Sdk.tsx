@@ -229,7 +229,7 @@ tools/perinkpheral log --follow
               [t('On demand', 'По запросу'), t('http_request() from the code', 'http_request() из кода')],
               [t('Ready values', 'Готовые значения'), t('List JSON paths in "pick": app_on_values() gets the values', 'Пути JSON в "pick": app_on_values() получает значения')],
               [t('Raw response', 'Ответ как есть'), t('Without "pick": app_on_data() gets the response piece by piece', 'Без "pick": app_on_data() получает ответ частями')],
-              [t('Show on screen', 'Показать на экране'), t('request_focus() opens the app when its data arrives', 'request_focus() открывает приложение, когда пришли данные')],
+              [t('Show on screen', 'Показать на экране'), t('request_focus() asks to open the app when its data arrives; once in 30 s', 'request_focus() просит открыть приложение, когда пришли данные; раз в 30 с')],
             ]}
           />
           <Code label="weather.c">{VALUES}</Code>
@@ -262,7 +262,7 @@ tools/perinkpheral log --follow
               [t('Saved data', 'Сохранённые данные'), t('2 KB, up to 1 KB per value', '2 КБ, до 1 КБ на значение')],
               [t('Files', 'Файлы'), t('64 KB in the package; 32 KB if the app writes files', '64 КБ в пакете; 32 КБ, если приложение пишет файлы')],
               [t('Scheduled requests', 'Запросы по расписанию'), t('4, every 10 s to 1 day', '4, от 10 с до суток')],
-              [t('Requests at once', 'Запросов одновременно'), '16'],
+              [t('Requests waiting', 'Запросов в очереди'), t('16 an app, one at a time', '16 на приложение, по одному')],
               [t('Response size', 'Размер ответа'), t('256 KB parsed, 4 MB piece by piece', '256 КБ с разбором, 4 МБ частями')],
               [t('Settings', 'Настройки'), t('8, values up to 255 bytes', '8, значения до 255 байт')],
               [t('Timers and alarms', 'Таймеры и будильники'), t('4 and 4', '4 и 4')],
