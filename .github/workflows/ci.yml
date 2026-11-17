@@ -1,28 +1,32 @@
-# The portal on GitHub Pages, at perinkpheral.dev: built, checked and
-# published when somebody presses Run workflow - a push does not publish.
-# The web flasher reads the firmware's releases from the firmware repository's
-# Pages, not from here.
+# Every push and pull request: the portal checked and built, the site as the run's artifact.
+#
+# Every push to main is a release, once that passes: the site published on GitHub Pages at
+# perinkpheral.dev, and the next version - the last release's with its patch one up, or 0.1.0 -
+# tagged, its notes the commits since the release before. The web flasher reads the firmware's
+# releases from the firmware repository's Pages, not from here.
 
-name: Publish
+name: CI
 
 on:
+  push:
+  pull_request:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
 concurrency:
-  group: pages
-  cancel-in-progress: false
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: npm
@@ -37,6 +41,7 @@ jobs:
 
   publish:
     needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -44,3 +49,23 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+
+  release:
+    needs: publish
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          last=$(git tag -l 'v[0-9]*' --sort=-v:refname | head -1 | sed 's/^v//')
+          next=0.1.0
+          if [ -n "$last" ]; then
+            IFS=. read -r major minor patch <<< "$last"
+            next="$major.$minor.$((patch + 1))"
+          fi
+          git log --no-merges --format='- %s' ${last:+v$last..}HEAD > notes.md
+          gh release create "v$next" --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
+            --title "$next" --notes-file notes.md
