@@ -6,18 +6,35 @@ import { readWholeFlash } from '../content/flashRead'
 import { useLocal, useT } from '../i18n'
 
 // The first flash from a browser: the board on a USB cable, Web Serial and
-// Espressif's esptool-js. The files are the latest firmware release's, put
-// beside the portal when it is published (firmware/manifest.json, in the form
-// of ESP Web Tools); the board is erased and they are written where the
+// Espressif's esptool-js. Any release of the firmware, for release or for
+// debugging: the firmware's repository puts the files of every release on its
+// Pages, where a browser may read them, with flash/index.json listing them -
+// the version, the date, the notes and a manifest in the form of ESP Web Tools
+// for each build. The board is erased and the files are written where the
 // manifest says. Before that, the whole flash can be read into a file: a copy
 // of what the board holds, settings and Wi-Fi password among it.
 
-const BASE = import.meta.env.BASE_URL
+const RELEASES = 'https://grakovne.github.io/perinkpheral/flash/'
 const ESPRESSIF = 0x303a
 const FLASH_BYTES = 4 * 1024 * 1024
 
 type Part = { path: string; offset: number }
 type Manifest = { version: string; builds: { chipFamily: string; parts: Part[] }[] }
+type Flavor = 'release' | 'debug'
+type Release = { version: string; date: string; notes: string; builds: Record<Flavor, string | null> }
+
+// The notes as CHANGES.md has them, the line about the flasher aside: a point a line.
+const notesOf = (release: Release) =>
+  release.notes
+    .split(/\n\s*\nA first flash/)[0]
+    .split(/\n(?=- )/)
+    .map((point) => point.trim().replace(/^- /, '').replace(/\s*\n\s*/g, ' '))
+    .filter(Boolean)
+
+// `code` of a note as code, the rest as text
+const Note = ({ text }: { text: string }) => (
+  <>{text.split('`').map((part, index) => (index % 2 ? <code key={index}>{part}</code> : part))}</>
+)
 
 type Phase =
   | { name: 'idle' }
@@ -47,7 +64,9 @@ export function Flash() {
     () => 'serial' in navigator,
     () => true,
   )
-  const [manifest, setManifest] = useState<Manifest | null | 'none'>(null)
+  const [releases, setReleases] = useState<Release[] | null | 'none'>(null)
+  const [chosen, setChosen] = useState(0)
+  const [flavor, setFlavor] = useState<Flavor>('release')
   const [phase, setPhase] = useState<Phase>({ name: 'idle' })
   const [log, setLog] = useState('')
   const loader = useRef<ESPLoader | null>(null)
@@ -65,11 +84,15 @@ export function Flash() {
   const transport = useRef<Transport | null>(null)
 
   useEffect(() => {
-    fetch(`${BASE}firmware/manifest.json`)
-      .then((answer) => (answer.ok ? answer.json() : 'none'))
-      .then(setManifest)
-      .catch(() => setManifest('none'))
+    fetch(`${RELEASES}index.json`, { cache: 'no-cache' })
+      .then((answer) => (answer.ok ? answer.json() : []))
+      .then((list: Release[]) => setReleases(list.length ? list : 'none'))
+      .catch(() => setReleases('none'))
   }, [])
+
+  const current = releases && releases !== 'none' ? releases[chosen] : null
+  // a release made before there were builds for debugging has the one
+  const build: Flavor = current && current.builds[flavor] ? flavor : 'release'
 
   // leaving the page lets the board go: the port is the browser's, not the page's
   useEffect(
@@ -152,18 +175,21 @@ export function Flash() {
   }
 
   const install = async () => {
-    if (!loader.current || !manifest || manifest === 'none') {
-      return
-    }
-    const build = manifest.builds.find((one) => one.chipFamily === 'ESP32-C6')
-    if (!build) {
+    const path = current?.builds[build]
+    if (!loader.current || !path) {
       return
     }
     setPhase({ name: 'erasing' })
     try {
+      const manifestUrl = new URL(path, RELEASES)
+      const manifest: Manifest = await (await fetch(manifestUrl)).json()
+      const chip = manifest.builds.find((one) => one.chipFamily === 'ESP32-C6')
+      if (!chip) {
+        throw new Error('no ESP32-C6 build')
+      }
       const files = await Promise.all(
-        build.parts.map(async (part) => {
-          const answer = await fetch(`${BASE}firmware/${part.path}`)
+        chip.parts.map(async (part) => {
+          const answer = await fetch(new URL(part.path, manifestUrl))
           if (!answer.ok) {
             throw new Error(part.path)
           }
@@ -288,18 +314,72 @@ export function Flash() {
     }
   }
 
-  const version = manifest && manifest !== 'none' ? manifest.version : null
+  const version = current?.version ?? null
   const busy =
     phase.name === 'connecting' || phase.name === 'erasing' || phase.name === 'writing' || phase.name === 'reading'
 
   let body
   if (!supported) {
     body = <p>{t('Needs Chrome or Edge on a computer.', 'Нужен Chrome или Edge на компьютере.')}</p>
-  } else if (manifest === 'none') {
+  } else if (releases === 'none') {
     body = <p>{t('No firmware is published yet.', 'Прошивка ещё не опубликована.')}</p>
   } else if (phase.name === 'idle' || phase.name === 'connecting') {
+    const list = releases ?? []
     body = (
       <>
+        <div className="flash-choice">
+          <label>
+            <span>{t('Version', 'Версия')}</span>
+            <select
+              value={chosen}
+              disabled={busy || !list.length}
+              onChange={(event) => setChosen(Number(event.target.value))}
+            >
+              {list.map((one, index) => (
+                <option key={one.version} value={index}>
+                  {one.version}
+                  {index === 0 ? t(' (latest)', ' (последняя)') : ''}
+                  {one.date ? ` - ${one.date}` : ''}
+                </option>
+              ))}
+            </select>
+          </label>
+          <div className="flash-build" role="radiogroup" aria-label={t('Build', 'Сборка')}>
+            <span>{t('Build', 'Сборка')}</span>
+            <div>
+              {(['release', 'debug'] as Flavor[]).map((one) => (
+                <button
+                  key={one}
+                  type="button"
+                  role="radio"
+                  aria-checked={build === one}
+                  disabled={busy || !current?.builds[one]}
+                  onClick={() => setFlavor(one)}
+                >
+                  {one === 'release' ? t('Release', 'Релиз') : t('Debug', 'Отладка')}
+                </button>
+              ))}
+            </div>
+          </div>
+          <p className="dim">
+            {build === 'release'
+              ? t('Smaller, for everyday use.', 'Компактнее, для повседневной работы.')
+              : t('With the development tools: screen, buttons and apps over the network.',
+                  'С инструментами разработчика: экран, кнопки и приложения по сети.')}
+          </p>
+          {current && notesOf(current).length > 0 && (
+            <details className="flash-notes">
+              <summary>{t('What is new', 'Что нового')}</summary>
+              <ul>
+                {notesOf(current).map((point) => (
+                  <li key={point}>
+                    <Note text={point} />
+                  </li>
+                ))}
+              </ul>
+            </details>
+          )}
+        </div>
         <p>{t('Connect the board to this computer with a USB-C cable.', 'Подключите плату к компьютеру кабелем USB-C.')}</p>
         <div className="buttons">
           <button type="button" className="button" onClick={connect} disabled={busy || !version}>
@@ -424,7 +504,7 @@ export function Flash() {
         <section className="flasher" aria-live="polite">
           <div className="flasher-head">
             <span>perINKpheral</span>
-            <span>{version ?? ''}</span>
+            <span>{version ? `${version}${build === 'debug' ? ' debug' : ''}` : ''}</span>
           </div>
           <div className="flasher-body">{body}</div>
           {log && phase.name !== 'monitor' && (

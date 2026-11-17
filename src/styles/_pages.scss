@@ -308,6 +308,100 @@
   }
 }
 
+// which release and which build: chosen before the board is connected
+.flash-choice {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+
+  label,
+  .flash-build {
+    display: grid;
+    grid-template-columns: 5.5rem minmax(0, 1fr);
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  select {
+    width: 100%;
+    padding: 0.45rem 2rem 0.45rem 0.7rem;
+    font: inherit;
+    color: var(--ink);
+    border: 1px solid var(--ink);
+    border-radius: 0;
+    appearance: none;
+    // the list's arrow, drawn in ink
+    background:
+      linear-gradient(45deg, transparent 50%, var(--ink) 50%) right 1rem center / 6px 6px no-repeat,
+      linear-gradient(-45deg, transparent 50%, var(--ink) 50%) right calc(1rem - 6px) center / 6px 6px no-repeat,
+      var(--paper);
+    cursor: pointer;
+  }
+
+  select:focus-visible,
+  .flash-build button:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+  }
+
+  .flash-build > div {
+    display: flex;
+    border: 1px solid var(--ink);
+    width: fit-content;
+  }
+
+  .flash-build button {
+    padding: 0.45rem 1rem;
+    font: inherit;
+    color: var(--ink);
+    background: var(--paper);
+    border: 0;
+    cursor: pointer;
+
+    & + button {
+      border-left: 1px solid var(--ink);
+    }
+
+    &[aria-checked='true'] {
+      color: var(--paper);
+      background: var(--ink);
+    }
+
+    &:disabled {
+      opacity: 0.35;
+      cursor: default;
+    }
+  }
+
+  > p {
+    margin: 0;
+  }
+
+  @include phone {
+    label,
+    .flash-build {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0.4rem;
+    }
+  }
+}
+
+.flash-notes {
+  summary {
+    cursor: pointer;
+  }
+
+  ul {
+    margin: 0.75rem 0 0;
+    padding-left: 1.2rem;
+    font-size: 0.9rem;
+  }
+
+  li + li {
+    margin-top: 0.35rem;
+  }
+}
+
 .flash-console {
   height: 20rem;
   margin: 0 0 1.25rem;
