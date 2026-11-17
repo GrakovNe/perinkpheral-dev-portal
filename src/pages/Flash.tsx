@@ -36,6 +36,51 @@ const Note = ({ text }: { text: string }) => (
   <>{text.split('`').map((part, index) => (index % 2 ? <code key={index}>{part}</code> : part))}</>
 )
 
+// The steps' pictures, eleven cells a side in the manner of the device's icons, all
+// filled, so that they weigh the same
+const ICON = {
+  plug: ['...#...#...', '...#...#...', '...#...#...', '.#########.', '.#########.', '.#########.', '..#######..', '...#####...', '.....#.....', '.....#.....', '.....#.....'],
+  list: ['##.########', '##.########', '...........', '...........', '##.########', '##.########', '...........', '...........', '##.########', '##.########'],
+  chip: ['..#.#.#.#..', '...........', '#.#######.#', '..#######..', '#.#######.#', '..#######..', '#.#######.#', '..#######..', '#.#######.#', '...........', '..#.#.#.#..'],
+  save: ['....###....', '....###....', '....###....', '.#########.', '..#######..', '...#####...', '....###....', '.....#.....', '...........', '##.......##', '###########'],
+  bolt: ['......###..', '.....###...', '....###....', '...###.....', '..#######..', '.....###...', '....###....', '...###.....', '..###......', '.###.......'],
+  signal: ['.......##', '.......##', '.......##', '....##.##', '....##.##', '....##.##', '.##.##.##', '.##.##.##', '.##.##.##'],
+  warning: ['.....#.....', '....#.#....', '....#.#....', '...#...#...', '...#.#.#...', '..#..#..#..', '..#..#..#..', '.#.......#.', '.#...#...#.', '#.........#', '###########'],
+}
+
+// A picture cropped to its ink and set in the middle of a square: every step's picture
+// the same size, whatever cells it takes
+function StepIcon({ rows }: { rows: string[] }) {
+  const inkRows = rows.map((row, y) => (row.includes('#') ? y : -1)).filter((y) => y >= 0)
+  const inkColumns = rows.flatMap((row) => [...row].flatMap((cell, x) => (cell === '#' ? [x] : [])))
+  const top = Math.min(...inkRows)
+  const left = Math.min(...inkColumns)
+  const width = Math.max(...inkColumns) - left + 1
+  const height = Math.max(...inkRows) - top + 1
+  const side = Math.max(width, height)
+  const box = `${left - (side - width) / 2} ${top - (side - height) / 2} ${side} ${side}`
+  return (
+    <svg className="app-icon" viewBox={box} shapeRendering="crispEdges" aria-hidden="true">
+      {rows.flatMap((row, y) =>
+        [...row.matchAll(/#+/g)].map((run) => (
+          <rect key={`${y}-${run.index}`} x={run.index} y={y} width={run[0].length} height={1} />
+        )),
+      )}
+    </svg>
+  )
+}
+
+// What to do, in order. "Wi-Fi" is not broken at its hyphen: a word joiner on each side.
+const WIFI = 'Wi\u2060-\u2060Fi'
+const STEPS: [string[], [string, string], [string, string]][] = [
+  [ICON.plug, ['Connect the board', 'Подключите плату'], ['USB-C cable with data.', 'Кабель USB-C с данными.']],
+  [ICON.list, ['Choose a version', 'Выберите версию'], ['And a build: Release or Debug.', 'И сборку: Релиз или Отладка.']],
+  [ICON.chip, ['Click Connect', 'Нажмите «Подключить»'], ['Pick the board in the list.', 'Выберите плату в списке.']],
+  [ICON.save, ['Back up', 'Сохраните копию'], ['Optional: the whole flash.', 'Необязательно: весь флеш.']],
+  [ICON.bolt, ['Click Install', 'Нажмите «Установить»'], ['About a minute.', 'Около минуты.']],
+  [ICON.signal, [`Set up ${WIFI}`, `Настройте ${WIFI}`], ['With the QR code on the screen.', 'По QR-коду на экране.']],
+]
+
 type Phase =
   | { name: 'idle' }
   | { name: 'monitor' }
@@ -501,28 +546,47 @@ export function Flash() {
     <>
       <PageHead title={t('Flash', 'Прошивка')} />
       <div className="wrap flash-page">
-        <section className="flasher" aria-live="polite">
-          <div className="flasher-head">
-            <span>perINKpheral</span>
-            <span>{version ? `${version}${build === 'debug' ? ' debug' : ''}` : ''}</span>
+        <div className="flash-main">
+          <section className="flasher" aria-live="polite">
+            <div className="flasher-head">
+              <span>perINKpheral</span>
+              <span>{version ? `${version}${build === 'debug' ? ' debug' : ''}` : ''}</span>
+            </div>
+            <div className="flasher-body">{body}</div>
+            {log && phase.name !== 'monitor' && (
+              <details className="flasher-log">
+                <summary>{t('Log', 'Журнал')}</summary>
+                <pre>{log}</pre>
+              </details>
+            )}
+          </section>
+          <div className="flash-browser" role="note">
+            <StepIcon rows={ICON.warning} />
+            <p>
+              {t(
+                'Requires Chrome or Edge on a computer. Safari, Firefox and mobile browsers do not support Web Serial.',
+                'Нужен Chrome или Edge на компьютере. Safari, Firefox и мобильные браузеры не поддерживают Web Serial.',
+              )}
+            </p>
           </div>
-          <div className="flasher-body">{body}</div>
-          {log && phase.name !== 'monitor' && (
-            <details className="flasher-log">
-              <summary>{t('Log', 'Журнал')}</summary>
-              <pre>{log}</pre>
-            </details>
-          )}
-        </section>
+        </div>
         <aside>
-          <Facts
-            rows={[
-              [t('Browser', 'Браузер'), t('Chrome or Edge on a computer', 'Chrome или Edge на компьютере')],
-              [t('Cable', 'Кабель'), t('USB-C with data', 'USB-C с передачей данных')],
-              [t('Board not found', 'Плата не видна'), t('Hold BOOT while plugging in', 'Держите BOOT при подключении')],
-              [t('Later updates', 'Дальнейшие обновления'), t('Over Wi-Fi, from the device page', 'По Wi-Fi, со страницы устройства')],
-            ]}
-          />
+          <ol className="flash-steps">
+            {STEPS.map(([icon, title, text], index) => (
+              <li key={title[0]}>
+                <span className="flash-step-icon">
+                  <StepIcon rows={icon} />
+                </span>
+                <div>
+                  <h3>
+                    <span className="flash-step-number">{index + 1}.</span>
+                    {t(...title)}
+                  </h3>
+                  <p>{t(...text)}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
         </aside>
       </div>
     </>

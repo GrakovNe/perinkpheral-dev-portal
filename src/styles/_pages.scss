@@ -386,6 +386,89 @@
   }
 }
 
+// what to do, in order: the device's icons in boxes joined by a line
+.flash-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  li {
+    position: relative;
+    display: grid;
+    grid-template-columns: 3.5rem minmax(0, 1fr);
+    gap: 1.1rem;
+    padding-bottom: 1.4rem;
+
+    // the line to the next step
+    &:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      left: 1.75rem;
+      top: 3.5rem;
+      bottom: 0;
+      border-left: 2px solid var(--ink);
+    }
+  }
+
+  .flash-step-icon {
+    display: grid;
+    place-items: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    border: 2px solid var(--ink);
+    background: var(--paper);
+
+    .app-icon {
+      width: 2rem;
+      height: 2rem;
+      fill: var(--ink);
+    }
+  }
+
+  h3 {
+    display: flex;
+    align-items: baseline;
+    gap: 0.2rem;
+    margin: 0.35rem 0 0.3rem;
+    font-size: 1.05rem;
+  }
+
+  .flash-step-number {
+    min-width: 1.4rem;
+  }
+
+  // a line, never more
+  p {
+    margin: 0;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+// what the flasher needs of the browser: under its card
+.flash-browser {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr);
+  gap: 0.9rem;
+  align-items: start;
+  margin-top: 1.75rem;
+  padding: 0.9rem 1.1rem;
+  border: 1px solid var(--ink);
+
+  .app-icon {
+    width: 1.6rem;
+    height: 1.6rem;
+    fill: var(--ink);
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.9rem;
+  }
+}
+
 .flash-notes {
   summary {
     cursor: pointer;
