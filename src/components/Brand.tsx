@@ -4,8 +4,8 @@ import wordmarkSource from '../assets/wordmark.svg?raw'
 // device's own update icon (11 cells square).
 const MARK_CELLS: [number, number, number, number][] = [
   [4, 1, 6, 1],
-  [9, 2, 1, 3],
-  [1, 6, 1, 3],
+  [9, 2, 1, 5],
+  [1, 4, 1, 5],
   [1, 9, 6, 1],
 ]
 
