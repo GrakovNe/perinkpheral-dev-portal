@@ -19,8 +19,8 @@ export const files = {
   hello: `${repo.firmware}/tree/main/sdk/apps/hello`,
   cmake: `${repo.firmware}/tree/main/sdk/cmake`,
   companion: blob('sdk/companion/example.html'),
-  guidePdf: raw('docs/guide/perinkpheral-app-guide.pdf'),
-  guidePdfRu: raw('docs/guide/perinkpheral-app-guide.ru.pdf'),
+  guidePdf: 'https://github.com/GrakovNe/perinkpheral/releases/latest/download/perinkpheral-app-guide.pdf',
+  guidePdfRu: 'https://github.com/GrakovNe/perinkpheral/releases/latest/download/perinkpheral-app-guide.ru.pdf',
   // a CDN that serves it as model/step, so a browser saves it rather than shows it as text
   step: 'https://cdn.jsdelivr.net/gh/GrakovNe/perinkpheral@main/hardware/step/perinkpheral.step',
   hardwareNotes: blob('hardware/README.md'),
