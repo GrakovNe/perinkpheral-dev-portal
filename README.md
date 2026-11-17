@@ -2,54 +2,44 @@
 
 # perINKpheral developer portal
 
-The site about the [perINKpheral](https://github.com/GrakovNe/perinkpheral) desk e-paper display: what it is,
-how to write applications for it, how to build one and how its firmware works.
+Source for [perinkpheral.dev](https://perinkpheral.dev), the perINKpheral site
+in English and Russian. Includes documentation and the browser flasher.
 
-https://perinkpheral.dev - in English and Russian. Pages: the landing page, Getting started, Hardware, Firmware,
-SDK, Contacts, Credits.
+[Getting started](https://perinkpheral.dev/start) -
+[Hardware](https://perinkpheral.dev/hardware) -
+[Web flasher](https://perinkpheral.dev/flash) -
+[Firmware](https://perinkpheral.dev/firmware) -
+[Developer documentation](https://perinkpheral.dev/sdk).
+Application guide (PDF):
+[English](https://raw.githubusercontent.com/GrakovNe/perinkpheral/main/docs/guide/perinkpheral-app-guide.pdf),
+[Russian](https://raw.githubusercontent.com/GrakovNe/perinkpheral/main/docs/guide/perinkpheral-app-guide.ru.pdf).
 
 ## Development
 
-Node 20 or later.
+Requires Node.js `^20.19.0 || >=22.12.0`.
 
-```bash
-npm install
-npm run dev       # http://localhost:5173
-npm run build     # dist/
-npm run check     # types and lint
+```sh
+npm ci
+npm run dev
+npm run check
+npm run build
 ```
 
-## Hosting
+The development server uses `http://localhost:5173`. The build writes static
+pages for both languages to `dist/`.
 
-GitHub Pages, at perinkpheral.dev (`public/CNAME`). The Publish workflow builds, checks and publishes the portal
-when it is run by hand from the Actions tab; a push to `main` publishes nothing.
+CI checks and builds every push. Each successful push to `main` publishes
+the site to GitHub Pages and creates a release.
 
-The build is static files, every page rendered into a file of its own at build time (`scripts/prerender.mjs`,
-from `src/entry-server.tsx`): `sdk.html` for /sdk, `ru/sdk.html` for /ru/sdk, each with its title, description,
-canonical address, the other language's address and the preview of a link (`og:*`, `public/og.jpg`). The
-browser then takes the page over. Any other address is `404.html`; `sitemap.xml` and `robots.txt` are written
-beside them. The addresses are made for the root of perinkpheral.dev.
+## Repository
 
-The language is in the address: English at /sdk, Russian at /ru/sdk. A first visit to an English address goes on
-to the Russian one when the browser asks for Russian; a language picked with the flags is remembered.
-
-## Pictures
-
-`public/renders` holds the renders of the case as WebP, 800 and 1600 px wide, and the front view with a screen of
-the device on its panel. They are made from the original renders - 6000 x 4000 PNGs of the firmware repository's
-`render` folder, which stay as they are - with ffmpeg and cwebp:
-
-```bash
-npm run images -- <folder of the original renders>
-```
-
-`public/screens` holds frames of the panel, 400 x 300 taken at twice the size, from the device and the simulator.
-
-## Content
-
-`src/pages` holds the pages, `src/components` what they are made of, `src/content/links.ts` every address the
-portal points to. The text is English, plain and factual; a hyphen, never a dash.
+- `src/pages/` - page content; `src/content/` - navigation, metadata and external links.
+- `src/components/` - shared interface components.
+- `public/` - images, domain configuration and font licenses.
+- `scripts/` - page prerendering and image preparation.
 
 ## License
 
-MIT. Departure Mono and Jersey are under the SIL Open Font License 1.1 (`public/licenses`).
+[MIT](LICENSE). Departure Mono and Jersey use SIL OFL 1.1:
+[Departure Mono](public/licenses/OFL-DepartureMono.txt),
+[Jersey](public/licenses/OFL-Jersey.txt).
