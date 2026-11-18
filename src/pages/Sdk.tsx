@@ -38,7 +38,7 @@ const HELLO = `
 static const char PRESSES_KEY[] = "presses";
 static int32_t presses;
 
-void app_init(void)
+void app_on_load(void)
 {
     /* Restore state: the host unloads the application
      * when it leaves the screen. */
@@ -54,7 +54,7 @@ void app_on_button(int32_t event)
 {
     if (event == BTN_OK_PRESSED) {
         presses++;
-        request_redraw(HOST_REDRAW_NORMAL);
+        screen_redraw(HOST_REDRAW_NORMAL);
     }
 }
 
@@ -66,8 +66,8 @@ void app_on_draw(void)
     app_text_add(&text, "Presses: ");
     app_text_add_number(&text, presses);
 
-    gfx_text(HOST_UI_MARGIN, HOST_UI_MARGIN, HOST_FONT_TEXT, "Hello from wasm", 15);
-    gfx_text(HOST_UI_MARGIN, 60, HOST_FONT_TEXT, line, app_text_length(line));
+    gfx_draw_text(HOST_UI_MARGIN, HOST_UI_MARGIN, HOST_FONT_TEXT, "Hello from wasm", 15);
+    gfx_draw_text(HOST_UI_MARGIN, 60, HOST_FONT_TEXT, line, app_text_length(line));
 }
 `
 
@@ -76,7 +76,7 @@ const MANIFEST = `
   "name": "weather",
   "title": "Weather",
   "version": "0.2.5",
-  "abi": 2,
+  "abi": 3,
   "settings": [
     { "key": "city", "type": "place", "title": "City",
       "latitude": "lat", "longitude": "lon" },
@@ -96,17 +96,17 @@ const MANIFEST = `
 `
 
 const VALUES = `
-void app_on_values(int32_t poll, int32_t http_status)
+void app_on_picked(int32_t poll, int32_t http_status)
 {
     /* Values of the "pick" paths, in order. 1 decimal: tenths. */
     int32_t temperature, code;
-    if (http_status == 200 &&
+    if (poll == 0 && http_status == 200 &&
         app_value_number(0, 1, &temperature) &&
         app_value_number(1, 0, &code)) {
         state.temperature = temperature;
         state.code = code;
         app_state_save("state", &state, sizeof state);
-        request_redraw(HOST_REDRAW_NORMAL);
+        screen_redraw(HOST_REDRAW_NORMAL);
     }
 }
 `
@@ -124,6 +124,7 @@ export function Sdk() {
           <Facts
             rows={[
               [t('Language', 'Язык'), t('C, compiled to WebAssembly', 'C, компилируется в WebAssembly')],
+              ['ABI', '3 · firmware 0.1.30+'],
               ['API', <a href={files.hostApi}>sdk/host_api.h</a>],
               [t('Memory', 'Память'), t('64 KB per app', '64 КБ на приложение')],
               [t('Numbers', 'Числа'), t('Integers only, no floating point', 'Только целые, без плавающей точки')],
@@ -136,7 +137,7 @@ export function Sdk() {
           <ol className="steps">
             <li>
               <h3>{t('Install the toolchain', 'Тулчейн')}</h3>
-              <p>wasi-sdk, Java, git.</p>
+              <p>{t('wasi-sdk (verified with 34), Java 21 or later, Git. The simulator also needs a C compiler and Make.', 'wasi-sdk (проверено с 34), Java 21 или новее, Git. Для симулятора также нужны компилятор C и Make.')}</p>
               <Code label="shell">{`
 git clone ${repo.firmware}.git
 cd perinkpheral
@@ -153,11 +154,12 @@ tools/perinkpheral
               <Code label="shell">{`tools/perinkpheral build ../myapp --out ../myapp/build`}</Code>
             </li>
             <li>
-              <h3>{t(t('Run in the simulator', 'Запустить в симуляторе'), 'Запуск в симуляторе')}</h3>
+              <h3>{t('Run in the simulator', 'Запуск в симуляторе')}</h3>
               <Code label="shell">{`tools/perinkpheral sim ../myapp`}</Code>
             </li>
             <li>
-              <h3>{t(t('Run on the device', 'Запустить на устройстве'), 'Запуск на устройстве')}</h3>
+              <h3>{t('Run on the device', 'Запуск на устройстве')}</h3>
+              <p>{t('Install a Debug firmware build for run, screenshots and button control. Replace the example hostname with the address on the second About page.', 'Для run, снимков экрана и управления кнопками нужна прошивка Debug. Замените пример адресом со второй страницы About.')}</p>
               <Code label="shell">{`
 export PERINKPHERAL_HOST=perinkpheral-xxxx.local
 tools/perinkpheral run ../myapp --shot screen.png
@@ -177,10 +179,10 @@ tools/perinkpheral log --follow
           <Table
             head={[t('Key', 'Ключ'), t('Meaning', 'Значение')]}
             rows={[
-              [<code>name</code>, t('Unique id: 1-13 characters, a-z, 0-9, - and _', 'Уникальный id: 1-13 символов, a-z, 0-9, - и _')],
+              [<code>name</code>, t('Unique id: 1-13 ASCII characters, a-z, 0-9, - and _', 'Уникальный id: 1-13 символов, a-z, 0-9, - и _')],
               [<code>title</code>, t('Name in the menu, up to 23 characters', 'Название в меню, до 23 символов')],
               [<code>polls</code>, t('Web requests the device makes on a schedule, up to 4', 'Запросы, которые устройство делает по расписанию, до 4')],
-              [<code>hosts</code>, t('Servers the app may contact', 'Серверы, к которым приложению можно обращаться')],
+              [<code>hosts</code>, t('Servers allowed for requests from code; manifest polls are exempt', 'Серверы для запросов из кода; запросы манифеста не требуют этого списка')],
               [<code>settings</code>, t('Up to 8. Types: text, secret, number, choice, toggle, place, url, link, list', 'До 8. Типы: text, secret, number, choice, toggle, place, url, link, list')],
               [<code>intents</code>, t('System events to receive: device start, clock change, network back', 'Системные события: запуск устройства, смена времени, появление сети')],
               [<code>icon</code>, t('11 x 11 pixel icon: # black, . white', 'Иконка 11 x 11 точек: # чёрный, . белый')],
@@ -198,7 +200,7 @@ tools/perinkpheral log --follow
           <Table
             head={[t('Function', 'Функция'), t('Called when', 'Когда вызывается')]}
             rows={[
-              [<code>app_init()</code>, t('The app starts', 'Приложение запускается')],
+              [<code>app_on_load()</code>, t('The app starts', 'Приложение запускается')],
               [<code>app_on_focus() / app_on_blur()</code>, t('The app appears on screen or leaves it', 'Приложение появляется на экране или уходит с него')],
               [<code>app_on_terminate()</code>, t('The app is about to close: save state here', 'Приложение сейчас закроется: здесь сохраняют состояние')],
               [<code>app_on_button(event)</code>, t('A button is pressed, released, or held', 'Кнопку нажали, отпустили или удерживают')],
@@ -206,7 +208,7 @@ tools/perinkpheral log --follow
               [<code>app_on_draw()</code>, t('The screen needs drawing', 'Нужно нарисовать экран')],
               [<code>app_on_timer(id)</code>, t('A timer fired, while the app is on screen', 'Сработал таймер, пока приложение на экране')],
               [<code>app_on_alarm(id)</code>, t('An alarm fired, even if the app is closed', 'Сработал будильник, даже если приложение закрыто')],
-              [<code>app_on_values(poll, status)</code>, t('Scheduled data arrived, already parsed', 'Пришли данные по расписанию, уже разобранные')],
+              [<code>app_on_picked(poll, status)</code>, t('Scheduled data arrived, already parsed', 'Пришли данные по расписанию, уже разобранные')],
               [<code>app_on_data(...)</code>, t('A piece of a response arrived', 'Пришла часть ответа')],
               [<code>app_on_settings()</code>, t('The user changed the settings', 'Пользователь изменил настройки')],
               [<code>app_on_intent(type)</code>, t('A system event the app asked for', 'Системное событие, на которое приложение подписано')],
@@ -226,10 +228,10 @@ tools/perinkpheral log --follow
           <Facts
             rows={[
               [t('On a schedule', 'По расписанию'), t('Requests in the manifest', 'Запросы в манифесте')],
-              [t('On demand', 'По запросу'), t('http_request() from the code', 'http_request() из кода')],
-              [t('Ready values', 'Готовые значения'), t('List JSON paths in "pick": app_on_values() gets the values', 'Пути JSON в "pick": app_on_values() получает значения')],
+              [t('On demand', 'По запросу'), t('http_send() from the code', 'http_send() из кода')],
+              [t('Ready values', 'Готовые значения'), t('List JSON paths in "pick": app_on_picked() gets the values', 'Пути JSON в "pick": app_on_picked() получает значения')],
               [t('Raw response', 'Ответ как есть'), t('Without "pick": app_on_data() gets the response piece by piece', 'Без "pick": app_on_data() получает ответ частями')],
-              [t('Show on screen', 'Показать на экране'), t('request_focus() asks to open the app when its data arrives; once in 30 s', 'request_focus() просит открыть приложение, когда пришли данные; раз в 30 с')],
+              [t('Show on screen', 'Показать на экране'), t('screen_request() asks to open the app when its data arrives; once in 30 s', 'screen_request() просит открыть приложение, когда пришли данные; раз в 30 с')],
             ]}
           />
           <Code label="weather.c">{VALUES}</Code>
@@ -239,14 +241,14 @@ tools/perinkpheral log --follow
           <Table
             head={[t('Part', 'Часть'), t('Functions', 'Функции')]}
             rows={[
-              [t('Text in four styles', 'Текст в четырёх стилях'), 'ui_text, ui_text_lines, ui_title'],
-              [t('List with scroll bar', 'Список с полосой прокрутки'), 'ui_list_row, ui_list_visible'],
-              [t('Dialog: text, icon, buttons', 'Диалог: текст, иконка, кнопки'), 'ui_notice'],
-              [t('Tile: name, picture, value', 'Плитка: название, картинка, значение'), 'ui_cell, ui_cell_fit'],
-              [t('Chart: line, area, bars, steps', 'График: линия, область, столбцы, ступени'), 'ui_chart'],
-              [t('Value with unit', 'Значение с единицей'), 'ui_value'],
-              [t('Choice of a value, date and time', 'Выбор значения, даты и времени'), 'ui_picker, ui_date'],
-              [t('Message while there is nothing to show', 'Сообщение, пока показывать нечего'), 'ui_reason'],
+              [t('Text in four styles', 'Текст в четырёх стилях'), 'ui_draw_text, ui_draw_text_lines, ui_draw_title'],
+              [t('List with scroll bar', 'Список с полосой прокрутки'), 'ui_draw_list_row, ui_list_visible'],
+              [t('Dialog: text, icon, buttons', 'Диалог: текст, иконка, кнопки'), 'ui_draw_notice'],
+              [t('Tile: name, picture, value', 'Плитка: название, картинка, значение'), 'ui_draw_cell, ui_cell_fit'],
+              [t('Chart: line, area, bars, steps', 'График: линия, область, столбцы, ступени'), 'ui_draw_chart'],
+              [t('Value with unit', 'Значение с единицей'), 'ui_draw_value'],
+              [t('Choice of a value, date and time', 'Выбор значения, даты и времени'), 'ui_draw_picker, ui_draw_date'],
+              [t('Message while there is nothing to show', 'Сообщение, пока показывать нечего'), 'ui_draw_reason'],
             ]}
           />
           <Carousel screens slides={KIT.map((one) => ({ name: one.name, caption: t(one.en, one.ru) }))} />

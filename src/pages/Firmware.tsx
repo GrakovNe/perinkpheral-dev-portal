@@ -66,16 +66,24 @@ export function Firmware() {
             ]}
           />
           <p>{t(
-            'The page downloads the firmware, then restarts the device into recovery. Press OK on the device to install. Settings and apps are kept. If the new firmware fails to start or stay reachable, the device returns to recovery; the previous firmware is not kept.',
-            'Страница скачивает прошивку и перезапускает устройство в recovery. Нажмите OK на устройстве для установки. Настройки и приложения сохраняются. Если новая прошивка не запускается или остаётся недоступной по сети, устройство возвращается в recovery; предыдущая прошивка не сохраняется.',
+            'The page downloads the firmware, then restarts the device into recovery. The screen shows preparation, then asks you to press OK to install. Settings and apps are kept. If the new firmware fails to start or pass its initial network checks, the device returns to recovery; the previous firmware is not kept. A later network outage does not trigger recovery.',
+            'Страница скачивает прошивку и перезапускает устройство в recovery. Экран показывает подготовку, затем просит нажать OK для установки. Настройки и приложения сохраняются. Если новая прошивка не запускается или не проходит начальную проверку сети, устройство возвращается в recovery; предыдущая прошивка не сохраняется. Последующая потеря сети не вызывает переход в recovery.',
           )}</p>
           <p>{t(
             'Moving from the old two-slot firmware needs USB once. In the browser flasher, choose Keep data. It checks the existing layout before writing. After installation, press BACK on the recovery screen to start the firmware.',
             'Для перехода со старой прошивки с двумя слотами один раз нужен USB. В прошивальщике выберите «Сохранить данные». Он проверит разметку перед записью. После установки нажмите BACK на экране recovery для запуска прошивки.',
           )} <Link to={local('/flash')}>{t('Open flasher', 'Открыть прошивальщик')}</Link></p>
           <p>{t(
-            'To enter recovery manually, hold BACK while restarting and keep it held for three seconds. If the device does not answer, hold UP and BACK for ten seconds to restart, then keep BACK held for another three seconds. Recovery uses the saved Wi-Fi or opens its own network; its page accepts a firmware file.',
-            'Чтобы войти в recovery вручную, держите BACK при перезапуске и ещё три секунды после него. Если устройство не отвечает, держите UP и BACK десять секунд для перезапуска, затем продолжайте держать BACK ещё три секунды. Recovery использует сохранённый Wi-Fi или открывает свою сеть; на его странице можно загрузить файл прошивки.',
+            'To enter recovery manually, choose Device → Enter recovery on the web page, or hold BACK while restarting and keep it held for three seconds. If the main firmware does not answer, hold UP and BACK for ten seconds to restart, then keep BACK held for another three seconds. This restart combination is available in the main firmware, not in recovery.',
+            'Чтобы войти в recovery вручную, выберите Device → Enter recovery на веб-странице или держите BACK при перезапуске и ещё три секунды после него. Если основная прошивка не отвечает, держите UP и BACK десять секунд для перезапуска, затем продолжайте держать BACK ещё три секунды. Эта комбинация перезапуска работает в основной прошивке, но не в recovery.',
+          )}</p>
+          <p>{t(
+            'Recovery always opens the perink-recovery Wi-Fi network with its page at 192.168.4.1, and also connects to saved Wi-Fi when available. Its page accepts a main firmware .bin file. Manual entry or recovery after a failed boot shows connection instructions; a planned update shows them only if preparation takes more than 30 seconds. BACK, labelled Exit recovery, attempts to start the installed main firmware. A damaged image must be replaced first.',
+            'Recovery всегда открывает сеть perink-recovery со страницей по адресу 192.168.4.1 и также подключается к сохранённому Wi-Fi, когда он доступен. На странице можно загрузить .bin основной прошивки. При ручном входе или после неудачного запуска экран показывает инструкции подключения; при запланированном обновлении они появляются, только если подготовка длится больше 30 секунд. BACK с подписью «Выйти из recovery» пытается запустить установленную основную прошивку. Повреждённый образ сначала нужно заменить.',
+          )}</p>
+          <p>{t(
+            'OTA updates only the main firmware. Updating recovery itself requires USB: choose Keep data in the browser flasher to update both images while preserving settings and apps. From a local firmware build, idf.py -p PORT recovery-flash writes only recovery; update the main image separately when both have changed.',
+            'OTA обновляет только основную прошивку. Для обновления самого recovery нужен USB: выберите «Сохранить данные» в прошивальщике, чтобы обновить оба образа, сохранив настройки и приложения. Из локальной сборки команда idf.py -p PORT recovery-flash записывает только recovery; если изменились оба образа, основную прошивку обновите отдельно.',
           )}</p>
         </Chapter>
 
