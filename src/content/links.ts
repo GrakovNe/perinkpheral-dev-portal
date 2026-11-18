@@ -11,7 +11,7 @@ export const repo = {
 }
 
 const blob = (path: string) => `${repo.firmware}/blob/main/${path}`
-const caseDirectory = 'https://cdn.jsdelivr.net/gh/GrakovNe/perinkpheral@main/hardware/step/rev1'
+const caseDirectory = 'https://cdn.jsdelivr.net/gh/GrakovNe/perinkpheral@cbfe42ffe7398ee34f662d0b44b27ac2f0a094ba/hardware/step/rev1'
 
 export const caseFiles = {
   frame: `${caseDirectory}/01-frame-with-logo.3mf`,
