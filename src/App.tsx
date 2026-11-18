@@ -12,7 +12,7 @@ import { Sdk } from './pages/Sdk'
 import { Start } from './pages/Start'
 import { Setup } from './pages/Setup'
 
-import { pageTitle } from './content/pages'
+import { updatePageMetadata } from './content/seo'
 import { plainPath, useLang, useLocal, useT } from './i18n'
 
 // A new page starts at its top, or at the section its address names; the
@@ -22,7 +22,7 @@ function Navigation() {
   const { lang } = useLang()
   useEffect(() => {
     const plain = plainPath(pathname)
-    document.title = pageTitle(plain, lang)
+    updatePageMetadata(plain, lang, document)
   }, [pathname, lang])
   useEffect(() => {
     if (hash) {
