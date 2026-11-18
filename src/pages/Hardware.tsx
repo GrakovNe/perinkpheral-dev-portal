@@ -170,7 +170,7 @@ export function Hardware() {
             head={[t('Where', 'Где'), t('Screw', 'Винт'), t('Qty', 'Кол-во'), t('Note', 'Примечание')]}
             rows={[
               [t('Display to frame, three corners', 'Экран к рамке, три угла'), 'M2.5 x 4', '3', ''],
-              [t('Display, bottom right corner', 'Экран, правый нижний угол'), 'M2.5 x 6', '1', t('Exactly 6 mm, a longer one shows on the front', 'Ровно 6 мм, длиннее выйдет на лицевую сторону')],
+              [t('Display, bottom right corner', 'Экран, правый нижний угол'), 'M2.5 x 6', '1', t('No longer than 6 mm', 'Не длиннее 6 мм')],
               [t('Back panel to frame', 'Задняя панель к рамке'), 'M2.5 x 4', '1', t('No longer than 4 mm', 'Не длиннее 4 мм')],
               [t('Back panel to corner bracket', 'Задняя панель к уголку'), 'M2.5 x 4', '1', ''],
               [t('Bottom to base', 'Дно к основанию'), 'M2.5 x 6', '4', t('Up to 8 mm', 'До 8 мм')],
