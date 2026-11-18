@@ -157,8 +157,8 @@ export function Hardware() {
                 {t(' and check the display and all four buttons before assembling the case.', ' и проверьте экран и все четыре кнопки до сборки корпуса.')}
               </p>
             </li>
-            <li id="assemble-case">
-              <h3>{t('Assemble the case', 'Собрать корпус')}</h3>
+            <li>
+              <h3 id="assemble-case">{t('Assemble the case', 'Собрать корпус')}</h3>
               <p>
                 {t(
                   'Insert the button caps into the base cover from the inside. Screw the back panel to the frame, the bottom to the base and the base to the back panel.',
