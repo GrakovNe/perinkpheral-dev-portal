@@ -1,0 +1,37 @@
+// SPDX-License-Identifier: MIT
+import { expect, test } from '@playwright/test'
+
+test('SPA navigation and language changes replace all page metadata', async ({ page }) => {
+  await page.goto('/')
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://perinkpheral.dev/')
+  await page.getByRole('link', { name: 'Hardware', exact: true }).first().click()
+  await expect(page).toHaveURL(/\/hardware$/)
+  await expect(page.locator('link[rel="canonical"]')).toHaveCount(1)
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://perinkpheral.dev/hardware')
+  await expect(page.locator('meta[property="og:url"]')).toHaveAttribute('content', 'https://perinkpheral.dev/hardware')
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /parts, the printed case/)
+  await page.getByRole('button', { name: 'Русский', exact: true }).first().click()
+  await expect(page).toHaveURL(/\/ru\/hardware$/)
+  await expect(page.locator('html')).toHaveAttribute('lang', 'ru')
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://perinkpheral.dev/ru/hardware')
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /Детали, корпус/)
+  await expect(page.locator('meta[name="twitter:description"]')).toHaveAttribute('content', /Детали, корпус/)
+  await expect(page.locator('link[hreflang="en"]')).toHaveAttribute('href', 'https://perinkpheral.dev/hardware')
+  await expect(page.locator('link[hreflang="ru"]')).toHaveAttribute('href', 'https://perinkpheral.dev/ru/hardware')
+  expect(await page.locator('#page-structured-data').evaluate((node) => JSON.parse(node.textContent)['@graph'][1].url))
+    .toBe('https://perinkpheral.dev/ru/hardware')
+  await page.goBack()
+  await expect(page.locator('meta[property="og:locale"]')).toHaveAttribute('content', 'en_US')
+})
+
+test('leaving a missing page clears noindex; unknown pages have no canonical', async ({ page }) => {
+  await page.goto('/not-a-page')
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex')
+  await expect(page.locator('link[rel="canonical"]')).toHaveCount(0)
+  await page.getByRole('link', { name: 'Home', exact: true }).click()
+  await expect(page.locator('meta[name="robots"]')).toHaveCount(0)
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://perinkpheral.dev/')
+  await page.goBack()
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex')
+  await expect(page.locator('#page-structured-data')).toHaveCount(0)
+})

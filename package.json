@@ -5,14 +5,15 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build && vite build --ssr src/entry-server.tsx --outDir dist-ssr && node scripts/prerender.mjs",
+    "build": "tsc -b && vite build && vite build --ssr src/entry-server.tsx --outDir dist-ssr && node scripts/prerender.mjs && npm run check:seo",
     "lint": "oxlint",
     "preview": "vite preview",
     "images": "npm run screens && sh scripts/images.sh",
     "check": "tsc -b && oxlint && npm test",
     "test": "node --experimental-strip-types --test tests/*.test.mjs",
     "screens": "node scripts/screens.mjs",
-    "test:browser": "playwright test"
+    "test:browser": "playwright test",
+    "check:seo": "node --experimental-strip-types scripts/check-seo.mjs"
   },
   "dependencies": {
     "esptool-js": "0.7.0",

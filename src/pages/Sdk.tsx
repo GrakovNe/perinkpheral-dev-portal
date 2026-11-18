@@ -75,6 +75,7 @@ const MANIFEST = `
 {
   "name": "weather",
   "title": "Weather",
+  "author": "Your name",
   "version": "0.2.5",
   "abi": 3,
   "settings": [
@@ -147,7 +148,7 @@ tools/perinkpheral
             </li>
             <li>
               <h3>{t('Create an application', 'Новое приложение')}</h3>
-              <Code label="shell">{`tools/perinkpheral new ../myapp --title "My App"`}</Code>
+              <Code label="shell">{`tools/perinkpheral new ../myapp --author "Your name" --title "My App"`}</Code>
             </li>
             <li>
               <h3>{t('Build', 'Сборка')}</h3>
@@ -176,6 +177,7 @@ tools/perinkpheral log --follow
 
         <Chapter chapter={manifest}>
           <Code label="manifest.json">{MANIFEST}</Code>
+          <p>{t('Set author to your name, up to 63 UTF-8 bytes. Perinkpheral is reserved for the official catalog.', 'Укажите своё имя в author: до 63 байт UTF-8. Имя Perinkpheral зарезервировано для официального каталога.')}</p>
           <Table
             head={[t('Key', 'Ключ'), t('Meaning', 'Значение')]}
             rows={[
@@ -277,7 +279,7 @@ tools/perinkpheral log --follow
           <Table
             head={[t('Command', 'Команда'), t('Description', 'Описание')]}
             rows={[
-              [<code>new &lt;dir&gt;</code>, t('Start a new app', 'Новое приложение')],
+              [<code>new &lt;dir&gt; --author NAME</code>, t('Start a new app', 'Новое приложение')],
               [<code>build &lt;app&gt; --out &lt;dir&gt;</code>, t('Build and check', 'Собрать и проверить')],
               [<code>sim &lt;app&gt;</code>, t('Run in the simulator', 'Запустить в симуляторе')],
               [<code>run &lt;app&gt;</code>, t('Run on the device', 'Запустить на устройстве')],

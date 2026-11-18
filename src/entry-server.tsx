@@ -19,3 +19,5 @@ export function render(url: string): string {
 }
 
 export { DESCRIPTIONS, PAGES, pageTitle } from './content/pages.ts'
+
+export { SITE, LANGUAGES, localizedPath, pageMetadata, structuredDataJson } from './content/seo.ts'
