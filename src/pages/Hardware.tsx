@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom'
 import { Chapter, DocBody, Facts, PageHead, Table } from '../components/Doc'
 import { WiringDiagram } from '../components/Diagrams'
 import { Render } from '../components/Pictures'
-import { files } from '../content/links'
 import { useLocal, useT } from '../i18n'
 
 const CHAPTERS = [
@@ -14,14 +13,13 @@ const CHAPTERS = [
   { id: 'assembly', en: 'Assembly', ru: 'Сборка' },
   { id: 'fasteners', en: 'Fasteners', ru: 'Крепёж' },
   { id: 'flashing', en: 'First flash', ru: 'Первая прошивка' },
-  { id: 'files', en: 'Files', ru: 'Файлы' },
 ]
 
 export function Hardware() {
   const t = useT()
   const local = useLocal()
   const chapters = CHAPTERS.map((one) => ({ id: one.id, title: t(one.en, one.ru) }))
-  const [overview, parts, constraints, printing, wiring, assembly, fasteners, flashing, filesChapter] =
+  const [overview, parts, constraints, printing, wiring, assembly, fasteners, flashing] =
     chapters
   return (
     <>
@@ -196,16 +194,6 @@ export function Hardware() {
           </div>
         </Chapter>
 
-        <Chapter chapter={filesChapter}>
-          <div className="buttons">
-            <Link className="button quiet" to={local('/hardware/print')}>
-              {t('Case files, 3MF / STEP', 'Файлы корпуса, 3MF / STEP')} <span className="arrow">-&gt;</span>
-            </Link>
-            <a className="button quiet" href={files.hardwareNotes}>
-              {t('Display notes', 'Заметки об экране')} <span className="arrow">-&gt;</span>
-            </a>
-          </div>
-        </Chapter>
       </DocBody>
     </>
   )
