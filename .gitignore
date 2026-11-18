@@ -10,8 +10,6 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
-# the firmware release's files, fetched when the portal is published
-public/firmware
 *.local
 
 # Editor directories and files
