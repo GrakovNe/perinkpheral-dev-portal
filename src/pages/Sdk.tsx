@@ -286,6 +286,7 @@ tools/perinkpheral log --follow
               [<code>log [--follow]</code>, t('Device log', 'Лог устройства')],
               [<code>set &lt;app&gt; &lt;key&gt; &lt;value&gt;</code>, t('Change an app setting', 'Изменить настройку приложения')],
               [<code>catalog &lt;folder&gt; --out &lt;dir&gt;</code>, t('Build a catalog', 'Собрать каталог')],
+              [<code>publish &lt;folder&gt; --repo owner/repository</code>, t('Publish to your GitHub repository', 'Опубликовать в своём репозитории GitHub')],
               [<code>strings export / import</code>, t('Translations as a spreadsheet', 'Переводы таблицей')],
               [<code>flash [image]</code>, t('Update over Wi-Fi; press OK in recovery to confirm', 'Обновить по Wi-Fi; подтвердить кнопкой OK в recovery')],
               [<code>usb &lt;port&gt;</code>, t('Control a device over USB', 'Управлять устройством по USB')],
@@ -304,7 +305,15 @@ tools/perinkpheral log --follow
         </Chapter>
 
         <Chapter chapter={publishing}>
-          <Code label="shell">{`tools/perinkpheral catalog apps --out catalog`}</Code>
+          <p>{t('Publish apps to your own public GitHub repository. Install Git and ', 'Приложения публикуются в вашем публичном репозитории GitHub. Установите Git и ')}<a href="https://cli.github.com/">GitHub CLI</a>{t(', then sign in:', ', затем войдите в аккаунт:')}</p>
+          <Code label="shell">{`gh auth login`}</Code>
+          <p>{t('Create a repository once. Replace OWNER with your GitHub username:', 'Один раз создайте репозиторий. Вместо OWNER укажите свой логин GitHub:')}</p>
+          <Code label="shell">{`gh repo create OWNER/my-perink-apps --public`}</Code>
+          <p>{t('Publish the apps from your local apps folder:', 'Опубликуйте приложения из своей локальной папки apps:')}</p>
+          <Code label="shell">{`tools/perinkpheral publish apps --repo OWNER/my-perink-apps`}</Code>
+          <p>{t('The command builds the apps and updates catalog/ in the repository. Keep all apps you want to publish in the supplied folder: each run replaces the catalog. Files outside catalog/ stay unchanged.', 'Команда собирает приложения и обновляет catalog/ в репозитории. В указанной папке должны быть все приложения для публикации: каждый запуск заменяет каталог целиком. Файлы вне catalog/ сохраняются.')}</p>
+          <p>{t('Copy the printed repository link. On the device page, open Catalog → Sources (the gear), add the link and save. Your apps will appear with an Install button.', 'Скопируйте ссылку на репозиторий из вывода команды. На странице устройства откройте Каталог → Источники (шестерёнка), добавьте ссылку и сохраните. Приложения появятся с кнопкой «Установить».')}</p>
+          <p>{t('For an update, increase version in manifest.json and run publish again. Refresh the catalog on the device page to see the update.', 'Для обновления увеличьте version в manifest.json и снова выполните publish. Обновите каталог на странице устройства, чтобы увидеть новую версию.')}</p>
         </Chapter>
 
         <Chapter chapter={reference}>

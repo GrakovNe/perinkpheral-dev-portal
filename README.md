@@ -24,11 +24,15 @@ npm ci
 npm run images
 npm run dev
 npm run check
+npx playwright install chromium
+npm run test:browser
 npm run build
 ```
 
 The development server uses `http://localhost:5173`. The build writes static
 pages for both languages to `dist/`.
+
+Browser tests mock the serial connection and network responses; they do not flash a device.
 
 CI renders the showcase, checks and builds every push. Each successful push to `main` publishes
 the site to GitHub Pages and creates a release.
