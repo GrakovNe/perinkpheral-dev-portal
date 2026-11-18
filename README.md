@@ -3,7 +3,7 @@
 # perINKpheral developer portal
 
 Source for [perinkpheral.dev](https://perinkpheral.dev), the perINKpheral site
-in English and Russian. Includes documentation and the browser flasher.
+in English and Russian. Includes documentation for Perinkpheral OS and the browser flasher.
 
 [Getting started](https://perinkpheral.dev/start) -
 [Hardware](https://perinkpheral.dev/hardware) -

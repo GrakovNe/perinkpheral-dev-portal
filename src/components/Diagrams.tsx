@@ -84,12 +84,12 @@ function Diagram({ width, height, label, children }: { width: number; height: nu
   )
 }
 
-// ---- the layers of the host ----
+// ---- the layers of Perinkpheral OS ----
 
 export function LayersDiagram() {
   const t = useT()
   return (
-    <Diagram width={760} height={560} label={t('The layers of the main firmware; recovery is a separate image', 'Слои основной прошивки; recovery — отдельный образ')}>
+    <Diagram width={760} height={560} label={t('The layers of Perinkpheral OS; recovery is a separate image', 'Слои Perinkpheral OS; recovery — отдельный образ')}>
       <Box x={10} y={10} w={530} h={50} title={t('Apps', 'Приложения')} sub={t('Including Settings, About and setup', 'В том числе настройки, информация и подключение')} filled />
       <Box x={10} y={74} w={530} h={40} title="host_api · ABI 3" />
       <Box x={10} y={128} w={530} h={50} title="wasm3" sub={t('One loaded app instance', 'Один загруженный экземпляр приложения')} />
@@ -98,7 +98,7 @@ export function LayersDiagram() {
       <Box x={10} y={256} w={530} h={40} title={t('Graphics', 'Графика')} />
       <Box x={10} y={310} w={530} h={40} title={t('Screen refresh', 'Обновление экрана')} />
       <Box x={10} y={364} w={530} h={40} title={t('Drivers', 'Драйверы')} />
-      <Box x={560} y={10} w={190} h={50} title={t('Host event loop', 'Цикл событий хоста')} filled />
+      <Box x={560} y={10} w={190} h={50} title="Perinkpheral OS" sub={t('Event loop', 'Цикл событий')} filled />
       <Box x={560} y={74} w={190} h={50} title={t('Timers', 'Таймеры')} />
       <Box x={560} y={138} w={190} h={50} title={t('Network', 'Сеть')} />
       <Box x={560} y={202} w={190} h={50} title={t('Wi-Fi and time', 'Wi-Fi и время')} />
