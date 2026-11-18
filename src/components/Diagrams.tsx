@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 import type { ReactNode } from 'react'
 import { useT } from '../i18n'
 
@@ -88,25 +89,24 @@ function Diagram({ width, height, label, children }: { width: number; height: nu
 export function LayersDiagram() {
   const t = useT()
   return (
-    <Diagram
-      width={760}
-      height={430}
-      label={t('The layers of the firmware', 'Слои прошивки')}
-    >
-      <Box x={10} y={10} w={530} h={50} title={t('Apps', 'Приложения')} filled />
-      <Box x={10} y={74} w={530} h={50} title={t('App runtime', 'Среда приложений')} />
-      <Box x={10} y={138} w={260} h={50} title={t('Navigation', 'Навигация')} />
-      <Box x={280} y={138} w={260} h={50} title={t('Screens', 'Экраны')} />
-      <Box x={10} y={202} w={530} h={50} title={t('Graphics', 'Графика')} />
-      <Box x={10} y={266} w={530} h={50} title={t('Screen refresh', 'Обновление экрана')} />
-      <Box x={10} y={330} w={530} h={50} title={t('Drivers', 'Драйверы')} />
-      <Box x={10} y={394} w={740} h={28} title="ESP32-C6" />
-      <Box x={560} y={10} w={190} h={50} title={t('Events', 'События')} filled />
+    <Diagram width={760} height={560} label={t('The layers of the main firmware; recovery is a separate image', 'Слои основной прошивки; recovery — отдельный образ')}>
+      <Box x={10} y={10} w={530} h={50} title={t('Apps', 'Приложения')} sub={t('Including Settings, About and setup', 'В том числе настройки, информация и подключение')} filled />
+      <Box x={10} y={74} w={530} h={40} title="host_api · ABI 3" />
+      <Box x={10} y={128} w={530} h={50} title="wasm3" sub={t('One loaded app instance', 'Один загруженный экземпляр приложения')} />
+      <Box x={10} y={192} w={260} h={50} title={t('Navigation', 'Навигация')} />
+      <Box x={280} y={192} w={260} h={50} title={t('Scenes', 'Сцены')} />
+      <Box x={10} y={256} w={530} h={40} title={t('Graphics', 'Графика')} />
+      <Box x={10} y={310} w={530} h={40} title={t('Screen refresh', 'Обновление экрана')} />
+      <Box x={10} y={364} w={530} h={40} title={t('Drivers', 'Драйверы')} />
+      <Box x={560} y={10} w={190} h={50} title={t('Host event loop', 'Цикл событий хоста')} filled />
       <Box x={560} y={74} w={190} h={50} title={t('Timers', 'Таймеры')} />
       <Box x={560} y={138} w={190} h={50} title={t('Network', 'Сеть')} />
       <Box x={560} y={202} w={190} h={50} title={t('Wi-Fi and time', 'Wi-Fi и время')} />
       <Box x={560} y={266} w={190} h={50} title={t('Web page', 'Веб-страница')} />
       <Box x={560} y={330} w={190} h={50} title={t('Storage', 'Хранилище')} />
+      <Box x={10} y={424} w={740} h={56} title={t('Recovery · separate boot image', 'Recovery · отдельный загрузочный образ')}
+        sub={t('Receives and writes the main firmware update', 'Принимает и записывает обновление основной прошивки')} dashed />
+      <Box x={10} y={510} w={740} h={28} title="ESP32-C6" />
     </Diagram>
   )
 }
@@ -116,11 +116,7 @@ export function LayersDiagram() {
 export function DeliveryDiagram() {
   const t = useT()
   return (
-    <Diagram
-      width={820}
-      height={400}
-      label={t('How data reaches an app', 'Как данные доходят до приложения')}
-    >
+    <Diagram width={820} height={600} label={t('Picked values or raw response chunks reach one app instance', 'Выбранные значения или части ответа поступают одному экземпляру приложения')}>
       <Box x={10} y={20} w={180} h={56} title={t('Schedule', 'Расписание')} />
       <Box x={10} y={100} w={180} h={56} title={t('On demand', 'По запросу')} />
       <Arrow points={[[190, 48], [235, 48], [235, 80], [260, 80]]} />
@@ -130,18 +126,24 @@ export function DeliveryDiagram() {
       <Box x={490} y={60} w={150} h={56} title={t('Source', 'Источник')} />
       <Arrow points={[[640, 88], [680, 88]]} />
       <Box x={680} y={60} w={130} h={56} title={t('Response', 'Ответ')} />
-      <Arrow points={[[745, 116], [745, 176], [640, 176]]} label="pick" labelAt={[775, 150]} />
-      <Box x={440} y={151} w={200} h={50} title={t('Values', 'Значения')} />
-      <Arrow points={[[440, 176], [390, 176]]} />
-      <Box x={200} y={151} w={190} h={50} title={t('App on screen?', 'На экране?')} filled />
-      <Arrow points={[[295, 201], [295, 232], [115, 232], [115, 260]]} label={t('yes', 'да')} labelAt={[205, 225]} />
-      <Arrow points={[[295, 201], [295, 232], [450, 232], [450, 260]]} label={t('no', 'нет')} labelAt={[375, 225]} />
-      <Box x={10} y={260} w={210} h={56} title={t('App', 'Приложение')} />
-      <Box x={290} y={260} w={320} h={56} title={t('App in background', 'Приложение в фоне')} />
-      <Arrow points={[[610, 288], [670, 288]]} dashed />
-      <Box x={670} y={260} w={140} h={56} title={t('Focus', 'Фокус')} dashed />
-      <Arrow points={[[450, 316], [450, 360], [400, 360]]} />
-      <Box x={150} y={340} w={250} h={40} title={t('Previous screen', 'Предыдущий экран')} />
+      <Arrow points={[[715, 116], [715, 175], [610, 175]]} label="pick" labelAt={[680, 165]} />
+      <Box x={360} y={147} w={250} h={56} title={t('Selected values', 'Выбранные значения')} sub="app_on_picked" />
+      <Arrow points={[[775, 116], [775, 255], [610, 255]]} label={t('raw body', 'тело ответа')} labelAt={[700, 245]} />
+      <Box x={360} y={227} w={250} h={56} title={t('Response chunks', 'Части ответа')} sub="app_on_data" />
+      <Arrow points={[[360, 175], [300, 175], [300, 210], [250, 210]]} />
+      <Arrow points={[[360, 255], [300, 255], [300, 226], [250, 226]]} />
+      <Box x={20} y={190} w={230} h={56} title={t('App on screen?', 'Приложение на экране?')} filled />
+      <Arrow points={[[80, 246], [80, 320]]} label={t('yes', 'да')} labelAt={[60, 285]} />
+      <Box x={10} y={320} w={210} h={56} title={t('Deliver to app', 'Передать приложению')} />
+      <Arrow points={[[190, 246], [190, 300], [480, 300], [480, 320]]} label={t('no', 'нет')} labelAt={[260, 290]} />
+      <Box x={290} y={320} w={410} h={60} title={t('Temporarily load recipient', 'Временно загрузить получателя')}
+        sub={t('Unload the foreground app; deliver the response', 'Выгрузить активное приложение; передать ответ')} />
+      <Arrow points={[[495, 380], [495, 410]]} />
+      <Box x={290} y={410} w={410} h={56} title={t('Focus requested and allowed?', 'Фокус запрошен и разрешён?')} filled />
+      <Arrow points={[[390, 466], [390, 495], [180, 495], [180, 520]]} label={t('no', 'нет')} labelAt={[280, 485]} />
+      <Arrow points={[[600, 466], [600, 520]]} label={t('yes', 'да')} labelAt={[625, 495]} />
+      <Box x={10} y={520} w={340} h={56} title={t('Restore previous screen', 'Восстановить прежний экран')} />
+      <Box x={430} y={520} w={340} h={56} title={t('Show recipient', 'Показать получателя')} />
     </Diagram>
   )
 }
@@ -169,7 +171,7 @@ export function FlashDiagram() {
     <Diagram
       width={width}
       height={120}
-      label={t('The 4 MB flash and its partitions', 'Флеш 4 МБ и его разделы')}
+      label={t('Main flash partitions, not to scale', 'Основные разделы флеш, без масштаба')}
     >
       {PARTITIONS.map((part, index) => {
         const w = (part.weight / total) * width
@@ -186,11 +188,8 @@ export function FlashDiagram() {
           </g>
         )
       })}
-      <text x={0} y={104} fontSize={11} fill={DIM}>
-        0x000000
-      </text>
-      <text x={width} y={104} fontSize={11} fill={DIM} textAnchor="end">
-        0x400000
+      <text x={width / 2} y={104} fontSize={11} fill={DIM} textAnchor="middle">
+        {t('Not to scale. Bootloader and service areas: another 48 KiB.', 'Без масштаба. Загрузчик и служебные области: ещё 48 КиБ.')}
       </text>
     </Diagram>
   )

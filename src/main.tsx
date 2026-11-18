@@ -1,19 +1,9 @@
 import { StrictMode } from 'react'
 import { createRoot, hydrateRoot } from 'react-dom/client'
-import { BrowserRouter } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import App from './App.tsx'
 import { LangProvider } from './i18n.tsx'
 import './styles/global.scss'
-
-const page = (
-  <StrictMode>
-    <BrowserRouter basename={import.meta.env.BASE_URL}>
-      <LangProvider>
-        <App />
-      </LangProvider>
-    </BrowserRouter>
-  </StrictMode>
-)
 
 // The files are named sdk.html and index.html, and a host answers those
 // names too: the address becomes the page's own, /sdk and /, before the
@@ -23,6 +13,11 @@ if (named) {
   const path = named[1] === '' || named[1] === '/ru' ? `${named[1]}/` : named[1]
   window.history.replaceState(null, '', path + window.location.search + window.location.hash)
 }
+
+const router = createBrowserRouter([
+  { path: '*', element: <LangProvider><App /></LangProvider> },
+], { basename: import.meta.env.BASE_URL })
+const page = <StrictMode><RouterProvider router={router} /></StrictMode>
 
 // A page rendered at build time is taken over as it is; the development
 // server's empty one is drawn, and so is 404.html, which stands for any

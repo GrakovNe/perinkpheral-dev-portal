@@ -38,3 +38,7 @@ public/renders/hero-*.webp
 *.njsproj
 *.sln
 *.sw?
+
+# Browser regression artifacts
+test-results/
+playwright-report/

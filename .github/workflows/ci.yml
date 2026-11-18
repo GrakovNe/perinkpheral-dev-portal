@@ -57,6 +57,8 @@ jobs:
           PERINKPHERAL: ${{ github.workspace }}/.sources/perinkpheral
           PERINKPHERAL_APPS: ${{ github.workspace }}/.sources/perinkpheral-apps
       - run: npm run check
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:browser
       - run: npm run build
         env:
           PORTAL_BASE: /

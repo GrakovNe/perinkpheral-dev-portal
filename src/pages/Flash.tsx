@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import type { ESPLoader, Transport } from 'esptool-js'
+import { FlashNavigation } from '../components/FlashNavigation'
+import { restartTransport } from '../content/flashSession'
 import { Facts, PageHead } from '../components/Doc'
 import { GuideNav } from '../components/GuideNav'
 import { readFlashRange, readWholeFlash } from '../content/flashRead'
@@ -82,6 +84,7 @@ type Phase =
   | { name: 'idle' }
   | { name: 'monitor' }
   | { name: 'connecting' }
+  | { name: 'disconnecting' }
   | { name: 'connected'; chip: string; mac: string; saved?: string }
   | { name: 'reading'; chip: string; mac: string; done: number }
   | { name: 'preparing' }
@@ -106,7 +109,10 @@ export function Flash() {
     () => 'serial' in navigator,
     () => true,
   )
-  const [releases, setReleases] = useState<Release[] | null | 'none'>(null)
+  const [releases, setReleases] = useState<Release[] | null | 'none' | 'failed'>(null)
+  const [releaseAttempt, setReleaseAttempt] = useState(0)
+  const [navigationBlocked, setNavigationBlocked] = useState(false)
+  const clientReady = useSyncExternalStore(() => () => {}, () => true, () => false)
   const [chosen, setChosen] = useState(0)
   const [flavor, setFlavor] = useState<Flavor>('release')
   const [mode, setMode] = useState<InstallMode>('preserve')
@@ -127,18 +133,29 @@ export function Flash() {
   const transport = useRef<Transport | null>(null)
 
   useEffect(() => {
-    fetch(`${RELEASES}index.json`, { cache: 'no-cache' })
-      .then((answer) => (answer.ok ? answer.json() : []))
-      .then((list: Release[]) => setReleases(list.length ? list : 'none'))
-      .catch(() => setReleases('none'))
-  }, [])
+    const controller = new AbortController()
+    fetch(`${RELEASES}index.json`, { cache: 'no-cache', signal: controller.signal })
+      .then((answer) => {
+        if (!answer.ok) throw new Error('release index download')
+        return answer.json()
+      })
+      .then((list: Release[]) => {
+        if (!Array.isArray(list)) throw new Error('release index format')
+        setChosen(0)
+        setReleases(list.length ? list : 'none')
+      })
+      .catch(() => { if (!controller.signal.aborted) setReleases('failed') })
+    return () => controller.abort()
+  }, [releaseAttempt])
 
-  const current = releases && releases !== 'none' ? releases[chosen] : null
+  const current = Array.isArray(releases) ? releases[chosen] : null
   // a release made before there were builds for debugging has the one
   const build: Flavor = current && current.builds[flavor] ? flavor : 'release'
   const installPath = current ? manifestPath(current.builds, build, mode) : null
 
-  // leaving the page lets the board go: the port is the browser's, not the page's
+  // Normal navigation awaits reset through FlashNavigation. Unmount also releases
+  // an idle connection; active operations must finish before the port is touched.
+  const operation = useRef(false)
   useEffect(
     () => () => {
       const reader = monitorReader.current
@@ -149,9 +166,12 @@ export function Flash() {
         await reader?.cancel().catch(() => {})
         await port?.close().catch(() => {})
       })()
-      void transport.current?.disconnect().catch(() => {})
-      transport.current = null
-      loader.current = null
+      if (!operation.current) {
+        const line = transport.current
+        transport.current = null
+        loader.current = null
+        void restartTransport(line).then(() => line?.disconnect()).catch(() => {})
+      }
     },
     [],
   )
@@ -163,23 +183,7 @@ export function Flash() {
     write: (line: string) => say(line),
   }
 
-  // The board out of its loader and into its firmware. esptool-js's hard
-  // reset left the C6 in the loader over USB-JTAG; this is esptool.py's for
-  // USB-JTAG - the boot pin let go, RTS up for a moment and down again.
-  const restart = async () => {
-    const line = transport.current
-    if (!line) {
-      return
-    }
-    try {
-      await line.setDTR(false)
-      await line.setRTS(true)
-      await new Promise((resolve) => setTimeout(resolve, 100))
-      await line.setRTS(false)
-    } catch {
-      // the board is gone already
-    }
-  }
+  const restart = () => restartTransport(transport.current)
 
   const release = async () => {
     try {
@@ -191,7 +195,17 @@ export function Flash() {
     loader.current = null
   }
 
+  const disconnect = async () => {
+    operation.current = true
+    setPhase({ name: 'disconnecting' })
+    await restart()
+    await release()
+    operation.current = false
+    setPhase({ name: 'idle' })
+  }
+
   const connect = async () => {
+    operation.current = true
     setPhase({ name: 'connecting' })
     try {
       const { ESPLoader, Transport } = await import('esptool-js')
@@ -215,12 +229,15 @@ export function Flash() {
           ? { name: 'idle' }
           : { name: 'error', message: t('The board does not answer.', 'Плата не отвечает.') },
       )
+    } finally {
+      operation.current = false
     }
   }
 
   const install = async () => {
     const device = loader.current
     if (!device || !installPath || !current) return
+    operation.current = true
     setPhase({ name: 'preparing' })
     let writing = false
     try {
@@ -255,6 +272,7 @@ export function Flash() {
       await release()
       setPhase({ name: 'done', recovery, mode })
     } catch (error) {
+      if (!writing) await restart()
       await release()
       const message = error instanceof FlashPlanError
         ? error.message === 'source'
@@ -266,6 +284,8 @@ export function Flash() {
           ? t('Writing stopped. Connect again.', 'Запись прервалась. Подключите ещё раз.')
           : t('Preparation failed. Nothing was written. Connect again.', 'Подготовка не удалась. Ничего не записано. Подключите ещё раз.')
       setPhase({ name: 'error', message })
+    } finally {
+      operation.current = false
     }
   }
 
@@ -346,6 +366,7 @@ export function Flash() {
     if (!loader.current) {
       return
     }
+    operation.current = true
     setPhase({ name: 'reading', chip, mac, done: 0 })
     try {
       const data = await readWholeFlash(loader.current, FLASH_BYTES, (read, size) =>
@@ -359,22 +380,30 @@ export function Flash() {
       URL.revokeObjectURL(link.href)
       setPhase({ name: 'connected', chip, mac, saved: name })
     } catch {
+      await restart()
       await release()
       setPhase({ name: 'error', message: t('Reading stopped. Connect again.', 'Чтение прервалось. Подключите ещё раз.') })
+    } finally {
+      operation.current = false
     }
   }
 
   const version = current?.version ?? null
   const busy =
-    phase.name === 'connecting' || phase.name === 'preparing' || phase.name === 'erasing' || phase.name === 'writing' || phase.name === 'reading'
+    phase.name === 'connecting' || phase.name === 'disconnecting' || phase.name === 'preparing' || phase.name === 'erasing' || phase.name === 'writing' || phase.name === 'reading'
 
   let body
   if (!supported) {
     body = <p>{t('Needs Chrome or Edge on a computer.', 'Нужен Chrome или Edge на компьютере.')}</p>
+  } else if (releases === 'failed') {
+    body = <>
+      <p role="alert">{t('Could not load firmware versions. Check your connection and try again.', 'Не удалось загрузить версии прошивки. Проверьте соединение и попробуйте ещё раз.')}</p>
+      <button type="button" className="button" onClick={() => { setReleases(null); setReleaseAttempt((attempt) => attempt + 1) }}>{t('Try again', 'Повторить')}</button>
+    </>
   } else if (releases === 'none') {
     body = <p>{t('No firmware is published yet.', 'Прошивка ещё не опубликована.')}</p>
   } else if (phase.name === 'idle' || phase.name === 'connecting') {
-    const list = releases ?? []
+    const list = Array.isArray(releases) ? releases : []
     body = (
       <>
         <div className="flash-choice">
@@ -500,18 +529,15 @@ export function Flash() {
           <button
             type="button"
             className="button quiet"
-            onClick={async () => {
-              // Connect left the board in its loader: it starts its firmware again
-              await restart()
-              await release()
-              setPhase({ name: 'idle' })
-            }}
+            onClick={disconnect}
           >
             {t('Disconnect', 'Отключить')}
           </button>
         </div>
       </>
     )
+  } else if (phase.name === 'disconnecting') {
+    body = <p>{t('Disconnecting', 'Отключение')}</p>
   } else if (phase.name === 'reading') {
     body = (
       <>
@@ -566,6 +592,14 @@ export function Flash() {
 
   return (
     <>
+      {clientReady && <FlashNavigation
+        busy={busy}
+        connected={phase.name === 'connected'}
+        disconnect={disconnect}
+        onBlocked={() => setNavigationBlocked(true)}
+      />}
+      {navigationBlocked && busy && <p className="wrap" role="alert">{t('Wait for the operation to finish before leaving this page.', 'Дождитесь завершения операции перед переходом на другую страницу.')}</p>}
+
       <PageHead title={t('Flash', 'Прошивка')} />
       <div className="wrap flash-page">
         <div className="flash-main">
