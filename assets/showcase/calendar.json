@@ -1,0 +1,17 @@
+{
+  "at": 1794832230,
+  "tz": "Europe/Moscow",
+  "clock": true,
+  "store": {
+    "feed": "https://calendar.example/demo.ics"
+  },
+  "mocks": {
+    "https://calendar.example/*": {
+      "body": "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nBEGIN:VEVENT\r\nUID:demo-1\r\nDTSTART:20261116T130000Z\r\nDTEND:20261116T133000Z\r\nSUMMARY:Design review\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:demo-2\r\nDTSTART:20261116T150000Z\r\nDTEND:20261116T160000Z\r\nSUMMARY:Lunch with Alex\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:demo-3\r\nDTSTART:20261117T080000Z\r\nDTEND:20261117T083000Z\r\nSUMMARY:Weekly planning\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
+    }
+  },
+  "steps": [
+    "wait 3",
+    "shot calendar"
+  ]
+}

@@ -26,11 +26,36 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+      - uses: actions/checkout@v5
+        with:
+          repository: GrakovNe/perinkpheral
+          path: .sources/perinkpheral
+      - uses: actions/checkout@v5
+        with:
+          repository: GrakovNe/perinkpheral-apps
+          path: .sources/perinkpheral-apps
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Image tools and wasi-sdk
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg webp
+          curl --fail -sSL https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-34/wasi-sdk-34.0-x86_64-linux.tar.gz \
+            | tar -xz -C "$RUNNER_TEMP"
+          echo "WASI_SDK_PATH=$RUNNER_TEMP/wasi-sdk-34.0-x86_64-linux" >> "$GITHUB_ENV"
       - uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: npm
       - run: npm ci
+      - name: Render the applications and case images
+        run: npm run images
+        env:
+          PERINKPHERAL: ${{ github.workspace }}/.sources/perinkpheral
+          PERINKPHERAL_APPS: ${{ github.workspace }}/.sources/perinkpheral-apps
       - run: npm run check
       - run: npm run build
         env:

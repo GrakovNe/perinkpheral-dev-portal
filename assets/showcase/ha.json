@@ -1,0 +1,18 @@
+{
+  "at": 1794832230,
+  "tz": "Europe/Moscow",
+  "clock": true,
+  "store": {
+    "server": "https://home.example",
+    "token": "showcase"
+  },
+  "mocks": {
+    "https://home.example/*": {
+      "body": "hero|22.5°|thermometer\ndetail|46|%|drop\ndetail|620|ppm|co2\ncolumn|Outside|cloudy|12°\ncolumn|Office|thermometer|23°\ncolumn|Bedroom|thermometer|21°"
+    }
+  },
+  "steps": [
+    "wait 3",
+    "shot ha"
+  ]
+}

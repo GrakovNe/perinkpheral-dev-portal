@@ -1,0 +1,17 @@
+{
+  "at": 1794832230,
+  "tz": "Europe/Moscow",
+  "clock": true,
+  "store": {
+    "tickers": "NVDA"
+  },
+  "mocks": {
+    "https://query1.finance.yahoo.com/*": {
+      "body": "{\"chart\":{\"result\":[{\"meta\":{\"longName\":\"NVIDIA\",\"shortName\":\"NVIDIA\",\"symbol\":\"NVDA\",\"regularMarketPrice\":186.42,\"chartPreviousClose\":178.5,\"priceHint\":2,\"regularMarketTime\":1794832230,\"currency\":\"USD\"},\"indicators\":{\"quote\":[{\"close\":[178.8,179.4,179.1,180.2,181,180.5,181.4,182.3,181.8,182.6,182.4,183.5,183.1,184.2,184,185.1,184.7,185.6,185.2,186.42]}]}}],\"error\":null}}"
+    }
+  },
+  "steps": [
+    "wait 3",
+    "shot stocks"
+  ]
+}

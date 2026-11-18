@@ -6,7 +6,7 @@
 // page's own text, title, description and preview. Writes 404.html, the
 // sitemap and robots.txt beside them.
 
-import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 
@@ -39,6 +39,11 @@ function page({ url, lang, title, description, head, any = false }) {
 }
 
 function write(name, html) {
+  for (const [asset] of html.matchAll(/(?:screens|renders)\/[^"'\s,<>]+\.(?:png|webp)/g)) {
+    if (!existsSync(resolve(DIST, asset))) {
+      throw new Error(`${name}: missing ${asset}; run npm run images before building`)
+    }
+  }
   const target = resolve(DIST, `.${name}`)
   mkdirSync(dirname(target), { recursive: true })
   writeFileSync(target, html)

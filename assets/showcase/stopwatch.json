@@ -1,0 +1,9 @@
+{
+  "at": 1794832230,
+  "tz": "Europe/Moscow",
+  "steps": [
+    "wait 3",
+    "shot stopwatch"
+  ],
+  "clock": true
+}

@@ -11,6 +11,22 @@ node_modules
 dist
 dist-ssr
 *.local
+.sources/
+
+# Generated from real applications and the case sources by npm run images.
+public/screens/air.png
+public/screens/calendar.png
+public/screens/clock.png
+public/screens/ha.png
+public/screens/iss.png
+public/screens/stocks.png
+public/screens/stopwatch.png
+public/screens/weather.png
+public/screens/sources.json
+public/renders/front-*.webp
+public/renders/front34l-*.webp
+public/renders/front34r-*.webp
+public/renders/hero-*.webp
 
 # Editor directories and files
 .vscode/*

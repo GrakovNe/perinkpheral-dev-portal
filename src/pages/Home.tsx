@@ -373,9 +373,9 @@ const SPECS: { en: string; ru: string; value: string; valueRu: string; icon: str
 
 const HERO = [
   { name: 'hero-weather', en: 'Weather', ru: 'Погода' },
-  { name: 'hero-sun', en: 'Sun and Moon', ru: 'Солнце и Луна' },
+  { name: 'hero-iss', en: 'ISS', ru: 'МКС' },
   { name: 'hero-stocks', en: 'Stocks', ru: 'Акции' },
-  { name: 'hero-timer', en: 'Timer', ru: 'Таймер' },
+  { name: 'hero-air', en: 'Air quality', ru: 'Качество воздуха' },
 ]
 
 const RENDERS = [

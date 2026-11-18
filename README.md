@@ -21,6 +21,7 @@ Requires Node.js 22.12 or later. CI uses Node.js 22; tests use its built-in Type
 
 ```sh
 npm ci
+npm run images
 npm run dev
 npm run check
 npm run build
@@ -29,7 +30,7 @@ npm run build
 The development server uses `http://localhost:5173`. The build writes static
 pages for both languages to `dist/`.
 
-CI checks and builds every push. Each successful push to `main` publishes
+CI renders the showcase, checks and builds every push. Each successful push to `main` publishes
 the site to GitHub Pages and creates a release.
 
 ## Repository
@@ -57,9 +58,23 @@ internal anchors when moving a section.
   their integration instructions.
 
 `npm run build` generates `dist/` and a temporary `dist-ssr/`; neither is committed.
-`public/renders/` contains optimized source assets for this site. To rebuild them,
-run `scripts/images.sh <original-render-folder>` with ffmpeg and cwebp installed;
-the original PNGs are kept locally under the firmware repository's `hardware/render/`.
+`npm run images` builds the eight showcase applications, captures their screens in
+the real simulator, and composites the case pictures. It needs Java 21+, a C compiler,
+wasi-sdk 34 (`WASI_SDK_PATH`), ffmpeg and cwebp. By default it uses sibling checkouts
+`../perinkpheral` and `../perinkpheral-apps`; override them with `PERINKPHERAL` and
+`PERINKPHERAL_APPS`. CI checks out both repositories' `main` and runs this before
+building the site. `public/screens/sources.json` records the exact revisions used.
+
+The inputs in `assets/showcase/` fix the time, settings and mock responses. All values
+are demonstration data, including NVIDIA's rising price series; no live accounts or
+market data are used. Frames are generated in temporary folders, separate from the
+applications' reviewed regression baselines. The generated app screens and case
+composites are ignored by git and included in the deployed site.
+
+`assets/renders/` holds three blank case views at 1600 x 1067, encoded as lossless WebP.
+They are reduced from the original 6000 x 4000 PNGs under the firmware repository's
+local `hardware/render/`. CI needs only these committed sources. Other case angles
+and the SDK's `kit-*` illustrations remain static assets in `public/`.
 
 ## License
 
