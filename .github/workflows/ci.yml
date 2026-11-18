@@ -1,6 +1,6 @@
 # Every push and pull request: the portal checked and built, the site as the run's artifact.
 #
-# Every push to main is a release, once that passes: the site published on GitHub Pages at
+# Every push or manual run on main is a release, once that passes: the site published on GitHub Pages at
 # perinkpheral.dev, and the next version - the last release's with its patch one up, or 0.1.0 -
 # tagged, its notes the commits since the release before. The web flasher reads the firmware's
 # releases from the firmware repository's Pages, not from here.
@@ -66,7 +66,7 @@ jobs:
 
   publish:
     needs: build
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-latest
     environment:
       name: github-pages

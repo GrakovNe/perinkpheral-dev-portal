@@ -64,6 +64,9 @@ wasi-sdk 34 (`WASI_SDK_PATH`), ffmpeg and cwebp. By default it uses sibling chec
 `../perinkpheral` and `../perinkpheral-apps`; override them with `PERINKPHERAL` and
 `PERINKPHERAL_APPS`. CI checks out both repositories' `main` and runs this before
 building the site. `public/screens/sources.json` records the exact revisions used.
+After an application release, run the portal's CI workflow on `main` to regenerate
+the showcase and publish it without making an empty source commit. Runs on other
+branches and pull requests only build and check.
 
 The inputs in `assets/showcase/` fix the time, settings and mock responses. All values
 are demonstration data, including NVIDIA's rising price series; no live accounts or
