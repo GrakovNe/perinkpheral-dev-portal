@@ -14,13 +14,13 @@ export function PrintCase() {
     </Download>
   )
   const parts = [
-    [t('Frame and logo', 'Рамка и логотип'), '1', t('Frame with the lettering', 'Рамка с надписью'), caseFiles.frame],
-    [t('Back panel', 'Задняя панель'), '1', t('Panel behind the display', 'Крышка за экраном'), caseFiles.back],
-    [t('Base cover', 'Крышка основания'), '1', t('Cover with the button openings', 'Крышка с отверстиями кнопок'), caseFiles.base],
-    [t('Bottom', 'Дно'), '1', t('Bottom with the board and battery supports', 'Дно с опорами платы и бортиками аккумулятора'), caseFiles.bottom],
-    [t('Corner bracket', 'Уголок'), '1', t('Bracket for the display', 'Уголок крепления экрана'), caseFiles.bracket],
-    [t('Button caps', 'Колпачки кнопок'), '4', t('Caps', 'Колпачки'), caseFiles.caps],
-    [t('Feet', 'Ножки'), '6', t('TPU feet', 'Ножки из TPU'), caseFiles.feet],
+    [t('Frame and logo', 'Рамка и логотип'), '1', 'PLA/PETG/ABS', caseFiles.frame],
+    [t('Back panel', 'Задняя панель'), '1', 'PLA/PETG/ABS', caseFiles.back],
+    [t('Base cover', 'Крышка основания'), '1', 'PLA/PETG/ABS', caseFiles.base],
+    [t('Bottom', 'Дно'), '1', 'PLA/PETG/ABS', caseFiles.bottom],
+    [t('Corner bracket', 'Уголок'), '1', 'PLA/PETG/ABS', caseFiles.bracket],
+    [t('Button caps', 'Колпачки кнопок'), '4', 'PLA/PETG/ABS', caseFiles.caps],
+    [t('Feet', 'Ножки'), '6', 'TPU', caseFiles.feet],
   ]
 
   return (
@@ -54,8 +54,8 @@ export function PrintCase() {
           <section>
             <h2>{t('Print files', 'Файлы для печати')}</h2>
             <Table
-              head={[t('Part', 'Деталь'), t('Quantity', 'Количество'), t('Description', 'Описание'), t('File', 'Файл')]}
-              rows={parts.map(([name, quantity, description, url]) => [name, quantity, description, download(url, name)])}
+              head={[t('Part', 'Деталь'), t('Quantity', 'Количество'), t('Plastic type', 'Тип пластика'), t('File', 'Файл')]}
+              rows={parts.map(([name, quantity, plastic_type, url]) => [name, quantity, plastic_type, download(url, name)])}
             />
           </section>
 
