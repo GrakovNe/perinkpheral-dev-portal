@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { Chapter, DocBody, Facts, PageHead } from '../components/Doc'
 import { DeliveryDiagram, FlashDiagram, LayersDiagram } from '../components/Diagrams'
 import { files, repo } from '../content/links'
-import { EnglishOnly, useLocal, useT } from '../i18n'
+import { useLocal, useT } from '../i18n'
 
 const CHAPTERS = [
   { id: 'overview', en: 'Overview', ru: 'Обзор' },
@@ -36,21 +36,15 @@ export function Firmware() {
         </Chapter>
 
         <Chapter chapter={architecture}>
-          <EnglishOnly>
-            <LayersDiagram />
-          </EnglishOnly>
+          <LayersDiagram />
         </Chapter>
 
         <Chapter chapter={delivery}>
-          <EnglishOnly>
-            <DeliveryDiagram />
-          </EnglishOnly>
+          <DeliveryDiagram />
         </Chapter>
 
         <Chapter chapter={storage}>
-          <EnglishOnly>
-            <FlashDiagram />
-          </EnglishOnly>
+          <FlashDiagram />
         </Chapter>
 
         <Chapter chapter={network}>
