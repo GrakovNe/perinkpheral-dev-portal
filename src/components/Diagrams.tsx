@@ -222,53 +222,37 @@ export function WiringDiagram() {
   const t = useT()
   const row = 30
   const top = 56
-  const height = top + row * PANEL_PINS.length
+  const parts = [
+    { name: 'Waveshare 4.2" V2', pins: PANEL_PINS },
+    { name: t('Buttons 4P', 'Кнопки 4P'), pins: BUTTON_PINS },
+  ]
   return (
-    <Diagram
-      width={760}
-      height={height + 20}
-      label={t('Wiring', 'Проводка')}
-    >
-      <rect x={10} y={10} width={170} height={height - 10} fill={PAPER} stroke={INK} strokeWidth={1.5} />
-      <text x={95} y={32} textAnchor="middle" fontSize={13}>
-        Waveshare 4.2" V2
-      </text>
-      <rect x={250} y={10} width={260} height={height - 10} fill={INK} stroke={INK} strokeWidth={1.5} />
-      <text x={380} y={32} textAnchor="middle" fontSize={13} fill={PAPER}>
-        XIAO ESP32-C6
-      </text>
-      <rect x={580} y={10} width={170} height={top + row * BUTTON_PINS.length - 10} fill={PAPER} stroke={INK} strokeWidth={1.5} />
-      <text x={665} y={32} textAnchor="middle" fontSize={13}>
-        {t('Buttons 4P', 'Кнопки 4P')}
-      </text>
-      {PANEL_PINS.map(([pin, xiao], index) => {
-        const y = top + index * row
+    <div className="wiring-diagrams">
+      {parts.map(({ name, pins }) => {
+        const height = top + row * pins.length
         return (
-          <g key={pin}>
-            <text x={24} y={y + 4} fontSize={12}>
-              {pin}
+          <Diagram key={name} width={360} height={height + 10} label={`${name} - XIAO ESP32-C6`}>
+            <rect x={10} y={10} width={160} height={height - 10} fill={PAPER} stroke={INK} strokeWidth={1.5} />
+            <text x={90} y={32} textAnchor="middle" fontSize={13}>
+              {name}
             </text>
-            <line x1={180} y1={y} x2={250} y2={y} stroke={INK} strokeWidth={1.5} />
-            <text x={262} y={y + 4} fontSize={12} fill={PAPER}>
-              {xiao}
+            <rect x={230} y={10} width={120} height={height - 10} fill={INK} stroke={INK} strokeWidth={1.5} />
+            <text x={290} y={32} textAnchor="middle" fontSize={13} fill={PAPER}>
+              XIAO ESP32-C6
             </text>
-          </g>
+            {pins.map(([pin, xiao], index) => {
+              const y = top + index * row
+              return (
+                <g key={pin}>
+                  <text x={24} y={y + 4} fontSize={14}>{pin}</text>
+                  <line x1={170} y1={y} x2={230} y2={y} stroke={INK} strokeWidth={1.5} />
+                  <text x={244} y={y + 4} fontSize={14} fill={PAPER}>{xiao}</text>
+                </g>
+              )
+            })}
+          </Diagram>
         )
       })}
-      {BUTTON_PINS.map(([pin, xiao], index) => {
-        const y = top + index * row
-        return (
-          <g key={pin}>
-            <text x={736} y={y + 4} fontSize={12} textAnchor="end">
-              {pin}
-            </text>
-            <line x1={510} y1={y} x2={580} y2={y} stroke={INK} strokeWidth={1.5} />
-            <text x={498} y={y + 4} fontSize={12} fill={PAPER} textAnchor="end">
-              {xiao}
-            </text>
-          </g>
-        )
-      })}
-    </Diagram>
+    </div>
   )
 }
