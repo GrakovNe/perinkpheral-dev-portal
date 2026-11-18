@@ -152,11 +152,11 @@ export function Hardware() {
               </p>
             </li>
             <li>
-              <h3>{t('Close the case', 'Закрыть корпус')}</h3>
+              <h3>{t('Assemble the case', 'Собрать корпус')}</h3>
               <p>
                 {t(
-                  'Screw the back panel to the frame, the bottom to the base and the base to the back panel. Put on the button caps.',
-                  'Привинтите заднюю панель к рамке, дно к основанию и основание к задней панели. Наденьте колпачки кнопок.',
+                  'Insert the button caps into the base cover from the inside. Screw the back panel to the frame, the bottom to the base and the base to the back panel.',
+                  'Вставьте колпачки кнопок в крышку основания изнутри. Привинтите заднюю панель к рамке, дно к основанию и основание к задней панели.',
                 )}
               </p>
             </li>
