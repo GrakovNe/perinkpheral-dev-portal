@@ -51,7 +51,7 @@ export function Hardware() {
               [t('Buttons', 'Кнопки'), '"Independent key switch module 4P"', '1', t('A small board with four buttons, sold under this name', 'Плата с четырьмя кнопками, продаётся под этим названием')],
               [t('Battery', 'Аккумулятор'), t('Li-Ion/LiPo 3.7 V, size code 955465, 4000 mAh', 'Li-Ion/LiPo 3.7 В, типоразмер 955465, 4000 мАч'), '1', t('With a protection board', 'С платой защиты')],
               [t('Screws', 'Винты'), 'M2.5 x 4', '5', t('3 display to frame, 2 back panel', '3 экран к рамке, 2 задняя панель')],
-              [t('Screws', 'Винты'), 'M2.5 x 6', '7', t('4 bottom to cover, 2 sole, 1 display corner', '4 дно к основанию, 2 основание, 1 угол экрана')],
+              [t('Screws', 'Винты'), 'M2.5 x 6', '9', t('4 bottom to cover, 4 base to back panel, 1 display corner', '4 дно к основанию, 4 основание к задней панели, 1 угол экрана')],
               [t('Wire', 'Провод'), t('Thin hook-up wire', 'Тонкий монтажный'), t('~0.3 m', '~0.3 м'), t('Buttons and battery', 'Кнопки и аккумулятор')],
               [t('Heat shrink tube', 'Термоусадка'), t('1.5-2 mm', '1.5-2 мм'), t('~0.1 m', '~0.1 м'), t('Insulating the joined wires', 'Изоляция скруток')],
               [t('Tape', 'Скотч'), t('Thin double-sided', 'Тонкий двусторонний'), '-', t('Antenna and battery', 'Антенна и аккумулятор')],
@@ -96,13 +96,18 @@ export function Hardware() {
               [t('Base', 'Основание'), '1', t('PLA, copper', 'PLA, медный'), t('Top side down', 'Верхом вниз')],
               [t('Bottom', 'Дно'), '1', t('PLA, copper', 'PLA, медный'), t('Bottom side down', 'Низом вниз')],
               [t('Button caps', 'Колпачки кнопок'), '4', t('PLA, black', 'PLA, чёрный'), t('Wide side down', 'Широкой стороной вниз')],
-              [t('Feet', 'Ножки'), '6', 'TPU', t('Flat side down', 'Плоской стороной вниз')],
+              [t('Feet, optional', 'Ножки, необязательно'), '6', 'TPU', t('Flat side down', 'Плоской стороной вниз')],
             ]}
           />
           <ul>
             <li>{t('No supports.', 'Без поддержек.')}</li>
             <li>{t('Logo: second color, printed with the frame.', 'Логотип: второй цвет, печатается вместе с рамкой.')}</li>
           </ul>
+          <div className="buttons">
+            <Link className="button" to={local('/hardware/print')}>
+              {t('Print files', 'Файлы для печати')} <span className="arrow">-&gt;</span>
+            </Link>
+          </div>
         </Chapter>
 
         <Chapter chapter={wiring}>
@@ -126,7 +131,7 @@ export function Hardware() {
           <ol className="steps">
             <li>
               <h3>{t('Print', 'Печать')}</h3>
-              <p>{t('Print all parts as listed above. Press the TPU feet into the bottom.', 'Напечатайте все детали по списку выше. Вдавите ножки из TPU в дно.')}</p>
+              <p>{t('Print the case from the ready-oriented 3MF files. If using TPU feet, press them into the bottom.', 'Напечатайте корпус из 3MF с готовой ориентацией деталей. Если нужны ножки из TPU, вдавите их в дно.')}</p>
             </li>
             <li>
               <h3>{t('Mount the display', 'Экран')}</h3>
@@ -185,7 +190,7 @@ export function Hardware() {
               [t('Back panel to frame', 'Задняя панель к рамке'), 'M2.5 x 4', '1', t('No longer than 4 mm', 'Не длиннее 4 мм')],
               [t('Back panel to corner bracket', 'Задняя панель к уголку'), 'M2.5 x 4', '1', ''],
               [t('Bottom to base', 'Дно к основанию'), 'M2.5 x 6', '4', t('Up to 8 mm', 'До 8 мм')],
-              [t('Base to back panel', 'Основание к задней панели'), 'M2.5 x 6', '2', t('No longer than 6 mm', 'Не длиннее 6 мм')],
+              [t('Base to back panel', 'Основание к задней панели'), 'M2.5 x 6', '4', t('No longer than 6 mm', 'Не длиннее 6 мм')],
             ]}
           />
         </Chapter>
@@ -209,9 +214,9 @@ export function Hardware() {
 
         <Chapter chapter={filesChapter}>
           <div className="buttons">
-            <a className="button quiet" href={files.step} download="perinkpheral.step">
-              {t('3D model, STEP', '3D-модель, STEP')}
-            </a>
+            <Link className="button quiet" to={local('/hardware/print')}>
+              {t('Case files, 3MF / STEP', 'Файлы корпуса, 3MF / STEP')} <span className="arrow">-&gt;</span>
+            </Link>
             <a className="button quiet" href={files.hardwareNotes}>
               {t('Display notes', 'Заметки об экране')} <span className="arrow">-&gt;</span>
             </a>

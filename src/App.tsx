@@ -6,6 +6,7 @@ import { Credits } from './pages/Credits'
 import { Firmware } from './pages/Firmware'
 import { Flash } from './pages/Flash'
 import { Hardware } from './pages/Hardware'
+import { PrintCase } from './pages/PrintCase'
 import { Home } from './pages/Home'
 import { Sdk } from './pages/Sdk'
 import { Start } from './pages/Start'
@@ -38,6 +39,7 @@ const ROUTES: [string, ReactElement][] = [
   ['/start', <Start />],
   ['/flash', <Flash />],
   ['/hardware', <Hardware />],
+  ['/hardware/print', <PrintCase />],
   ['/firmware', <Firmware />],
   ['/sdk', <Sdk />],
   ['/contacts', <Contacts />],

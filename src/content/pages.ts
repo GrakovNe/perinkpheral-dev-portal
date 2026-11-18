@@ -1,9 +1,10 @@
 // The sections of the portal, in the order the bar and the footer list
-// them. Flash and Credits are the footer's only.
+// them. Pages without inBar are linked from the footer.
 export const PAGES = [
   { to: '/start', en: 'Getting started', ru: 'Начало работы', inBar: true },
   { to: '/flash', en: 'Flash', ru: 'Прошивка', inBar: false },
   { to: '/hardware', en: 'Hardware', ru: 'Hardware', inBar: true },
+  { to: '/hardware/print', en: 'Print the case', ru: 'Печать корпуса', inBar: false },
   { to: '/firmware', en: 'Firmware', ru: 'Firmware', inBar: true },
   { to: '/sdk', en: 'SDK', ru: 'SDK', inBar: true },
   { to: '/contacts', en: 'Contacts', ru: 'Контакты', inBar: true },
@@ -28,6 +29,10 @@ export const DESCRIPTIONS: Record<string, { en: string; ru: string }> = {
   '/hardware': {
     en: 'The parts, the printed case, the wiring, the assembly and the first flash of the perINKpheral display.',
     ru: 'Детали, корпус, схема сборки, сборка и первая прошивка экрана perINKpheral.',
+  },
+  '/hardware/print': {
+    en: 'Download the perINKpheral Rev 1 case as 3MF files, already oriented for printing without supports. Includes the STEP source.',
+    ru: 'Корпус perINKpheral Rev 1 в формате 3MF: детали уже развёрнуты для печати без поддержек. Исходная модель в STEP.',
   },
   '/firmware': {
     en: 'The perINKpheral firmware: its architecture, how data reaches apps, the storage, the network and the web API.',
