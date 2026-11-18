@@ -11,7 +11,6 @@ export const repo = {
 }
 
 const blob = (path: string) => `${repo.firmware}/blob/main/${path}`
-const raw = (path: string) => `https://raw.githubusercontent.com/GrakovNe/perinkpheral/main/${path}`
 
 export const files = {
   hostApi: blob('sdk/host_api.h'),

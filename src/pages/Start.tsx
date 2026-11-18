@@ -76,8 +76,8 @@ export function Start() {
             }
           >
             {t(
-              'From a browser, with the board on a USB-C cable. Later updates install over Wi-Fi.',
-              'Из браузера, с платой на кабеле USB-C. Дальше обновления ставятся по Wi-Fi.',
+              'From a browser, with the board on a USB-C cable. Choose Fresh install for a new board. On the recovery screen, press BACK to start the firmware. Later updates install over Wi-Fi.',
+              'Из браузера, с платой на кабеле USB-C. Для новой платы выберите «Чистая установка». На экране recovery нажмите BACK для запуска прошивки. Дальше обновления ставятся по Wi-Fi.',
             )}
           </Step>
           <Step id="wifi" number={3} icon={STEP_ICONS.connect} title={t('Connect to Wi-Fi', 'Подключите к Wi-Fi')}>

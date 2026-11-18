@@ -151,8 +151,8 @@ export function DeliveryDiagram() {
 const PARTITIONS: { name: string; ru: string; size: string; weight: number; filled?: boolean }[] = [
   { name: 'settings', ru: 'настройки', size: '24K', weight: 1.7 },
   { name: 'app data', ru: 'данные', size: '56K', weight: 1.4 },
-  { name: 'firmware', ru: 'прошивка', size: '1.44M', weight: 2.8, filled: true },
-  { name: 'update', ru: 'обновление', size: '1.44M', weight: 2.8, filled: true },
+  { name: 'recovery', ru: 'recovery', size: '896K', weight: 2.4, filled: true },
+  { name: 'firmware', ru: 'прошивка', size: '2M', weight: 3.2, filled: true },
   { name: 'app code', ru: 'код', size: '320K', weight: 1.6 },
   { name: 'app files', ru: 'файлы', size: '640K', weight: 2 },
   { name: 'fonts', ru: 'шрифты', size: '64K', weight: 1.4 },

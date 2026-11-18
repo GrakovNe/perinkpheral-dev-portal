@@ -195,6 +195,7 @@ export function Hardware() {
             rows={[
               [t('Needs', 'Нужно'), t('Chrome or Edge on a computer, a USB-C cable', 'Chrome или Edge на компьютере, кабель USB-C')],
               [t('Board not found', 'Плата не видна'), t('Hold BOOT while plugging in', 'Держите BOOT при подключении')],
+              [t('After flashing', 'После прошивки'), t('On the recovery screen, press BACK to start', 'На экране recovery нажмите BACK для запуска')],
               [t('Wi-Fi setup', 'Настройка Wi-Fi'), <>{t('Join', 'Подключиться к')} <code>Perinkpheral-XXXX</code>, {t('open', 'открыть')} <code>http://192.168.4.1</code></>],
               [t('Later updates', 'Дальнейшие обновления'), t('Over Wi-Fi', 'По Wi-Fi')],
             ]}

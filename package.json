@@ -9,7 +9,8 @@
     "lint": "oxlint",
     "preview": "vite preview",
     "images": "sh scripts/images.sh",
-    "check": "tsc -b && oxlint"
+    "check": "tsc -b && oxlint && npm test",
+    "test": "node --experimental-strip-types --test tests/*.test.mjs"
   },
   "dependencies": {
     "esptool-js": "0.7.0",

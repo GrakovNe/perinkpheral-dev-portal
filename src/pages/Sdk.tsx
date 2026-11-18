@@ -285,7 +285,7 @@ tools/perinkpheral log --follow
               [<code>set &lt;app&gt; &lt;key&gt; &lt;value&gt;</code>, t('Change an app setting', 'Изменить настройку приложения')],
               [<code>catalog &lt;folder&gt; --out &lt;dir&gt;</code>, t('Build a catalog', 'Собрать каталог')],
               [<code>strings export / import</code>, t('Translations as a spreadsheet', 'Переводы таблицей')],
-              [<code>flash [image]</code>, t('Update the firmware over Wi-Fi', 'Обновить прошивку по Wi-Fi')],
+              [<code>flash [image]</code>, t('Update over Wi-Fi; press OK in recovery to confirm', 'Обновить по Wi-Fi; подтвердить кнопкой OK в recovery')],
               [<code>usb &lt;port&gt;</code>, t('Control a device over USB', 'Управлять устройством по USB')],
             ]}
           />

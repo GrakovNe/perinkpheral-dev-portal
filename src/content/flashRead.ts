@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 import type { ESPLoader } from 'esptool-js'
 
 // Reading a board's flash, as esptool.py does it rather than esptool-js:
@@ -27,7 +28,9 @@ function join(...parts: Uint8Array[]): Uint8Array {
   return all
 }
 
-async function readPiece(loader: ESPLoader, address: number, size: number): Promise<Uint8Array> {
+export async function readFlashRange(loader: ESPLoader, address: number, size: number): Promise<Uint8Array> {
+  if (!Number.isSafeInteger(address) || !Number.isSafeInteger(size) || address < 0 || size <= 0 ||
+      size > PIECE || address % SECTOR || size % SECTOR) throw new Error('read flash: invalid range')
   const result = await loader.checkCommand(
     'read flash',
     READ_FLASH,
@@ -62,7 +65,7 @@ export async function readWholeFlash(
   const all = new Uint8Array(size)
   for (let address = 0; address < size; address += PIECE) {
     const length = Math.min(PIECE, size - address)
-    all.set(await readPiece(loader, address, length), address)
+    all.set(await readFlashRange(loader, address, length), address)
     progress(address + length, size)
   }
   return all
@@ -74,7 +77,7 @@ const hex = (bytes: Uint8Array) => Array.from(bytes, (byte) => byte.toString(16)
 const SHIFT = [7, 12, 17, 22, 5, 9, 14, 20, 4, 11, 16, 23, 6, 10, 15, 21]
 const K = Array.from({ length: 64 }, (_, i) => Math.floor(Math.abs(Math.sin(i + 1)) * 2 ** 32) >>> 0)
 
-function md5(data: Uint8Array): string {
+export function md5(data: Uint8Array): string {
   const padded = new Uint8Array((((data.length + 8) >> 6) + 1) << 6)
   padded.set(data)
   padded[data.length] = 0x80

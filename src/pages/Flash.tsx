@@ -1,8 +1,11 @@
+// SPDX-License-Identifier: MIT
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import { Link } from 'react-router-dom'
 import type { ESPLoader, Transport } from 'esptool-js'
 import { Facts, PageHead } from '../components/Doc'
-import { readWholeFlash } from '../content/flashRead'
+import { readFlashRange, readWholeFlash } from '../content/flashRead'
+import { FLASH_BYTES, TABLE_ADDRESS, SECTOR_BYTES, FlashPlanError, manifestPath, manifestParts, releaseUrl, validateFiles } from '../content/flashPlan'
+import type { Builds, Flavor, InstallMode } from '../content/flashPlan'
 import { useLocal, useT } from '../i18n'
 
 // The first flash from a browser: the board on a USB cable, Web Serial and
@@ -10,18 +13,13 @@ import { useLocal, useT } from '../i18n'
 // debugging: the firmware's repository puts the files of every release on its
 // Pages, where a browser may read them, with flash/index.json listing them -
 // the version, the date, the notes and a manifest in the form of ESP Web Tools
-// for each build. The board is erased and the files are written where the
-// manifest says. Before that, the whole flash can be read into a file: a copy
+// for each build. A migration preserves user data after checking both layouts;
+// a fresh install erases the board. The whole flash can be read into a file: a copy
 // of what the board holds, settings and Wi-Fi password among it.
 
 const RELEASES = 'https://grakovne.github.io/perinkpheral/flash/'
 const ESPRESSIF = 0x303a
-const FLASH_BYTES = 4 * 1024 * 1024
-
-type Part = { path: string; offset: number }
-type Manifest = { version: string; builds: { chipFamily: string; parts: Part[] }[] }
-type Flavor = 'release' | 'debug'
-type Release = { version: string; date: string; notes: string; builds: Record<Flavor, string | null> }
+type Release = { version: string; date: string; notes: string; builds: Builds }
 
 // The notes as CHANGES.md has them, the line about the flasher aside: a point a line.
 const notesOf = (release: Release) =>
@@ -70,15 +68,14 @@ function StepIcon({ rows }: { rows: string[] }) {
   )
 }
 
-// What to do, in order. "Wi-Fi" is not broken at its hyphen: a word joiner on each side.
-const WIFI = 'Wi\u2060-\u2060Fi'
+// What to do, in order.
 const STEPS: [string[], [string, string], [string, string]][] = [
   [ICON.plug, ['Connect the board', 'Подключите плату'], ['USB-C cable with data.', 'Кабель USB-C с данными.']],
   [ICON.list, ['Choose a version', 'Выберите версию'], ['And a build: Release or Debug.', 'И сборку: Релиз или Отладка.']],
   [ICON.chip, ['Click Connect', 'Нажмите «Подключить»'], ['Pick the board in the list.', 'Выберите плату в списке.']],
   [ICON.save, ['Back up', 'Сохраните копию'], ['Optional: the whole flash.', 'Необязательно: весь флеш.']],
-  [ICON.bolt, ['Click Install', 'Нажмите «Установить»'], ['About a minute.', 'Около минуты.']],
-  [ICON.signal, [`Set up ${WIFI}`, `Настройте ${WIFI}`], ['With the QR code on the screen.', 'По QR-коду на экране.']],
+  [ICON.bolt, ['Click Install', 'Нажмите «Установить»'], ['New board: choose Fresh install.', 'Новая плата: «Чистая установка».']],
+  [ICON.signal, ['Start the device', 'Запустите устройство'], ['Press BACK on the recovery screen.', 'Нажмите BACK на экране recovery.']],
 ]
 
 type Phase =
@@ -87,9 +84,10 @@ type Phase =
   | { name: 'connecting' }
   | { name: 'connected'; chip: string; mac: string; saved?: string }
   | { name: 'reading'; chip: string; mac: string; done: number }
+  | { name: 'preparing' }
   | { name: 'erasing' }
   | { name: 'writing'; done: number }
-  | { name: 'done' }
+  | { name: 'done'; recovery: boolean; mode: InstallMode }
   | { name: 'error'; message: string }
 
 function Progress({ value }: { value: number }) {
@@ -112,6 +110,7 @@ export function Flash() {
   const [releases, setReleases] = useState<Release[] | null | 'none'>(null)
   const [chosen, setChosen] = useState(0)
   const [flavor, setFlavor] = useState<Flavor>('release')
+  const [mode, setMode] = useState<InstallMode>('preserve')
   const [phase, setPhase] = useState<Phase>({ name: 'idle' })
   const [log, setLog] = useState('')
   const loader = useRef<ESPLoader | null>(null)
@@ -138,6 +137,7 @@ export function Flash() {
   const current = releases && releases !== 'none' ? releases[chosen] : null
   // a release made before there were builds for debugging has the one
   const build: Flavor = current && current.builds[flavor] ? flavor : 'release'
+  const installPath = current ? manifestPath(current.builds, build, mode) : null
 
   // leaving the page lets the board go: the port is the browser's, not the page's
   useEffect(
@@ -220,35 +220,32 @@ export function Flash() {
   }
 
   const install = async () => {
-    const path = current?.builds[build]
-    if (!loader.current || !path) {
-      return
-    }
-    setPhase({ name: 'erasing' })
+    const device = loader.current
+    if (!device || !installPath || !current) return
+    setPhase({ name: 'preparing' })
+    let writing = false
     try {
-      const manifestUrl = new URL(path, RELEASES)
-      const manifest: Manifest = await (await fetch(manifestUrl)).json()
-      const chip = manifest.builds.find((one) => one.chipFamily === 'ESP32-C6')
-      if (!chip) {
-        throw new Error('no ESP32-C6 build')
-      }
-      const files = await Promise.all(
-        chip.parts.map(async (part) => {
-          const answer = await fetch(new URL(part.path, manifestUrl))
-          if (!answer.ok) {
-            throw new Error(part.path)
-          }
-          return { data: new Uint8Array(await answer.arrayBuffer()), address: part.offset }
-        }),
-      )
+      const manifestUrl = releaseUrl(installPath, new URL(RELEASES))
+      const answer = await fetch(manifestUrl, { cache: 'no-cache' })
+      if (!answer.ok) throw new Error('manifest download')
+      const parts = manifestParts(await answer.json(), current.version, build, mode)
+      const files = await Promise.all(parts.map(async (part) => {
+        const answer = await fetch(releaseUrl(part.path, manifestUrl))
+        if (!answer.ok) throw new Error('image download')
+        return { data: new Uint8Array(await answer.arrayBuffer()), address: part.offset }
+      }))
+      const source = mode === 'preserve' ? await readFlashRange(device, TABLE_ADDRESS, SECTOR_BYTES) : undefined
+      const { recovery } = validateFiles(parts, files, mode, source)
       const total = files.reduce((sum, file) => sum + file.data.length, 0)
       const before = files.map((_, index) => files.slice(0, index).reduce((sum, file) => sum + file.data.length, 0))
-      await loader.current.writeFlash({
+      writing = true
+      setPhase(mode === 'fresh' ? { name: 'erasing' } : { name: 'writing', done: 0 })
+      await device.writeFlash({
         fileArray: files,
         flashSize: 'keep',
         flashMode: 'keep',
         flashFreq: 'keep',
-        eraseAll: true,
+        eraseAll: mode === 'fresh',
         compress: true,
         reportProgress: (index, written, size) => {
           const share = (before[index] + (written / size) * files[index].data.length) / total
@@ -257,10 +254,19 @@ export function Flash() {
       })
       await restart()
       await release()
-      setPhase({ name: 'done' })
-    } catch {
+      setPhase({ name: 'done', recovery, mode })
+    } catch (error) {
       await release()
-      setPhase({ name: 'error', message: t('Writing stopped. Connect again.', 'Запись прервалась. Подключите ещё раз.') })
+      const message = error instanceof FlashPlanError
+        ? error.message === 'source'
+          ? t('This flash layout cannot be migrated safely. Nothing was written. Back up before choosing a fresh install.',
+              'Эту разметку нельзя безопасно перенести. Ничего не записано. Сохраните копию перед чистой установкой.')
+          : t('The firmware files do not match a supported layout. Nothing was written.',
+              'Файлы прошивки не соответствуют поддерживаемой разметке. Ничего не записано.')
+        : writing
+          ? t('Writing stopped. Connect again.', 'Запись прервалась. Подключите ещё раз.')
+          : t('Preparation failed. Nothing was written. Connect again.', 'Подготовка не удалась. Ничего не записано. Подключите ещё раз.')
+      setPhase({ name: 'error', message })
     }
   }
 
@@ -361,7 +367,7 @@ export function Flash() {
 
   const version = current?.version ?? null
   const busy =
-    phase.name === 'connecting' || phase.name === 'erasing' || phase.name === 'writing' || phase.name === 'reading'
+    phase.name === 'connecting' || phase.name === 'preparing' || phase.name === 'erasing' || phase.name === 'writing' || phase.name === 'reading'
 
   let body
   if (!supported) {
@@ -467,9 +473,26 @@ export function Flash() {
             {t('Backup saved:', 'Резервная копия сохранена:')} <code>{phase.saved}</code>
           </p>
         ) : null}
-        <p className="flash-warning">{t('Everything on the board is erased.', 'Всё на плате будет стёрто.')}</p>
+        <div className="flash-choice">
+          <label>
+            <span>{t('Install', 'Установка')}</span>
+            <select value={mode} onChange={event => setMode(event.target.value as InstallMode)}>
+              <option value="preserve">{t('Keep data', 'Сохранить данные')}</option>
+              <option value="fresh">{t('Fresh install', 'Чистая установка')}</option>
+            </select>
+          </label>
+          <p className={mode === 'fresh' || !installPath ? 'flash-warning' : 'dim'}>
+            {mode === 'fresh'
+              ? t('Everything on the board is erased.', 'Всё на плате будет стёрто.')
+              : installPath
+                ? t('Keeps settings, Wi-Fi, apps and their data. The existing layout is checked before writing.',
+                    'Сохраняет настройки, Wi-Fi, приложения и их данные. Разметка проверяется перед записью.')
+                : t('This release has no migration build. Choose a newer release to keep data.',
+                    'У этой версии нет сборки для переноса. Выберите более новую версию, чтобы сохранить данные.')}
+          </p>
+        </div>
         <div className="buttons">
-          <button type="button" className="button" onClick={install}>
+          <button type="button" className="button" onClick={install} disabled={!installPath}>
             {t('Install', 'Установить')}
           </button>
           <button type="button" className="button quiet" onClick={() => save(phase.chip, phase.mac)}>
@@ -501,12 +524,12 @@ export function Flash() {
         <p className="dim">{t('Keep the board connected.', 'Не отключайте плату.')}</p>
       </>
     )
-  } else if (phase.name === 'erasing' || phase.name === 'writing') {
+  } else if (phase.name === 'preparing' || phase.name === 'erasing' || phase.name === 'writing') {
     const done = phase.name === 'writing' ? phase.done : 0
     body = (
       <>
         <p>
-          {phase.name === 'erasing' ? t('Erasing', 'Стирание') : t('Writing', 'Запись')}
+          {phase.name === 'preparing' ? t('Checking firmware and layout', 'Проверка прошивки и разметки') : phase.name === 'erasing' ? t('Erasing', 'Стирание') : t('Writing', 'Запись')}
           {phase.name === 'writing' && <span className="flash-percent">{done}%</span>}
         </p>
         <Progress value={done} />
@@ -517,10 +540,15 @@ export function Flash() {
     body = (
       <>
         <p>
-          {t(
-            'Done. The device restarts and shows a QR code.',
-            'Готово. Устройство перезагрузится и покажет QR-код.',
-          )}
+          {phase.recovery
+            ? t('Installed. On the recovery screen, press BACK to start the firmware.',
+                'Установлено. На экране recovery нажмите BACK, чтобы запустить прошивку.')
+            : t('Installed. The device restarts and shows a QR code.', 'Установлено. Устройство перезагрузится и покажет QR-код.')}
+        </p>
+        <p>
+          {phase.mode === 'preserve'
+            ? t('Your saved Wi-Fi and apps are kept.', 'Сохранённые Wi-Fi и приложения остаются на месте.')
+            : t('Then scan the QR code to set up Wi-Fi.', 'Затем отсканируйте QR-код, чтобы настроить Wi-Fi.')}
         </p>
         <div className="buttons">
           <Link className="button" to={local('/start#wifi')}>
