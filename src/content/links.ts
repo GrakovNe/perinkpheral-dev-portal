@@ -45,6 +45,6 @@ export const files = {
 export const author = {
   name: 'Max Grakov',
   email: 'grakovne@gmail.com',
-  telegram: 'maxgrakov',
+  telegram: 'perinkpheral',
   github: GITHUB,
 }
