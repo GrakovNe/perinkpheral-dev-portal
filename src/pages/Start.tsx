@@ -1,7 +1,6 @@
 import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { keepWords, PageHead } from '../components/Doc'
-import { GuideNav } from '../components/GuideNav'
 import { PixelIcon } from '../components/PixelIcon'
 import { STEP_ICONS } from '../content/start'
 import { useLocal, useT } from '../i18n'
@@ -98,7 +97,6 @@ export function Start() {
             {t('Choose what your device shows from the built-in catalog.', 'Выберите в готовом каталоге, что будет показывать устройство.')}
           </Step>
         </ol>
-        <GuideNav next={{ to: '/hardware', label: t('Build the device', 'Собрать устройство') }} />
       </div>
     </>
   )
