@@ -40,7 +40,7 @@ static int32_t presses;
 
 void app_on_load(void)
 {
-    /* Restore state: the host unloads the application
+    /* Restore state: Perinkpheral OS unloads the application
      * when it leaves the screen. */
     kv_get(PRESSES_KEY, sizeof PRESSES_KEY - 1, &presses, sizeof presses);
 }
