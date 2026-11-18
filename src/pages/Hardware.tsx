@@ -77,7 +77,6 @@ export function Hardware() {
           </ul>
           <h3>{t('Buttons', 'Кнопки')}</h3>
           <ul>
-            <li>{t('Snap off the narrow strip along the edge of the button board, or it does not fit.', 'Отломите узкую полоску по краю платы кнопок, иначе она не встанет.')}</li>
             <li>{t('The board sits on two pins in the bottom, solder pads towards the XIAO.', 'Плата садится на два штыря в дне, площадками к XIAO.')}</li>
             <li>{t('The caps fit standard 6 x 6 mm buttons.', 'Колпачки под стандартные кнопки 6 x 6 мм.')}</li>
           </ul>
@@ -119,17 +118,8 @@ export function Hardware() {
               <h3>{t('Mount the display', 'Экран')}</h3>
               <p>
                 {t(
-                  'Unscrew the spacers, plug in the cable and put the display into the frame from the back. Three corners: M2.5 x 4 screws. Bottom right corner: M2.5 x 6 through the corner bracket.',
-                  'Открутите стойки, подключите шлейф и вставьте экран в рамку сзади. Три угла: винты M2.5 x 4. Правый нижний угол: M2.5 x 6 через уголок.',
-                )}
-              </p>
-            </li>
-            <li>
-              <h3>{t('Install the board, buttons and battery', 'Плата, кнопки и аккумулятор')}</h3>
-              <p>
-                {t(
-                  'Put the XIAO on its two supports with USB-C in the opening of the right wall, the button board on its pins and the battery in its compartment.',
-                  'Поставьте XIAO на две опоры разъёмом USB-C в окно правой стенки, плату кнопок на её штыри, аккумулятор в отсек.',
+                  'Unscrew the spacers, plug in the cable and put the display into the frame from the back. Viewed from behind, the bottom left corner takes an M2.5 x 6 screw through the bracket. Use M2.5 x 4 screws for the other three corners.',
+                  'Открутите стойки, подключите шлейф и вставьте экран в рамку сзади. Если смотреть сзади, в левом нижнем углу установите уголок и винт M2.5 x 6. В остальных трёх углах: M2.5 x 4.',
                 )}
               </p>
             </li>
@@ -137,8 +127,17 @@ export function Hardware() {
               <h3>{t('Solder', 'Пайка')}</h3>
               <p>
                 {t(
-                  'Solder the display and the buttons as in the wiring table, button wires no longer than 35 mm. Solder the battery to the pads under the XIAO.',
-                  'Припаяйте экран и кнопки по схеме сборки, провода кнопок не длиннее 35 мм. Аккумулятор припаяйте к площадкам под XIAO.',
+                  'Before installing the XIAO, solder the display and buttons as in the wiring table, with button wires no longer than 35 mm. Solder the battery wires to BAT+ and BAT- on the underside of the XIAO.',
+                  'До установки XIAO припаяйте экран и кнопки по схеме сборки, провода кнопок не длиннее 35 мм. Провода аккумулятора припаяйте к BAT+ и BAT- на нижней стороне XIAO.',
+                )}
+              </p>
+            </li>
+            <li>
+              <h3>{t('Install the board, buttons and battery', 'Плата, кнопки и аккумулятор')}</h3>
+              <p>
+                {t(
+                  'Put the XIAO on its two supports with USB-C in the opening of the right wall and the button board on its pins. Secure the battery in its compartment with thin double-sided tape.',
+                  'Поставьте XIAO на две опоры разъёмом USB-C в окно правой стенки, плату кнопок на её штыри. Закрепите аккумулятор в отсеке тонким двусторонним скотчем.',
                 )}
               </p>
             </li>
@@ -152,7 +151,14 @@ export function Hardware() {
               </p>
             </li>
             <li>
-              <h3>{t('Assemble the case', 'Собрать корпус')}</h3>
+              <h3>{t('First start', 'Первый запуск')}</h3>
+              <p>
+                <Link to={local('/flash')}>{t('Install the firmware', 'Установите прошивку')}</Link>
+                {t(' and check the display and all four buttons before assembling the case.', ' и проверьте экран и все четыре кнопки до сборки корпуса.')}
+              </p>
+            </li>
+            <li>
+              <h3 id="assemble-case">{t('Assemble the case', 'Собрать корпус')}</h3>
               <p>
                 {t(
                   'Insert the button caps into the base cover from the inside. Screw the back panel to the frame, the bottom to the base and the base to the back panel.',
@@ -168,7 +174,7 @@ export function Hardware() {
             head={[t('Where', 'Где'), t('Screw', 'Винт'), t('Qty', 'Кол-во'), t('Note', 'Примечание')]}
             rows={[
               [t('Display to frame, three corners', 'Экран к рамке, три угла'), 'M2.5 x 4', '3', ''],
-              [t('Display, bottom right corner', 'Экран, правый нижний угол'), 'M2.5 x 6', '1', t('No longer than 6 mm', 'Не длиннее 6 мм')],
+              [t('Display, bottom left viewed from behind', 'Экран, левый нижний угол при взгляде сзади'), 'M2.5 x 6', '1', t('No longer than 6 mm', 'Не длиннее 6 мм')],
               [t('Back panel to frame', 'Задняя панель к рамке'), 'M2.5 x 4', '1', t('No longer than 4 mm', 'Не длиннее 4 мм')],
               [t('Back panel to corner bracket', 'Задняя панель к уголку'), 'M2.5 x 4', '1', ''],
               [t('Bottom to base', 'Дно к основанию'), 'M2.5 x 6', '4', t('Up to 8 mm', 'До 8 мм')],
@@ -180,7 +186,6 @@ export function Hardware() {
         <GuideNav
           id="flashing"
           previous={{ to: '/start', label: t('Getting started', 'Начало работы') }}
-          next={{ to: '/flash', label: 'Flash Firmware' }}
         />
 
       </DocBody>

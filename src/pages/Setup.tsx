@@ -60,7 +60,10 @@ export function Setup() {
           <p>{t('The device is ready: your app is on the screen, and network apps fetch their data over Wi-Fi.', 'Устройство готово: выбранное приложение на экране, а сетевые приложения получают данные по Wi-Fi.')}</p>
           <p>{t('Use the device’s web page whenever you want to change settings or add another app. Future firmware updates are in its Firmware section.', 'Возвращайтесь на веб-страницу устройства, чтобы менять настройки или добавлять приложения. Последующие обновления прошивки находятся в разделе «Прошивка» этой страницы.')}</p>
         </Chapter>
-        <GuideNav previous={{ to: '/flash', label: 'Flash Firmware' }} />
+        <GuideNav
+          previous={{ to: '/flash', label: 'Flash Firmware' }}
+          next={{ to: '/hardware#assemble-case', label: t('Assemble the case', 'Собрать корпус') }}
+        />
       </DocBody>
     </>
   )

@@ -30,8 +30,8 @@ export function PrintCase() {
           <section>
             <p>
               {t(
-                'Download the files and drag them into your slicer. Keep their orientation, choose your usual printer and PLA profile, and turn supports off.',
-                'Скачайте файлы и перетащите их в слайсер. Сохраните положение деталей, выберите обычный профиль своего принтера и PLA, отключите поддержки.',
+                'Download the files and drag them into your slicer. Keep their orientation, choose your usual printer profile and a material from the table, and turn supports off.',
+                'Скачайте файлы и перетащите их в слайсер. Сохраните положение деталей, выберите обычный профиль своего принтера и материал из таблицы, отключите поддержки.',
               )}
             </p>
             <p>
