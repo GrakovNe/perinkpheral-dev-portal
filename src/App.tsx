@@ -10,6 +10,7 @@ import { PrintCase } from './pages/PrintCase'
 import { Home } from './pages/Home'
 import { Sdk } from './pages/Sdk'
 import { Start } from './pages/Start'
+import { Setup } from './pages/Setup'
 
 import { pageTitle } from './content/pages'
 import { plainPath, useLang, useLocal, useT } from './i18n'
@@ -38,6 +39,7 @@ const ROUTES: [string, ReactElement][] = [
   ['', <Home />],
   ['/start', <Start />],
   ['/flash', <Flash />],
+  ['/setup', <Setup />],
   ['/hardware', <Hardware />],
   ['/hardware/print', <PrintCase />],
   ['/firmware', <Firmware />],

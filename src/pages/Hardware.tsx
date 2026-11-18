@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Chapter, DocBody, Facts, PageHead, Table } from '../components/Doc'
+import { GuideNav } from '../components/GuideNav'
 import { WiringDiagram } from '../components/Diagrams'
 import { Render } from '../components/Pictures'
 import { useLocal, useT } from '../i18n'
@@ -12,14 +13,13 @@ const CHAPTERS = [
   { id: 'wiring', en: 'Wiring', ru: 'Схема сборки' },
   { id: 'assembly', en: 'Assembly', ru: 'Сборка' },
   { id: 'fasteners', en: 'Fasteners', ru: 'Крепёж' },
-  { id: 'flashing', en: 'First flash', ru: 'Первая прошивка' },
 ]
 
 export function Hardware() {
   const t = useT()
   const local = useLocal()
   const chapters = CHAPTERS.map((one) => ({ id: one.id, title: t(one.en, one.ru) }))
-  const [overview, parts, constraints, printing, wiring, assembly, fasteners, flashing] =
+  const [overview, parts, constraints, printing, wiring, assembly, fasteners] =
     chapters
   return (
     <>
@@ -51,7 +51,7 @@ export function Hardware() {
               [t('Screws', 'Винты'), 'M2.5 x 4', '5', t('3 display to frame, 2 back panel', '3 экран к рамке, 2 задняя панель')],
               [t('Screws', 'Винты'), 'M2.5 x 6', '9', t('4 bottom to cover, 4 base to back panel, 1 display corner', '4 дно к основанию, 4 основание к задней панели, 1 угол экрана')],
               [t('Wire', 'Провод'), t('Thin hook-up wire', 'Тонкий монтажный'), t('~0.3 m', '~0.3 м'), t('Buttons and battery', 'Кнопки и аккумулятор')],
-              [t('Heat shrink tube', 'Термоусадка'), t('1.5-2 mm', '1.5-2 мм'), t('~0.1 m', '~0.1 м'), t('Insulating the joined wires', 'Изоляция скруток')],
+              [t('Heat shrink tube', 'Термоусадка'), t('1.5-2 mm', '1.5-2 мм'), t('~0.1 m', '~0.1 м'), t('Insulating soldered joints', 'Изоляция мест пайки')],
               [t('Tape', 'Скотч'), t('Thin double-sided', 'Тонкий двусторонний'), '-', t('Antenna and battery', 'Антенна и аккумулятор')],
             ]}
           />
@@ -177,22 +177,11 @@ export function Hardware() {
           />
         </Chapter>
 
-        <Chapter chapter={flashing}>
-          <Facts
-            rows={[
-              [t('Needs', 'Нужно'), t('Chrome or Edge on a computer, a USB-C cable', 'Chrome или Edge на компьютере, кабель USB-C')],
-              [t('Board not found', 'Плата не видна'), t('Hold BOOT while plugging in', 'Держите BOOT при подключении')],
-              [t('After flashing', 'После прошивки'), t('On the recovery screen, press BACK to start', 'На экране recovery нажмите BACK для запуска')],
-              [t('Wi-Fi setup', 'Настройка Wi-Fi'), <>{t('Join', 'Подключиться к')} <code>Perinkpheral-XXXX</code>, {t('open', 'открыть')} <code>http://192.168.4.1</code></>],
-              [t('Later updates', 'Дальнейшие обновления'), t('Over Wi-Fi', 'По Wi-Fi')],
-            ]}
-          />
-          <div className="buttons">
-            <Link className="button" to={local('/flash')}>
-              {t('Flash from a browser', 'Прошить из браузера')} <span className="arrow">-&gt;</span>
-            </Link>
-          </div>
-        </Chapter>
+        <GuideNav
+          id="flashing"
+          previous={{ to: '/start', label: t('Getting started', 'Начало работы') }}
+          next={{ to: '/flash', label: 'Flash Firmware' }}
+        />
 
       </DocBody>
     </>

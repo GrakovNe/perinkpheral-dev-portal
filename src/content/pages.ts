@@ -2,9 +2,10 @@
 // them. Pages without inBar are linked from the footer.
 export const PAGES = [
   { to: '/start', en: 'Getting started', ru: 'Начало работы', inBar: true },
-  { to: '/flash', en: 'Flash', ru: 'Прошивка', inBar: false },
   { to: '/hardware', en: 'Hardware', ru: 'Hardware', inBar: true },
   { to: '/hardware/print', en: 'Print the case', ru: 'Печать корпуса', inBar: false },
+  { to: '/flash', en: 'Flash', ru: 'Прошивка', inBar: false },
+  { to: '/setup', en: 'Device setup', ru: 'Настройка устройства', inBar: false },
   { to: '/firmware', en: 'Firmware', ru: 'Firmware', inBar: true },
   { to: '/sdk', en: 'SDK', ru: 'SDK', inBar: true },
   { to: '/contacts', en: 'Contacts', ru: 'Контакты', inBar: true },
@@ -23,12 +24,16 @@ export const DESCRIPTIONS: Record<string, { en: string; ru: string }> = {
     ru: 'От деталей до экрана с приложениями: собрать, прошить, подключить к Wi-Fi, установить приложения.',
   },
   '/flash': {
-    en: 'The first flash of perINKpheral from a browser: the board on a USB-C cable, Chrome or Edge, one button.',
-    ru: 'Первая прошивка perINKpheral из браузера: плата на кабеле USB-C, Chrome или Edge, одна кнопка.',
+    en: 'Install perINKpheral firmware over USB from Chrome or Edge. Choose a release, back up your board and install.',
+    ru: 'Установка прошивки perINKpheral по USB из Chrome или Edge. Выбор версии, резервная копия и установка.',
+  },
+  '/setup': {
+    en: 'Connect perINKpheral to Wi-Fi, open its web page, install apps and put your first app on the screen.',
+    ru: 'Подключите perINKpheral к Wi-Fi, откройте его веб-страницу, установите приложения и запустите первое на экране.',
   },
   '/hardware': {
-    en: 'The parts, the printed case, the wiring, the assembly and the first flash of the perINKpheral display.',
-    ru: 'Детали, корпус, схема сборки, сборка и первая прошивка экрана perINKpheral.',
+    en: 'The parts, the printed case, the wiring and the assembly of the perINKpheral display.',
+    ru: 'Детали, корпус, схема подключения и сборка экрана perINKpheral.',
   },
   '/hardware/print': {
     en: 'Download the perINKpheral Rev 1 case as 3MF files, already oriented for printing without supports. Includes the STEP source.',

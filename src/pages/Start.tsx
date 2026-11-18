@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { keepWords, PageHead } from '../components/Doc'
+import { GuideNav } from '../components/GuideNav'
 import { PixelIcon } from '../components/PixelIcon'
 import { STEP_ICONS } from '../content/start'
 import { useLocal, useT } from '../i18n'
@@ -45,7 +46,9 @@ export function Start() {
   const local = useLocal()
   return (
     <>
-      <PageHead title={t('Getting started', 'Начало работы')} />
+      <PageHead title={t('Getting started', 'Начало работы')}>
+        {t('From parts to your first app. Follow the steps, or start where you left off.', 'От деталей до первого приложения. Пройдите шаги по порядку или начните с того, на котором остановились.')}
+      </PageHead>
       <div className="wrap">
         <ol className="start">
           <Step
@@ -71,26 +74,31 @@ export function Start() {
             title={t('Flash the firmware', 'Прошейте')}
             more={
               <Link className="button quiet" to={local('/flash')}>
-                {t('Flash', 'Прошить')} <span className="arrow">-&gt;</span>
+                Flash Firmware <span className="arrow">-&gt;</span>
               </Link>
             }
           >
             {t(
-              'From a browser, with the board on a USB-C cable. Choose Fresh install for a new board. On the recovery screen, press BACK to start the firmware. Later updates install over Wi-Fi.',
-              'Из браузера, с платой на кабеле USB-C. Для новой платы выберите «Чистая установка». На экране recovery нажмите BACK для запуска прошивки. Дальше обновления ставятся по Wi-Fi.',
+              'Install the firmware from your computer with a USB-C cable.',
+              'Установите прошивку с компьютера через кабель USB-C.',
             )}
           </Step>
-          <Step id="wifi" number={3} icon={STEP_ICONS.connect} title={t('Connect to Wi-Fi', 'Подключите к Wi-Fi')}>
-            {t(
-              'Scan the QR code on the screen with a phone, pick your network and press OK on the device.',
-              'Отсканируйте телефоном QR-код на экране, выберите свою сеть и нажмите OK на устройстве.',
-            )}
+          <Step id="wifi" number={3} icon={STEP_ICONS.connect} title={t('Connect to Wi-Fi', 'Подключите к Wi-Fi')}
+            more={<Link className="button quiet" to={local('/setup#wifi')}>
+              {t('Set up Wi-Fi', 'Настроить Wi-Fi')} <span className="arrow">-&gt;</span>
+            </Link>}
+          >
+            {t('Connect the device to your home network and open its web page.', 'Подключите устройство к домашней сети и откройте его веб-страницу.')}
           </Step>
-          <Step id="apps" number={4} icon={STEP_ICONS.install} title={t('Install apps', 'Установите приложения')}>
-            {t('Open', 'Откройте в браузере')} <code>perinkpheral-xxxx.local</code>
-            {t(' in a browser and add apps from the catalog.', ' и добавьте приложения из каталога.')}
+          <Step id="apps" number={4} icon={STEP_ICONS.install} title={t('Install apps', 'Установите приложения')}
+            more={<Link className="button quiet" to={local('/setup#apps')}>
+              {t('Choose apps', 'Выбрать приложения')} <span className="arrow">-&gt;</span>
+            </Link>}
+          >
+            {t('Choose what your device shows from the built-in catalog.', 'Выберите в готовом каталоге, что будет показывать устройство.')}
           </Step>
         </ol>
+        <GuideNav next={{ to: '/hardware', label: t('Build the device', 'Собрать устройство') }} />
       </div>
     </>
   )

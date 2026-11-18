@@ -51,10 +51,6 @@ export function Firmware() {
           <EnglishOnly>
             <FlashDiagram />
           </EnglishOnly>
-          <p>{t(
-            'Recovery has 896 KiB; the main firmware has 2 MiB. Settings, applications and their data keep the same space.',
-            'Recovery занимает 896 КиБ, основная прошивка получает 2 МиБ. Объём разделов настроек, приложений и их данных не меняется.',
-          )}</p>
         </Chapter>
 
         <Chapter chapter={network}>

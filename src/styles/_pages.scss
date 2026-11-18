@@ -174,7 +174,7 @@
 // ---- Getting started: a step a row, its picture beside it ----
 
 .start {
-  margin: 0 0 clamp(3rem, 7vw, 5rem);
+  margin: 0;
   padding: 0;
   list-style: none;
 }
@@ -187,6 +187,10 @@
   margin: 0;
   padding: 2.5rem 0;
   border-bottom: 1px solid var(--line);
+
+  &:last-child {
+    border-bottom: 0;
+  }
 
   .start-picture {
     display: grid;

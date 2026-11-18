@@ -236,7 +236,8 @@ main {
     margin-top: 3rem;
   }
 
-  > section:last-child {
+  > section:last-child,
+  > section:has(+ .guide-nav) {
     padding-bottom: 0;
     border-bottom: 0;
   }

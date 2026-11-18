@@ -57,6 +57,44 @@
   gap: 0.9rem;
 }
 
+.guide-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  scroll-margin-top: 5.5rem;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+
+  .guide-next {
+    margin-left: auto;
+  }
+
+  @include phone {
+    flex-direction: column;
+
+    .button {
+      justify-content: center;
+      white-space: normal;
+      height: auto;
+      min-height: 2.9rem;
+      padding: 0.6rem 1rem;
+    }
+
+    .guide-next {
+      margin-left: 0;
+    }
+  }
+}
+
+main > .wrap > .guide-nav {
+  margin-bottom: 5rem;
+}
+
+.flash-page + .wrap > .guide-nav {
+  margin-top: 0;
+}
+
 // ---- a box of ink lines ----
 
 .panel {

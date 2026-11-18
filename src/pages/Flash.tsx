@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: MIT
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
-import { Link } from 'react-router-dom'
 import type { ESPLoader, Transport } from 'esptool-js'
 import { Facts, PageHead } from '../components/Doc'
+import { GuideNav } from '../components/GuideNav'
 import { readFlashRange, readWholeFlash } from '../content/flashRead'
 import { FLASH_BYTES, TABLE_ADDRESS, SECTOR_BYTES, FlashPlanError, manifestPath, manifestParts, releaseUrl, validateFiles } from '../content/flashPlan'
 import type { Builds, Flavor, InstallMode } from '../content/flashPlan'
-import { useLocal, useT } from '../i18n'
+import { useT } from '../i18n'
 
 // The first flash from a browser: the board on a USB cable, Web Serial and
 // Espressif's esptool-js. Any release of the firmware, for release or for
@@ -100,7 +100,6 @@ function Progress({ value }: { value: number }) {
 
 export function Flash() {
   const t = useT()
-  const local = useLocal()
   // Web Serial, asked of the browser; a page built ahead of time assumes it
   const supported = useSyncExternalStore(
     () => () => {},
@@ -550,11 +549,6 @@ export function Flash() {
             ? t('Your saved Wi-Fi and apps are kept.', 'Сохранённые Wi-Fi и приложения остаются на месте.')
             : t('Then scan the QR code to set up Wi-Fi.', 'Затем отсканируйте QR-код, чтобы настроить Wi-Fi.')}
         </p>
-        <div className="buttons">
-          <Link className="button" to={local('/start#wifi')}>
-            {t('Connect to Wi-Fi', 'Подключить к Wi-Fi')} <span className="arrow">-&gt;</span>
-          </Link>
-        </div>
       </>
     )
   } else {
@@ -615,8 +609,20 @@ export function Flash() {
               </li>
             ))}
           </ol>
+          <details>
+            <summary>{t('The board is not listed', 'Платы нет в списке')}</summary>
+            <p>{t('Use a USB cable that carries data. On the XIAO, hold BOOT, press and release RESET, then release BOOT and click Connect again.', 'Используйте USB-кабель с передачей данных. На XIAO удерживайте BOOT, нажмите и отпустите RESET, затем отпустите BOOT и снова нажмите «Подключить».')}</p>
+          </details>
         </aside>
       </div>
+      {!busy && (
+        <div className="wrap">
+          <GuideNav
+            previous={{ to: '/hardware', label: 'Hardware' }}
+            next={{ to: '/setup', label: t('Set up the device', 'Настроить устройство') }}
+          />
+        </div>
+      )}
     </>
   )
 }

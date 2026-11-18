@@ -1,13 +1,12 @@
 // SPDX-License-Identifier: MIT
-import { Link } from 'react-router-dom'
 import { PageHead, Table } from '../components/Doc'
+import { GuideNav } from '../components/GuideNav'
 import { Download } from '../components/Download'
 import { caseFiles } from '../content/links'
-import { useLocal, useT } from '../i18n'
+import { useT } from '../i18n'
 
 export function PrintCase() {
   const t = useT()
-  const local = useLocal()
   const download = (url: string, name: string) => (
     <Download href={url} label={`${t('Download', 'Скачать')}: ${name}`}>
       {t('Download', 'Скачать')}
@@ -45,9 +44,6 @@ export function PrintCase() {
               <Download href={caseFiles.archive} quiet={false}>
                 {t('Download all', 'Скачать всё')}
               </Download>
-              <Link className="button quiet" to={local('/hardware#assembly')}>
-                {t('Assembly', 'Сборка')} <span className="arrow">-&gt;</span>
-              </Link>
             </div>
           </section>
 
@@ -68,6 +64,7 @@ export function PrintCase() {
               </Download>
             </div>
           </section>
+          <GuideNav next={{ to: '/hardware#wiring', label: t('Continue assembly', 'Продолжить сборку') }} />
         </div>
       </div>
     </>
