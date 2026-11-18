@@ -102,7 +102,7 @@ export function Hardware() {
               [t('Display CS, DC', 'Экран CS, DC'), 'D7, D5'],
               [t('Display RST, BUSY', 'Экран RST, BUSY'), 'D4, D6'],
               [t('Buttons 1, 2, 3, 4', 'Кнопки 1, 2, 3, 4'), 'D0, D1, D2, D3'],
-              [t('Buttons V, G (power)', 'Кнопки V, G (питание)'), t('3V3, GND: joined to the display\'s VCC and GND wires', '3V3, GND: скруткой с проводами VCC и GND экрана')],
+              [t('Buttons V, G (power)', 'Кнопки V, G (питание)'), t('3V3, GND: soldered to the display\'s VCC and GND wires', '3V3, GND: пайкой с проводами VCC и GND экрана')],
               [t('Battery +, -', 'Аккумулятор +, -'), t('BAT+, BAT- pads under the board', 'Площадки BAT+, BAT- под платой')],
               [t('Antenna', 'Антенна'), t('Antenna connector', 'Разъём антенны')],
             ]}
