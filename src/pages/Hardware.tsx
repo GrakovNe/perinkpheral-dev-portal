@@ -86,23 +86,7 @@ export function Hardware() {
         </Chapter>
 
         <Chapter chapter={printing}>
-          <Table
-            head={[t('Part', 'Деталь'), t('Qty', 'Кол-во'), t('Material', 'Материал'), t('Orientation', 'Положение')]}
-            rows={[
-              [t('Frame', 'Рамка'), '1', t('PLA, copper', 'PLA, медный'), t('Front side down', 'Лицом вниз')],
-              [t('Logo', 'Логотип'), '1', t('PLA, black', 'PLA, чёрный'), t('Together with the frame, second color', 'Вместе с рамкой, вторым цветом')],
-              [t('Back panel', 'Задняя панель'), '1', t('PLA, copper', 'PLA, медный'), t('Outer side down', 'Внешней стороной вниз')],
-              [t('Corner bracket', 'Уголок'), '1', 'PLA', t('Wide side down', 'Широкой стороной вниз')],
-              [t('Base', 'Основание'), '1', t('PLA, copper', 'PLA, медный'), t('Top side down', 'Верхом вниз')],
-              [t('Bottom', 'Дно'), '1', t('PLA, copper', 'PLA, медный'), t('Bottom side down', 'Низом вниз')],
-              [t('Button caps', 'Колпачки кнопок'), '4', t('PLA, black', 'PLA, чёрный'), t('Wide side down', 'Широкой стороной вниз')],
-              [t('Feet, optional', 'Ножки, необязательно'), '6', 'TPU', t('Flat side down', 'Плоской стороной вниз')],
-            ]}
-          />
-          <ul>
-            <li>{t('No supports.', 'Без поддержек.')}</li>
-            <li>{t('Logo: second color, printed with the frame.', 'Логотип: второй цвет, печатается вместе с рамкой.')}</li>
-          </ul>
+          <p>{t('Download the case files and print the parts.', 'Скачайте файлы корпуса и распечатайте детали.')}</p>
           <div className="buttons">
             <Link className="button" to={local('/hardware/print')}>
               {t('Print files', 'Файлы для печати')} <span className="arrow">-&gt;</span>
