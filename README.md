@@ -12,8 +12,8 @@ in English and Russian. Includes documentation for Perinkpheral OS and the brows
 [Firmware](https://perinkpheral.dev/firmware) -
 [Developer documentation](https://perinkpheral.dev/sdk).
 Application guide (PDF):
-[English](https://github.com/GrakovNe/perinkpheral/releases/latest/download/perinkpheral-app-guide.pdf),
-[Russian](https://github.com/GrakovNe/perinkpheral/releases/latest/download/perinkpheral-app-guide.ru.pdf).
+[English](https://github.com/perinkpheral/perinkpheral/releases/latest/download/perinkpheral-app-guide.pdf),
+[Russian](https://github.com/perinkpheral/perinkpheral/releases/latest/download/perinkpheral-app-guide.ru.pdf).
 
 ## Development
 
@@ -52,13 +52,13 @@ internal anchors when moving a section.
 
 ## Sources and generated files
 
-- [Firmware and SDK](https://github.com/GrakovNe/perinkpheral) own device behavior,
+- [Firmware and SDK](https://github.com/perinkpheral/perinkpheral) own device behavior,
   recovery, API references, guide PDFs and release files. The flasher reads that
   repository's Pages index directly.
-- [Applications](https://github.com/GrakovNe/perinkpheral-apps) own the catalog and
+- [Applications](https://github.com/perinkpheral/perinkpheral-apps) own the catalog and
   app screenshots used as source material.
-- [CLion plugin](https://github.com/GrakovNe/perinkpheral-clion-plugin) and
-  [Home Assistant integration](https://github.com/GrakovNe/perinkpheral-hacs) own
+- [CLion plugin](https://github.com/perinkpheral/perinkpheral-clion-plugin) and
+  [Home Assistant integration](https://github.com/perinkpheral/perinkpheral-hacs) own
   their integration instructions.
 
 `npm run build` generates `dist/` and a temporary `dist-ssr/`; neither is committed.

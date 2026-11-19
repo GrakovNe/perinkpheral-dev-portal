@@ -1,6 +1,6 @@
 // Where things are: the repositories, the files in them, the author.
 
-const GITHUB = 'https://github.com/GrakovNe'
+const GITHUB = 'https://github.com/perinkpheral'
 
 export const repo = {
   firmware: `${GITHUB}/perinkpheral`,
@@ -31,8 +31,8 @@ export const files = {
   hello: `${repo.firmware}/tree/main/sdk/apps/hello`,
   cmake: `${repo.firmware}/tree/main/sdk/cmake`,
   companion: blob('sdk/companion/example.html'),
-  guidePdf: 'https://github.com/GrakovNe/perinkpheral/releases/latest/download/perinkpheral-app-guide.pdf',
-  guidePdfRu: 'https://github.com/GrakovNe/perinkpheral/releases/latest/download/perinkpheral-app-guide.ru.pdf',
+  guidePdf: 'https://github.com/perinkpheral/perinkpheral/releases/latest/download/perinkpheral-app-guide.pdf',
+  guidePdfRu: 'https://github.com/perinkpheral/perinkpheral/releases/latest/download/perinkpheral-app-guide.ru.pdf',
   hardwareNotes: blob('hardware/README.md'),
   partitions: blob('firmware/partitions.csv'),
   security: blob('SECURITY.md'),
