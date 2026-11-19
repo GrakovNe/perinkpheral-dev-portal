@@ -30,7 +30,7 @@ export function Firmware() {
               ['Network', 'Wi-Fi 6, HTTP, HTTPS'],
               ['Updates', 'Over Wi-Fi'],
               ['Languages', 'English, Russian'],
-              ['Source', <a href={repo.firmware}>GrakovNe/perinkpheral</a>],
+              ['Source', <a href={repo.firmware}>Perinkpheral/Perinkpheral</a>],
             ]}
           />
         </Chapter>
