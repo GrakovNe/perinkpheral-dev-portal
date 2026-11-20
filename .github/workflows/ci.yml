@@ -65,7 +65,8 @@ jobs:
           PERINKPHERAL: ${{ github.workspace }}/.sources/perinkpheral
           PERINKPHERAL_APPS: ${{ github.workspace }}/.sources/perinkpheral-apps
       - run: npm run check
-      - run: npx playwright install --with-deps chromium
+      # The browser's system libraries are on the runner, installed once: no sudo in a job.
+      - run: npx playwright install chromium
       - run: npm run test:browser
       - run: npm run build
         env:
