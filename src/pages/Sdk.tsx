@@ -128,7 +128,7 @@ export function Sdk() {
               ['ABI', '3 · firmware 0.1.30+'],
               ['API', <a href={files.hostApi}>sdk/host_api.h</a>],
               [t('Memory', 'Память'), t('64 KB per app', '64 КБ на приложение')],
-              [t('Numbers', 'Числа'), t('Integers only, no floating point', 'Только целые, без плавающей точки')],
+              [t('Numbers', 'Числа'), t('No floating point; decimals as fixed-point numbers', 'Без плавающей точки; дробные - числами с фиксированной точкой')],
               [t('Package', 'Пакет'), t('app.wasm, manifest.json, translations, pictures, files', 'app.wasm, manifest.json, переводы, картинки, файлы')],
             ]}
           />
