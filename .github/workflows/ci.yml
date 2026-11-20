@@ -23,7 +23,7 @@ concurrency:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, perinkpheral]
     steps:
       - uses: actions/checkout@v5
       - uses: actions/checkout@v5
@@ -39,13 +39,21 @@ jobs:
           distribution: temurin
           java-version: 21
       - uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-disabled: true
       - name: Image tools and wasi-sdk
         run: |
-          sudo apt-get update
-          sudo apt-get install -y ffmpeg webp
-          curl --fail -sSL https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-34/wasi-sdk-34.0-x86_64-linux.tar.gz \
-            | tar -xz -C "$RUNNER_TEMP"
-          echo "WASI_SDK_PATH=$RUNNER_TEMP/wasi-sdk-34.0-x86_64-linux" >> "$GITHUB_ENV"
+          # ffmpeg and webp are on the runner, installed once.
+          # Kept in the runner's tool cache: 190 MB is not fetched again by every job.
+          sdk="$RUNNER_TOOL_CACHE/wasi-sdk-34.0-x86_64-linux"
+          if [ ! -x "$sdk/bin/clang" ]; then
+            mkdir -p "$RUNNER_TOOL_CACHE"
+            fresh=$(mktemp -d -p "$RUNNER_TOOL_CACHE")
+            curl --fail -sSL https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-34/wasi-sdk-34.0-x86_64-linux.tar.gz | tar -xz -C "$fresh"
+            mv -T "$fresh/wasi-sdk-34.0-x86_64-linux" "$sdk" || true
+            rm -rf "$fresh"
+          fi
+          echo "WASI_SDK_PATH=$sdk" >> "$GITHUB_ENV"
       - uses: actions/setup-node@v5
         with:
           node-version: 22
@@ -69,7 +77,7 @@ jobs:
   publish:
     needs: build
     if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, perinkpheral]
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -79,7 +87,7 @@ jobs:
 
   release:
     needs: publish
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, perinkpheral]
     steps:
       - uses: actions/checkout@v5
         with:
