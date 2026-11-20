@@ -76,8 +76,8 @@ test('preservation requires a source table; fresh install ignores unknown source
   const fresh = fixture('fresh'); validateFiles(fresh.parts, fresh.files, 'fresh', new Uint8Array(4096))
 })
 test('release URLs stay in the published directory', () => {
-  const base = new URL('https://perinkpheral.github.io/perinkpheral/flash/v0.1.35/manifest.json')
-  assert.equal(releaseUrl('bootloader.bin', base).pathname, '/perinkpheral/flash/v0.1.35/bootloader.bin')
+  const base = new URL('https://perinkpheral.github.io/perinkpheral-os/flash/v0.1.35/manifest.json')
+  assert.equal(releaseUrl('bootloader.bin', base).pathname, '/perinkpheral-os/flash/v0.1.35/bootloader.bin')
   for (const path of ['../bootloader.bin', '//example.com/bootloader.bin', 'https://example.com/file', '/file', '?x=1', '#x', '']) {
     assert.throws(() => releaseUrl(path, base))
   }

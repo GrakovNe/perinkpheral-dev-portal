@@ -12,8 +12,8 @@ in English and Russian. Includes documentation for Perinkpheral OS and the brows
 [Firmware](https://perinkpheral.dev/firmware) -
 [Developer documentation](https://perinkpheral.dev/sdk).
 Application guide (PDF):
-[English](https://github.com/perinkpheral/perinkpheral/releases/latest/download/perinkpheral-app-guide.pdf),
-[Russian](https://github.com/perinkpheral/perinkpheral/releases/latest/download/perinkpheral-app-guide.ru.pdf).
+[English](https://github.com/Perinkpheral/perinkpheral-os/releases/latest/download/perinkpheral-app-guide.pdf),
+[Russian](https://github.com/Perinkpheral/perinkpheral-os/releases/latest/download/perinkpheral-app-guide.ru.pdf).
 
 ## Development
 
@@ -52,7 +52,7 @@ internal anchors when moving a section.
 
 ## Sources and generated files
 
-- [Firmware and SDK](https://github.com/perinkpheral/perinkpheral) own device behavior,
+- [Firmware and SDK](https://github.com/Perinkpheral/perinkpheral-os) own device behavior,
   recovery, API references, guide PDFs and release files. The flasher reads that
   repository's Pages index directly.
 - [Applications](https://github.com/perinkpheral/perinkpheral-apps) own the catalog and
@@ -65,7 +65,7 @@ internal anchors when moving a section.
 `npm run images` builds the eight showcase applications, captures their screens in
 the real simulator, and composites the case pictures. It needs Java 21+, a C compiler,
 wasi-sdk 34 (`WASI_SDK_PATH`), ffmpeg and cwebp. By default it uses sibling checkouts
-`../perinkpheral` and `../perinkpheral-apps`; override them with `PERINKPHERAL` and
+`../perinkpheral-os` and `../perinkpheral-apps`; override them with `PERINKPHERAL` and
 `PERINKPHERAL_APPS`. CI checks out both repositories' `main` and runs this before
 building the site. `public/screens/sources.json` records the exact revisions used.
 After an application release, run the portal's CI workflow on `main` to regenerate
