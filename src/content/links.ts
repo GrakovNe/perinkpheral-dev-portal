@@ -3,7 +3,7 @@
 const GITHUB = 'https://github.com/perinkpheral'
 
 export const repo = {
-  firmware: `${GITHUB}/perinkpheral`,
+  firmware: `${GITHUB}/perinkpheral-os`,
   apps: `${GITHUB}/perinkpheral-apps`,
   clion: `${GITHUB}/perinkpheral-clion-plugin`,
   homeAssistant: `${GITHUB}/perinkpheral-hacs`,
@@ -11,7 +11,7 @@ export const repo = {
 }
 
 const blob = (path: string) => `${repo.firmware}/blob/main/${path}`
-const caseDirectory = 'https://cdn.jsdelivr.net/gh/Perinkpheral/Perinkpheral@c48b4e9b6764f23f78caecf44092bc626b8f0257/hardware/step/rev1'
+const caseDirectory = 'https://cdn.jsdelivr.net/gh/Perinkpheral/perinkpheral-os@91dbbd36dff98d9de0bbd1dcf9c23f8ef82e1f91/hardware/step/rev1'
 
 export const caseFiles = {
   frame: `${caseDirectory}/01-frame-with-logo.3mf`,
@@ -31,8 +31,8 @@ export const files = {
   hello: `${repo.firmware}/tree/main/sdk/apps/hello`,
   cmake: `${repo.firmware}/tree/main/sdk/cmake`,
   companion: blob('sdk/companion/example.html'),
-  guidePdf: 'https://github.com/perinkpheral/perinkpheral/releases/latest/download/perinkpheral-app-guide.pdf',
-  guidePdfRu: 'https://github.com/perinkpheral/perinkpheral/releases/latest/download/perinkpheral-app-guide.ru.pdf',
+  guidePdf: 'https://github.com/Perinkpheral/perinkpheral-os/releases/latest/download/perinkpheral-app-guide.pdf',
+  guidePdfRu: 'https://github.com/Perinkpheral/perinkpheral-os/releases/latest/download/perinkpheral-app-guide.ru.pdf',
   hardwareNotes: blob('hardware/README.md'),
   partitions: blob('firmware/partitions.csv'),
   security: blob('SECURITY.md'),

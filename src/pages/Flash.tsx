@@ -19,7 +19,7 @@ import { useT } from '../i18n'
 // a fresh install erases the board. The whole flash can be read into a file: a copy
 // of what the board holds, settings and Wi-Fi password among it.
 
-const RELEASES = 'https://perinkpheral.github.io/perinkpheral/flash/'
+const RELEASES = 'https://perinkpheral.github.io/perinkpheral-os/flash/'
 const ESPRESSIF = 0x303a
 type Release = { version: string; date: string; notes: string; builds: Builds }
 

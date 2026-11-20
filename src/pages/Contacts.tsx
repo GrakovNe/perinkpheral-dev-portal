@@ -12,7 +12,7 @@ export function Contacts() {
           <div className="contacts">
             <a className="panel" href={repo.firmware}>
               <p className="kind">GitHub</p>
-              <p className="value">Perinkpheral/Perinkpheral</p>
+              <p className="value">Perinkpheral/perinkpheral-os</p>
             </a>
             <a className="panel" href={`mailto:${author.email}`}>
               <p className="kind">{t('Email', 'Почта')}</p>

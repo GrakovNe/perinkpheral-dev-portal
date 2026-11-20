@@ -7,7 +7,7 @@ import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
-const sdk = resolve(process.env.PERINKPHERAL || join(root, '../perinkpheral'))
+const sdk = resolve(process.env.PERINKPHERAL || join(root, '../perinkpheral-os'))
 const apps = resolve(process.env.PERINKPHERAL_APPS || join(root, '../perinkpheral-apps'))
 const work = mkdtempSync(join(tmpdir(), 'perinkpheral-showcase-'))
 const fixtures = join(root, 'assets/showcase')

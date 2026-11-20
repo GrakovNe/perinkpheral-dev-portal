@@ -29,7 +29,7 @@ async function serial(page) {
       }
     }
   ` }))
-  await page.route('https://perinkpheral.github.io/perinkpheral/flash/**', async (route) => {
+  await page.route('https://perinkpheral.github.io/perinkpheral-os/flash/**', async (route) => {
     const path = new URL(route.request().url()).pathname
     if (path.endsWith('index.json')) return route.fulfill({ json: [release] })
     const data = fixture('fresh')
